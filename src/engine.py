@@ -1,0 +1,353 @@
+"""
+Advanced GraphRAG Engine (模块化版本)
+特性：
+- 统一三层 KG：Document/Topic -> Chunk -> Entity
+- 双模型抽取：GLiNER (实体) + REBEL (关系)
+- 多跳检索：Best-First Search + 可信度评分
+- 模块化架构：易于维护和扩展
+- 支持离线建图 + 在线检索模式
+"""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import List, Dict, Optional, Set
+
+from langchain_openai import ChatOpenAI
+
+from src.config import LLM_MODEL, DEFAULT_BEAM_WIDTH, DEFAULT_MAX_HOPS
+from src.entity_extractor import EntityExtractor
+from src.graph_store import GraphStore
+from src.retriever import MultiHopRetriever
+
+
+class AdvancedRAGEngine:
+    """
+    高级 RAG 引擎 - 模块化版本
+    
+    支持两种模式：
+    1. 内存模式 (persist_dir=None): 实时建图，数据不持久化
+    2. 持久化模式 (persist_dir="./index"): 加载离线构建的索引
+    """
+    
+    def __init__(
+        self, 
+        persist_dir: Optional[str] = None, 
+        online_mode: bool = True,
+        use_llm_summary: bool = False
+    ):
+        """
+        参数:
+            persist_dir: 持久化目录路径，None 则使用内存模式
+            online_mode: True=仅加载索引用于检索，False=可构建索引
+            use_llm_summary: 是否使用 LLM 生成摘要（默认 False，使用启发式摘要加速）
+        """
+        self.persist_dir = persist_dir
+        self.online_mode = online_mode
+        self.use_llm_summary = use_llm_summary
+        
+        if persist_dir:
+            print(f"🚀 初始化 AdvancedRAG 引擎 (持久化模式: {persist_dir})...")
+        else:
+            print("🚀 初始化 AdvancedRAG 引擎 (内存模式)...")
+        
+        # 初始化各模块
+        self.entity_extractor = EntityExtractor()
+        self.graph_store = GraphStore()
+        
+        # 根据模式选择向量存储
+        if persist_dir:
+            from src.vector_store_persistent import PersistentVectorStore
+            self.vector_store = PersistentVectorStore(persist_dir=persist_dir)
+            self._load_doc_cache(persist_dir)
+        else:
+            from src.vector_store import VectorStore
+            self.vector_store = VectorStore()
+            self.doc_cache: Dict[str, Dict] = {}
+        
+        # 图构建器（仅非在线模式需要）
+        if not online_mode:
+            from src.graph_builder_offline import OfflineGraphBuilder
+            self.graph_builder = OfflineGraphBuilder(
+                self.entity_extractor, 
+                self.graph_store, 
+                self.vector_store,
+                use_llm_summary=use_llm_summary
+            )
+        else:
+            self.graph_builder = None
+        
+        self.retriever = MultiHopRetriever(
+            self.entity_extractor,
+            self.graph_store,
+            self.vector_store
+        )
+        
+        # LLM for answer generation
+        self.llm = ChatOpenAI(model=LLM_MODEL, temperature=0)
+        
+        print("✅ 引擎初始化完成")
+    
+    def _is_yes_no_question(self, query: str) -> bool:
+        """
+        检测是否为 Yes/No 问题
+        用于选择专用 Prompt 模板，提高格式正确率
+        """
+        query_lower = query.lower().strip()
+        yes_no_patterns = [
+            query_lower.startswith("are "),
+            query_lower.startswith("is "),
+            query_lower.startswith("was "),
+            query_lower.startswith("were "),
+            query_lower.startswith("do "),
+            query_lower.startswith("does "),
+            query_lower.startswith("did "),
+            query_lower.startswith("can "),
+            query_lower.startswith("could "),
+            query_lower.startswith("would "),
+            query_lower.startswith("will "),
+            query_lower.startswith("has "),
+            query_lower.startswith("have "),
+            query_lower.startswith("had "),
+            "the same" in query_lower,
+            "both" in query_lower,
+        ]
+        return any(yes_no_patterns)
+    
+    def _post_process_answer(self, answer: str, query: str) -> str:
+        """
+        答案后处理：
+        1. 标准化 Yes/No 答案
+        2. 清理多余空白
+        """
+        answer = answer.strip()
+        
+        # Yes/No 问题标准化
+        if self._is_yes_no_question(query):
+            answer_lower = answer.lower()
+            
+            # 1. 尝试提取 "Answer: yes/no" 格式
+            lines = answer_lower.split('\n')
+            for line in reversed(lines):
+                line = line.strip()
+                if line.startswith("answer:"):
+                    potential_ans = line.split("answer:")[-1].strip()
+                    if potential_ans.startswith("yes"): return "yes"
+                    if potential_ans.startswith("no"): return "no"
+            
+            # 2. 如果没有明确格式，检查最后一行是否以 yes/no 开头
+            if lines:
+                last_line = lines[-1].strip()
+                if last_line.startswith("yes"): return "yes"
+                if last_line.startswith("no"): return "no"
+
+            # 3. 兼容旧逻辑（保留关键词检测作为最后的兜底）
+            # 检测肯定答案
+            if any(w in answer_lower for w in ["yes", "correct", "true", "right", "same nationality", "both are", "both were", "they are", "they were"]):
+                return "yes"
+            # 检测否定答案
+            elif any(w in answer_lower for w in ["no", "incorrect", "false", "wrong", "different", "neither", "not the same", "aren't", "weren't", "isn't", "wasn't"]):
+                return "no"
+            # 如果答案本身就是 yes 或 no
+            if answer_lower in ["yes", "no", "yes.", "no."]:
+                return answer_lower.replace(".", "")
+        
+        return answer
+    
+    def _load_doc_cache(self, persist_dir: str):
+        """加载持久化的 doc_cache"""
+        cache_path = Path(persist_dir) / "doc_cache.json"
+        if cache_path.exists():
+            with open(cache_path, "r", encoding="utf-8") as f:
+                self.doc_cache = json.load(f)
+            print(f"📂 加载 {len(self.doc_cache)} 个文档缓存")
+        else:
+            self.doc_cache = {}
+            print("⚠️ 未找到文档缓存，请先运行离线建图")
+    
+    def reset(self):
+        """重置所有存储"""
+        self.doc_cache = {}
+        self.graph_store.reset()
+        self.vector_store.reset()
+    
+    def load_precomputed_cache(self, cache_data: Dict):
+        """
+        加载预计算的缓存数据（跳过 GLiNER/REBEL 推理）
+        
+        这是 HotpotQA 评测的推荐方式：
+        1. 先用 scripts/precompute_hotpot.py 预计算每个样本的图谱数据
+        2. 评测时直接加载缓存，无需实时抽取
+        
+        参数:
+            cache_data: 预计算脚本生成的缓存字典，包含:
+                - chunks: 预计算的 chunk 数据（含 embedding、entities、relations）
+                - summaries: 摘要节点
+                - summary_rels: 摘要关系
+                - semantic_edges: 语义边
+                - doc_cache: 文档缓存
+        """
+        # 1. 加载 doc_cache
+        self.doc_cache = cache_data.get("doc_cache", {})
+        
+        # 2. 写入 Neo4j 图存储
+        chunks = cache_data.get("chunks", [])
+        summaries = cache_data.get("summaries", [])
+        summary_rels = cache_data.get("summary_rels", [])
+        semantic_edges = cache_data.get("semantic_edges", [])
+        
+        self.graph_store.write_chunks(chunks)
+        self.graph_store.write_summaries(summaries, summary_rels)
+        self.graph_store.write_semantic_edges(semantic_edges)
+        
+        # 3. 写入向量存储
+        from langchain_core.documents import Document
+        lc_docs = []
+        ids = []
+        
+        # 添加 chunks
+        for chunk in chunks:
+            lc_docs.append(Document(
+                page_content=chunk["text"],
+                metadata={
+                    "doc_id": chunk["chunk_id"],
+                    "title": chunk["doc_title"],
+                    "type": "chunk"
+                }
+            ))
+            ids.append(chunk["chunk_id"])
+        
+        # 添加 summaries
+        for summary in summaries:
+            lc_docs.append(Document(
+                page_content=summary["text"],
+                metadata={
+                    "doc_id": summary["id"],
+                    "title": summary["doc_title"],
+                    "type": "summary"
+                }
+            ))
+            ids.append(summary["id"])
+        
+        self.vector_store.add_documents(lc_docs, ids=ids)
+    
+    def ingest(self, documents: List[Dict]):
+        """
+        摄入文档，构建三层图谱
+        documents: [{"title": str, "text": str}, ...]
+        
+        注意：持久化模式下建议使用离线建图脚本 scripts/build_index.py
+        """
+        if self.graph_builder is None:
+            raise RuntimeError(
+                "在线模式下不支持 ingest()，请使用离线建图脚本:\n"
+                "python scripts/build_index.py --input data/documents.json --persist_dir ./index"
+            )
+        self.doc_cache = self.graph_builder.build(documents)
+    
+    def query(
+        self, 
+        user_query: str, 
+        beam_width: int = DEFAULT_BEAM_WIDTH, 
+        max_hops: int = DEFAULT_MAX_HOPS,
+        doc_filter: Set[str] = None,
+        return_debug: bool = False
+    ) -> str:
+        """
+        查询接口
+        
+        参数:
+            user_query: 用户查询
+            beam_width: Beam 宽度
+            max_hops: 最大跳数
+            doc_filter: 限制检索范围的文档 ID 集合（用于 HotpotQA-Dist 设置）
+            return_debug: 是否返回检索调试信息
+        """
+        # 多跳检索
+        search_result = self.retriever.search(
+            user_query, 
+            self.doc_cache,
+            beam_width=beam_width, 
+            max_hops=max_hops,
+            doc_filter=doc_filter
+        )
+        
+        if not search_result["nodes"]:
+            answer = "I don't know."
+            if return_debug:
+                return answer, {"search_result": search_result}
+            return answer
+        
+        # 生成答案
+        sorted_evidence = search_result["nodes"]
+        context_str = "\n\n".join([f"[{n['title']}] {n['text']}" for n in sorted_evidence])
+        best_path_str = search_result["best_path"]
+        
+        # 根据问题类型选择不同的 Prompt
+        is_yes_no = self._is_yes_no_question(user_query)
+        
+        if is_yes_no:
+            # Yes/No 专用 Prompt - 允许简短推理
+            prompt = f"""You are a precise QA system. Answer the Yes/No question based on the context.
+
+**INSTRUCTION**: 
+- First, briefly reason about the answer (1-2 sentences max)
+- Then, output your final answer as ONLY "yes" or "no" on a new line
+- Format: 
+  Reasoning: [brief reasoning]
+  Answer: yes/no
+
+**Context:**
+{context_str}
+
+**Question:** {user_query}
+"""
+        else:
+            # 普通问题 Prompt
+            prompt = f"""You are a precise QA system. Answer the question based on the provided context.
+
+**Rules:**
+1. Answer with ONLY the specific entity name, date, location, number, or short phrase
+2. Be extremely concise - use as few words as possible
+3. Do NOT write full sentences
+4. Do NOT explain your reasoning
+5. If the answer cannot be found, say "I don't know"
+
+**Reasoning Path:**
+{best_path_str}
+
+**Context:**
+{context_str}
+
+**Question:** {user_query}
+**Answer:**"""
+        
+        raw_answer = self.llm.invoke(prompt).content
+        
+        # 后处理答案
+        answer = self._post_process_answer(raw_answer, user_query)
+        if return_debug:
+            return answer, {"search_result": search_result}
+        return answer
+    
+    # 兼容旧接口
+    def query_adaptive_search(
+        self, 
+        user_query: str, 
+        beam_width: int = DEFAULT_BEAM_WIDTH, 
+        max_hops: int = DEFAULT_MAX_HOPS,
+        doc_filter: Set[str] = None,
+        return_debug: bool = False
+    ) -> str:
+        """兼容旧接口"""
+        return self.query(
+            user_query,
+            beam_width,
+            max_hops,
+            doc_filter,
+            return_debug=return_debug
+        )
+    
+    def close(self):
+        """关闭连接"""
+        self.graph_store.close()
