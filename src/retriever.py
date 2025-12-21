@@ -9,7 +9,10 @@ import numpy as np
 import networkx as nx
 from FlagEmbedding import FlagReranker
 
-from src.config import DEVICE, RERANKER_MODEL, DEFAULT_BEAM_WIDTH, DEFAULT_MAX_HOPS, TRUST_THRESHOLD
+from src.config import (
+    DEVICE, RERANKER_MODEL, DEFAULT_BEAM_WIDTH, DEFAULT_MAX_HOPS, 
+    TRUST_THRESHOLD, SMALL_SPACE_THRESHOLD, MIN_CANDIDATES_KEEP
+)
 from src.entity_extractor import EntityExtractor
 from src.graph_store import GraphStore
 from src.vector_store import VectorStore
@@ -272,79 +275,146 @@ class MultiHopRetriever:
         # 计算 PPR 分数（以 query_entities 为种子）
         self._ppr_scores = self._build_graph_and_compute_ppr(query_entities)
         
-        # --- 1. 初始化种子节点 ---
+        # --- 1. 自适应搜索域策略 (Context-Aware Retrieval Strategy) ---
         initial_candidates = []
+        is_small_space = False  # 标记是否为小空间模式（用于后续 force_keep）
         
-        # [方案E] Summary-Guided Top-Down Retrieval
-        summary_candidates = self.vector_store.summary_guided_retrieval(
-            user_query, self.graph_store, top_k=beam_width
-        )
-        for sc in summary_candidates:
-            # 应用文档过滤器 (HotpotQA-Dist 设置)
-            if doc_filter and sc["id"] not in doc_filter:
-                continue
-
-            doc_title = get_doc_title(sc["id"])
-            initial_candidates.append({
-                "id": sc["id"],
-                "text": sc["text"],
-                "title": sc.get("title", "SummaryDrill"),
-                "doc_title": doc_title,
-                "path_history": [],
-                "context_str": "",
-                "hop_depth": 0,
-                "path_doc_titles": [doc_title] if doc_title else []
-            })
-        
-        # 普通向量检索补充
-        try:
-            seed_docs = self.vector_store.similarity_search_with_score(user_query, k=beam_width * 2)
+        if doc_filter is not None:
+            filter_size = len(doc_filter)
             
-            for doc, _ in seed_docs:
-                d_id = doc.metadata.get("doc_id")
-                d_type = doc.metadata.get("type")
+            if filter_size <= SMALL_SPACE_THRESHOLD:
+                # === 模式A: 受限小空间 (Constrained Small Space) ===
+                # 策略：全量加载 + Rerank（精度优先）
+                # 在 10 个文档中，向量检索容易因语义漂移丢失桥接文档
+                # 直接加载全部，让 Cross-Encoder Reranker 精确排序
+                is_small_space = True
+                print(f"  📋 [小空间模式] 全量加载 doc_filter ({filter_size} docs)")
                 
-                if any(c["id"] == d_id for c in initial_candidates):
-                    continue
-                
-                # 应用文档过滤器 (HotpotQA-Dist 设置)
-                if doc_filter and d_id not in doc_filter:
-                    continue
-                
-                if d_type == "summary":
-                    children = self.graph_store.get_summary_children(d_id)
-                    for child in children:
-                        # 应用文档过滤器
-                        if doc_filter and child["id"] not in doc_filter:
-                            continue
-                        if not any(c["id"] == child["id"] for c in initial_candidates):
-                            doc_title = get_doc_title(child["id"])
+                for doc_id in doc_filter:
+                    if doc_id in doc_cache:
+                        doc_data = doc_cache[doc_id]
+                        doc_title = doc_data.get("title", "")
+                        doc_text = doc_data.get("text", "")
+                        if doc_text:
                             initial_candidates.append({
-                                "id": child["id"], 
-                                "text": child["text"], 
-                                "title": doc_cache.get(child["id"], {}).get("title", ""),
+                                "id": doc_id,
+                                "text": doc_text,
+                                "title": doc_title,
                                 "doc_title": doc_title,
                                 "path_history": [],
                                 "context_str": "",
                                 "hop_depth": 0,
                                 "path_doc_titles": [doc_title] if doc_title else []
                             })
-                else:
-                    doc_title = get_doc_title(d_id)
-                    initial_candidates.append({
-                        "id": d_id, 
-                        "text": doc.page_content, 
-                        "title": doc.metadata.get("title", ""),
-                        "doc_title": doc_title,
-                        "path_history": [],
-                        "context_str": "",
-                        "hop_depth": 0,
-                        "path_doc_titles": [doc_title] if doc_title else []
-                    })
-        except Exception as e:
-            print(f"❌ Init Search Error: {e}")
-            if not initial_candidates:
-                return {"nodes": [], "best_path": ""}
+            else:
+                # === 模式B: 受限大空间 (Constrained Large Space) ===
+                # 策略：向量检索，但应用 doc_filter 过滤
+                print(f"  🔎 [大空间模式] 向量检索 + doc_filter 过滤 ({filter_size} docs)")
+                
+                try:
+                    # Summary-Guided 检索
+                    summary_candidates = self.vector_store.summary_guided_retrieval(
+                        user_query, self.graph_store, top_k=beam_width * 2
+                    )
+                    for sc in summary_candidates:
+                        if sc["id"] in doc_filter:
+                            doc_title = get_doc_title(sc["id"])
+                            initial_candidates.append({
+                                "id": sc["id"],
+                                "text": sc["text"],
+                                "title": sc.get("title", "SummaryDrill"),
+                                "doc_title": doc_title,
+                                "path_history": [],
+                                "context_str": "",
+                                "hop_depth": 0,
+                                "path_doc_titles": [doc_title] if doc_title else []
+                            })
+                    
+                    # 普通向量检索补充
+                    seed_docs = self.vector_store.similarity_search_with_score(user_query, k=beam_width * 3)
+                    for doc, _ in seed_docs:
+                        d_id = doc.metadata.get("doc_id")
+                        if d_id not in doc_filter:
+                            continue
+                        if any(c["id"] == d_id for c in initial_candidates):
+                            continue
+                        doc_title = get_doc_title(d_id)
+                        initial_candidates.append({
+                            "id": d_id,
+                            "text": doc.page_content,
+                            "title": doc.metadata.get("title", ""),
+                            "doc_title": doc_title,
+                            "path_history": [],
+                            "context_str": "",
+                            "hop_depth": 0,
+                            "path_doc_titles": [doc_title] if doc_title else []
+                        })
+                except Exception as e:
+                    print(f"❌ Large Space Search Error: {e}")
+        else:
+            # === 模式C: 全开放空间 (Open Space - Fullwiki) ===
+            # 策略：全库 ANN 检索（效率优先）
+            print(f"  🌐 [全开放模式] 全库向量检索")
+            
+            # Summary-Guided Top-Down Retrieval
+            summary_candidates = self.vector_store.summary_guided_retrieval(
+                user_query, self.graph_store, top_k=beam_width
+            )
+            for sc in summary_candidates:
+                doc_title = get_doc_title(sc["id"])
+                initial_candidates.append({
+                    "id": sc["id"],
+                    "text": sc["text"],
+                    "title": sc.get("title", "SummaryDrill"),
+                    "doc_title": doc_title,
+                    "path_history": [],
+                    "context_str": "",
+                    "hop_depth": 0,
+                    "path_doc_titles": [doc_title] if doc_title else []
+                })
+            
+            # 普通向量检索补充
+            try:
+                seed_docs = self.vector_store.similarity_search_with_score(user_query, k=beam_width * 2)
+                
+                for doc, _ in seed_docs:
+                    d_id = doc.metadata.get("doc_id")
+                    d_type = doc.metadata.get("type")
+                    
+                    if any(c["id"] == d_id for c in initial_candidates):
+                        continue
+                    
+                    if d_type == "summary":
+                        children = self.graph_store.get_summary_children(d_id)
+                        for child in children:
+                            if not any(c["id"] == child["id"] for c in initial_candidates):
+                                doc_title = get_doc_title(child["id"])
+                                initial_candidates.append({
+                                    "id": child["id"], 
+                                    "text": child["text"], 
+                                    "title": doc_cache.get(child["id"], {}).get("title", ""),
+                                    "doc_title": doc_title,
+                                    "path_history": [],
+                                    "context_str": "",
+                                    "hop_depth": 0,
+                                    "path_doc_titles": [doc_title] if doc_title else []
+                                })
+                    else:
+                        doc_title = get_doc_title(d_id)
+                        initial_candidates.append({
+                            "id": d_id, 
+                            "text": doc.page_content, 
+                            "title": doc.metadata.get("title", ""),
+                            "doc_title": doc_title,
+                            "path_history": [],
+                            "context_str": "",
+                            "hop_depth": 0,
+                            "path_doc_titles": [doc_title] if doc_title else []
+                        })
+            except Exception as e:
+                print(f"❌ Open Space Search Error: {e}")
+                if not initial_candidates:
+                    return {"nodes": [], "best_path": ""}
 
         if not initial_candidates:
             return {"nodes": [], "best_path": ""}
@@ -370,7 +440,13 @@ class MultiHopRetriever:
                 node["path_doc_titles"] = [doc_title] if doc_title else []
 
         frontier.sort(key=lambda x: x["score"], reverse=True)
-        frontier = frontier[:beam_width]
+        # 在小空间模式下，为了不错过任何线索，我们放宽 Beam Width
+        if is_small_space:
+            # 确保所有初始候选都进入图谱推理，但不超过 SMALL_SPACE_THRESHOLD 的上限
+            effective_beam_width = min(len(frontier), SMALL_SPACE_THRESHOLD)
+            frontier = frontier[:effective_beam_width]
+        else:
+            frontier = frontier[:beam_width]
 
         # --- 3. 迭代扩展 ---
         step = 0
@@ -386,9 +462,18 @@ class MultiHopRetriever:
             visited_ids.add(current_best_node["id"])
             
             # 可信度剪枝
+            should_keep = False
             if current_best_node["score"] >= TRUST_THRESHOLD:
+                should_keep = True
+            elif is_small_space and len(final_selected_nodes) < MIN_CANDIDATES_KEEP:
+                # [小空间模式] 强制保留前 K 个，防止被阈值完全误杀
+                should_keep = True
+                print(f"  🛡️ Force Keep: {current_best_node['title']} (Trust: {current_best_node['score']:.3f} < Threshold)")
+
+            if should_keep:
                 final_selected_nodes[current_best_node["id"]] = current_best_node
-                print(f"  ✅ Selected: {current_best_node['title']} (Trust: {current_best_node['score']:.3f})")
+                if current_best_node["score"] >= TRUST_THRESHOLD:
+                    print(f"  ✅ Selected: {current_best_node['title']} (Trust: {current_best_node['score']:.3f})")
             else:
                 print(f"  🗑️ Pruned: {current_best_node['title']} (Low Trust: {current_best_node['score']:.3f})")
                 continue
@@ -501,8 +586,36 @@ class MultiHopRetriever:
             frontier = frontier[:beam_width * 2]
 
         # --- 4. 返回结果 ---
+        # Fallback 机制：如果图谱游走一无所获，但在受限空间内（如 Distractor），
+        # 我们不能交白卷。必须把原始文档作为兜底证据返回。
         if not final_selected_nodes:
-            return {"nodes": [], "best_path": ""}
+            if doc_filter and len(doc_filter) <= SMALL_SPACE_THRESHOLD:
+                print(f"  ⚠️ Graph search failed. Fallback: Loading all {len(doc_filter)} docs from filter.")
+                fallback_nodes = []
+                for doc_id in doc_filter:
+                    if doc_id in doc_cache:
+                        d = doc_cache[doc_id]
+                        fallback_nodes.append({
+                            "id": doc_id,
+                            "text": d.get("text", ""),
+                            "title": d.get("title", ""),
+                            "score": 0.5, # 赋予默认分值
+                            "path_history": ["Fallback (Raw Doc)"]
+                        })
+                
+                # 再次尝试 Rerank 排序，选出最好的
+                if fallback_nodes:
+                    pairs = [[user_query, n["text"]] for n in fallback_nodes]
+                    scores = self._get_reranker_scores(pairs)
+                    for i, node in enumerate(fallback_nodes):
+                        node["score"] = scores[i]
+                    
+                    fallback_nodes.sort(key=lambda x: x["score"], reverse=True)
+                    # 只取 Top-Beam 作为证据，避免过多噪音
+                    final_selected_nodes = {n["id"]: n for n in fallback_nodes[:beam_width]}
+                    
+            if not final_selected_nodes:
+                return {"nodes": [], "best_path": ""}
 
         sorted_evidence = sorted(final_selected_nodes.values(), key=lambda x: x["score"], reverse=True)
         best_path_str = " -> ".join(sorted_evidence[0]["path_history"])
