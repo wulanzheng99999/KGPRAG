@@ -94,6 +94,8 @@ class AdvancedRAGEngine:
         用于选择专用 Prompt 模板，提高格式正确率
         """
         query_lower = query.lower().strip()
+        
+        # 1. 基础 Yes/No 模式
         yes_no_patterns = [
             query_lower.startswith("are "),
             query_lower.startswith("is "),
@@ -109,50 +111,82 @@ class AdvancedRAGEngine:
             query_lower.startswith("has "),
             query_lower.startswith("have "),
             query_lower.startswith("had "),
-            "the same" in query_lower,
-            "both" in query_lower,
         ]
-        return any(yes_no_patterns)
-    
-    def _post_process_answer(self, answer: str, query: str) -> str:
-        """
-        答案后处理：
-        1. 标准化 Yes/No 答案
-        2. 清理多余空白
-        """
-        answer = answer.strip()
-        
-        # Yes/No 问题标准化
-        if self._is_yes_no_question(query):
-            answer_lower = answer.lower()
-            
-            # 1. 尝试提取 "Answer: yes/no" 格式
-            lines = answer_lower.split('\n')
-            for line in reversed(lines):
-                line = line.strip()
-                if line.startswith("answer:"):
-                    potential_ans = line.split("answer:")[-1].strip()
-                    if potential_ans.startswith("yes"): return "yes"
-                    if potential_ans.startswith("no"): return "no"
-            
-            # 2. 如果没有明确格式，检查最后一行是否以 yes/no 开头
-            if lines:
-                last_line = lines[-1].strip()
-                if last_line.startswith("yes"): return "yes"
-                if last_line.startswith("no"): return "no"
+        if any(yes_no_patterns):
+            return True
 
-            # 3. 兼容旧逻辑（保留关键词检测作为最后的兜底）
-            # 检测肯定答案
-            if any(w in answer_lower for w in ["yes", "correct", "true", "right", "same nationality", "both are", "both were", "they are", "they were"]):
-                return "yes"
-            # 检测否定答案
-            elif any(w in answer_lower for w in ["no", "incorrect", "false", "wrong", "different", "neither", "not the same", "aren't", "weren't", "isn't", "wasn't"]):
-                return "no"
-            # 如果答案本身就是 yes 或 no
-            if answer_lower in ["yes", "no", "yes.", "no."]:
-                return answer_lower.replace(".", "")
+        # 2. 增强模式：检测 "same" / "both" 类型的比较问题
+        # e.g., "Were Scott Derrickson and Ed Wood of the same nationality?"
+        if "same" in query_lower and any(x in query_lower for x in ["nationality", "country", "type", "category", "genre", "year", "time"]):
+            return True
         
-        return answer
+        if "both" in query_lower and any(x in query_lower for x in ["are", "were", "born", "died", "from"]):
+            return True
+
+        return False
+    
+    def _post_process_answer(self, raw_answer: str, query: str) -> str:
+        """
+        通用答案后处理：强制提取 'Answer:' 后的内容
+        """
+        answer = raw_answer.strip()
+        
+        # --- 1. 通用提取逻辑：取最后一个 "Answer:" ---
+        # 很多时候模型会在 Reasoning 之后输出 "Answer: xxx"，或者多次输出
+        import re
+        # 查找所有 "Answer:" (忽略大小写) 的位置
+        # 使用正则找 "Answer:" 或 "Final Answer:" 或 "答案："
+        markers = ["answer:", "final answer:", "答案："]
+        
+        last_answer_content = None
+        
+        # 简单策略：按行倒序查找
+        lines = [l.strip() for l in answer.split('\n') if l.strip()]
+        for line in reversed(lines):
+            line_lower = line.lower()
+            for marker in markers:
+                if marker in line_lower:
+                    # 找到了标记，提取标记后的内容
+                    parts = line_lower.rsplit(marker, 1) # 只分割最后一次出现的 marker
+                    if len(parts) >= 2:
+                        # 注意：这里需要从原始 line 中提取，以保留大小写（虽然 HotpotQA 评测不敏感，但保留更好）
+                        # 重新定位 marker 在原始 line 中的索引
+                        idx = line.lower().rfind(marker)
+                        candidate = line[idx + len(marker):].strip()
+                        if candidate:
+                            last_answer_content = candidate
+                            break
+            if last_answer_content:
+                break
+        
+        # 如果没找到 Answer: 标记，则兜底取最后一行非空文本
+        if not last_answer_content:
+            if lines:
+                last_answer_content = lines[-1]
+            else:
+                last_answer_content = answer
+
+        # --- 2. 清洗提取出的答案 ---
+        final_ans = last_answer_content.strip()
+        
+        # 去除首尾的标点和引号 (e.g., "Yes.", "1990", **1990**)
+        final_ans = re.sub(r'^["\'\*`]+|["\'\*`\.\!]+$', '', final_ans)
+        
+        # 去除常见的废话前缀
+        # e.g., "The answer is 1990" -> "1990"
+        final_ans = re.sub(r'^(the answer is |it is |that is )', '', final_ans, flags=re.I).strip()
+        
+        # --- 3. Yes/No 标准化 (仅针对 Yes/No 问题) ---
+        if self._is_yes_no_question(query):
+            ans_lower = final_ans.lower()
+            if ans_lower.startswith("yes"): return "yes"
+            if ans_lower.startswith("no"): return "no"
+            
+            # 兜底检测（如果提取出的内容还包含其他词）
+            if "yes" in ans_lower: return "yes"
+            if "no" in ans_lower: return "no"
+            
+        return final_ans
     
     def _load_doc_cache(self, persist_dir: str):
         """加载持久化的 doc_cache"""
@@ -303,15 +337,13 @@ class AdvancedRAGEngine:
 **Question:** {user_query}
 """
         else:
-            # 普通问题 Prompt
+            # 普通问题 Prompt - 强制 Answer-only 契约
             prompt = f"""You are a precise QA system. Answer the question based on the provided context.
 
-**Rules:**
-1. Answer with ONLY the specific entity name, date, location, number, or short phrase
-2. Be extremely concise - use as few words as possible
-3. Do NOT write full sentences
-4. Do NOT explain your reasoning
-5. If the answer cannot be found, say "I don't know"
+**Output Format (STRICTLY REQUIRED):**
+- Output ONLY ONE LINE: Answer: <your answer>
+- <your answer> MUST be: a single entity name, date, number, or short phrase (max 5 words)
+- DO NOT include any explanation, reasoning, or sentence structure
 
 **Reasoning Path:**
 {best_path_str}
@@ -320,7 +352,7 @@ class AdvancedRAGEngine:
 {context_str}
 
 **Question:** {user_query}
-**Answer:**"""
+"""
         
         raw_answer = self.llm.invoke(prompt).content
         

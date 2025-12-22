@@ -2,6 +2,16 @@
 
 ## 📅 更新日志 (Changelog)
 
+*   **2025年12月22日**: 🚀 **F1 冲刺优化 (Precision & Recall Boost)**:
+    *   **Recall 暴力提升**:
+        *   📉 `TRUST_THRESHOLD`: **0.2 -> 0.01**。大幅降低剪枝门槛，确保在 HotpotQA 小空间检索中不漏掉任何微弱但关键的线索。
+        *   📡 `DEFAULT_BEAM_WIDTH`: **5 -> 8**。增加搜索广度，支持并行追踪更多潜在推理路径。
+        *   🛡️ `MIN_CANDIDATES_KEEP`: **3 -> 5**。在小空间模式下强制保留一半文档，防止全军覆没。
+    *   **Precision 与格式规范化**:
+        *   📝 **Answer-only 契约**: 强制 Prompt 输出格式为严格的 `Answer: <final answer>`，禁止输出推理过程和啰嗦句子，彻底解决 "Sem-Match 但 F1 低" 的冤案。
+        *   🧹 **通用后处理 (Universal Post-processing)**: 实现了智能提取逻辑，自动截取最后一行 `Answer:` 并清洗符号，兼容所有问题类型。
+        *   🔍 **增强型 Yes/No 检测**: 修复了 `_is_yes_no_question` 的漏检问题（新增 "same nationality/type" 等模式），确保正确应用格式化 Prompt。
+
 *   **2025年12月21日**: 实施核心优化方案，包括：
     *   **自适应搜索域策略**: 根据搜索空间大小动态调整检索方式，解决 HotpotQA Distractor 模式下的拒答问题。
     *   **鲁棒图谱连通性**: 扩展 `HARD_EDGE_ENTITY_TYPES` (新增 Event, Product, Award, Concept 等类型) 并降低 `MIN_ENTITY_NAME_LENGTH`，修复图谱中的“断桥”，提升多跳推理能力。
@@ -121,8 +131,9 @@ python evaluate.py
 | `SMALL_SPACE_THRESHOLD` | **20** | 小于此数量时触发全量加载 + Rerank 策略 |
 | `HARD_EDGE_ENTITY_TYPES` | **12 Types** | 包含 Event, Product 等，确保图谱连通性 |
 | `MIN_ENTITY_NAME_LENGTH` | **2** | 允许短实体（如人名缩写）建立连接 |
-| `MIN_CANDIDATES_KEEP` | **3** | 小空间模式下强制保留的最少节点数 |
-| `TRUST_THRESHOLD` | **0.2** | 节点进入下一跳的置信度门槛 |
+| `MIN_CANDIDATES_KEEP` | **5** | 小空间模式下强制保留的最少节点数 |
+| `TRUST_THRESHOLD` | **0.01** | 节点进入下一跳的置信度门槛 |
+| `DEFAULT_BEAM_WIDTH` | **8** | 搜索广度 |
 
 ---
 

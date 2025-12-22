@@ -49,9 +49,9 @@ NEO4J_USER = os.environ.get("NEO4J_USER", "neo4j")
 NEO4J_PASSWORD = os.environ.get("NEO4J_PASSWORD", "9RP4s9YpWWSV:k3")
 
 # ================= Search Configuration =================
-DEFAULT_BEAM_WIDTH = 5  # 恢复为 5，比较类问题需要同时追踪多个实体
+DEFAULT_BEAM_WIDTH = 8  # 恢复为 5，比较类问题需要同时追踪多个实体
 DEFAULT_MAX_HOPS = 3    # 保持 3 跳
-TRUST_THRESHOLD = 0.2   # 保持 0.2，避免过早剪枝
+TRUST_THRESHOLD = 0.01   # 保持 0.2，避免过早剪枝
 
 # === 自适应搜索域策略 (Context-Aware Retrieval Strategy) ===
 # 当 doc_filter 存在且大小 <= 此阈值时，采用"全量加载+重排"策略
@@ -60,7 +60,7 @@ SMALL_SPACE_THRESHOLD = 20
 
 # 小空间模式下，强制保留的最小候选数（防止被 TRUST_THRESHOLD 全部剪枝）
 # 在只有 10 个文档时，相对排名 > 绝对阈值
-MIN_CANDIDATES_KEEP = 3
+MIN_CANDIDATES_KEEP = 5
 
 # ================= Performance Tuning =================
 # 批处理大小 (根据 GPU 显存调整)
