@@ -2,6 +2,7 @@
 配置文件：集中管理所有配置项
 """
 import os
+from pathlib import Path
 import torch
 
 # ================= Device Configuration =================
@@ -12,6 +13,14 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "ollama")  # Ollama 兼容 OpenAI 协议但不校验 key
 OPENAI_BASE_URL = os.environ.get("OPENAI_BASE_URL", "http://localhost:11434/v1")
 LLM_MODEL = os.environ.get("LLM_MODEL", "llama3:8b")
+# LLM request reliability (for long-running eval)
+LLM_TIMEOUT = float(os.environ.get("LLM_TIMEOUT", "60"))
+LLM_MAX_RETRIES = int(os.environ.get("LLM_MAX_RETRIES", "8"))
+
+# Limit prompt size sent to LLM (avoid 5xx due to oversized requests)
+MAX_EVIDENCE_NODES_FOR_LLM = int(os.environ.get("MAX_EVIDENCE_NODES_FOR_LLM", "4"))
+MAX_EVIDENCE_CHARS_PER_NODE = int(os.environ.get("MAX_EVIDENCE_CHARS_PER_NODE", "2000"))
+MAX_TOTAL_CONTEXT_CHARS = int(os.environ.get("MAX_TOTAL_CONTEXT_CHARS", "8000"))
 
 # # [Original Config - DeepSeek API]
 # # OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "sk-1408831cec78417d9a6024ac8e02dac4")
@@ -27,13 +36,61 @@ LLM_MODEL = os.environ.get("LLM_MODEL", "llama3:8b")
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 os.environ["OPENAI_BASE_URL"] = OPENAI_BASE_URL
 
+# ================= Proxy Configuration =================
+# Ensure requests to localhost (Ollama) do NOT go through the proxy
+# This prevents 502 Bad Gateway errors when a system proxy is active
+no_proxy_list = os.environ.get("NO_PROXY", "").split(",") + os.environ.get("no_proxy", "").split(",")
+if "localhost" not in no_proxy_list:
+    os.environ["NO_PROXY"] = os.environ.get("NO_PROXY", "") + ",localhost,127.0.0.1,0.0.0.0"
+    os.environ["no_proxy"] = os.environ.get("no_proxy", "") + ",localhost,127.0.0.1,0.0.0.0"
+
+# ================= Model Path Resolution =================
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+_LOCAL_MODEL_DIRS = [
+    os.environ.get("LOCAL_MODEL_DIR", ""),
+    str(_PROJECT_ROOT / "models"),
+    "/root/KGPRAG/models",
+]
+
+
+def _resolve_model_id(env_key: str, default_repo: str) -> str:
+    """Prefer local paths when available; fallback to repo id."""
+    env_value = os.environ.get(env_key)
+    if env_value:
+        env_path = Path(env_value)
+        if env_path.exists():
+            return str(env_path)
+
+    repo_id = env_value or default_repo
+    repo_suffix = repo_id.split("/")[-1]
+
+    candidates = []
+    for local_dir in _LOCAL_MODEL_DIRS:
+        if not local_dir:
+            continue
+        base = Path(local_dir)
+        candidates.extend(
+            [
+                base / repo_id,  # supports org/repo layout
+                base / repo_suffix,
+                base / repo_id.replace("/", "_"),
+                base / repo_id.replace("/", "__"),
+            ]
+        )
+
+    for path in candidates:
+        if path.exists():
+            return str(path)
+
+    return repo_id
+
 # ================= Embedding & Reranker =================
-EMBED_MODEL = os.environ.get("EMBED_MODEL", "BAAI/bge-m3")
-RERANKER_MODEL = os.environ.get("RERANKER_MODEL", "BAAI/bge-reranker-v2-m3")
+EMBED_MODEL = _resolve_model_id("EMBED_MODEL", "BAAI/bge-m3")
+RERANKER_MODEL = _resolve_model_id("RERANKER_MODEL", "BAAI/bge-reranker-v2-m3")
 
 # ================= Entity & Relation Extraction =================
-GLINER_MODEL = os.environ.get("GLINER_MODEL", "urchade/gliner_medium-v2.1")
-REBEL_MODEL = os.environ.get("REBEL_MODEL", "Babelscape/rebel-large")
+GLINER_MODEL = _resolve_model_id("GLINER_MODEL", "urchade/gliner_medium-v2.1")
+REBEL_MODEL = _resolve_model_id("REBEL_MODEL", "Babelscape/rebel-large")
 
 # 实体抽取标签（思路A：扩展标签）
 ENTITY_LABELS = [
