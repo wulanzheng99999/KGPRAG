@@ -117,7 +117,7 @@ SMALL_SPACE_THRESHOLD = 20
 
 # 小空间模式下，强制保留的最小候选数（防止被 TRUST_THRESHOLD 全部剪枝）
 # 在只有 10 个文档时，相对排名 > 绝对阈值
-MIN_CANDIDATES_KEEP = 5
+MIN_CANDIDATES_KEEP = 3
 
 # ================= Performance Tuning =================
 # 批处理大小 (根据 GPU 显存调整)

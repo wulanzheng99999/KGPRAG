@@ -337,8 +337,10 @@ class AdvancedRAGEngine:
 **Question:** {user_query}
 """
         else:
-            # 普通问题 Prompt - 强制 Answer-only 契约
-            prompt = f"""You are a precise QA system. Answer the question based on the provided context.
+            # 普通问题: v2.1 增强稳健版 (With Path & Anchor)
+            # 1. 保留 Reasoning Path 以利用图谱优势
+            # 2. 保留 Answer: 锚点以诱导直接输出
+            prompt = f"""You are a precise QA system. Answer the question based on the Context.
 
 **Output Format (STRICTLY REQUIRED):**
 - Output ONLY ONE LINE: Answer: <your answer>
@@ -352,7 +354,7 @@ class AdvancedRAGEngine:
 {context_str}
 
 **Question:** {user_query}
-"""
+**Answer:**"""
         
         raw_answer = self.llm.invoke(prompt).content
         
