@@ -2,6 +2,15 @@
 
 ## 📅 更新日志 (Changelog)
 
+*   **2025年12月29日**: 🚀 **Phase 1 优化: 小空间全覆盖与动态 Context 策略 (Recall & F1 Boost)**:
+    *   **检索层 (Retriever)**:
+        *   🎯 **首跳强制保留 (First Hop Forced Keep)**: 在 HotpotQA Distractor 模式（10个文档）下，第一跳不再应用 `TRUST_THRESHOLD` 剪枝，确保所有候选文档都能进入推理链，消除由于 Reranker 初始评分波动导致的过早“误杀”。
+        *   🛡️ **保活机制增强**: 将 `MIN_CANDIDATES_KEEP` 从 **3 -> 6**，强制保留 60% 的初始候选，即使在复杂多跳场景下也能维持足够的搜索广度。
+    *   **生成层 (Engine)**:
+        *   📊 **动态证据覆盖**: 新增 `MAX_EVIDENCE_NODES_SMALL_SPACE = 6`。在检测到小空间模式时，自动将送入 LLM 的证据节点从 **4 个增加到 6 个**，显著提升了多跳问题中“支撑事实（Supporting Facts）”的覆盖率。
+    *   **配置 (Config)**:
+        *   🚀 `DEFAULT_BEAM_WIDTH`: **5 -> 8**。进一步提升多跳路径的并行搜索能力。
+
 *   **2025年12月22日**: 🚀 **F1 冲刺优化 (Precision & Recall Boost)**:
     *   **Recall 暴力提升**:
         *   📉 `TRUST_THRESHOLD`: **0.2 -> 0.01**。大幅降低剪枝门槛，确保在 HotpotQA 小空间检索中不漏掉任何微弱但关键的线索。

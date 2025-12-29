@@ -469,6 +469,10 @@ class MultiHopRetriever:
                 # [小空间模式] 强制保留前 K 个，防止被阈值完全误杀
                 should_keep = True
                 print(f"  🛡️ Force Keep: {current_best_node['title']} (Trust: {current_best_node['score']:.3f} < Threshold)")
+            elif is_small_space and step == 1:
+                # [Phase 1 优化] 小空间首跳强制保留，避免过早剪枝
+                should_keep = True
+                print(f"  🎯 First Hop Keep: {current_best_node['title']} (Small Space Mode)")
 
             if should_keep:
                 final_selected_nodes[current_best_node["id"]] = current_best_node
