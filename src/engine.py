@@ -312,8 +312,21 @@ class AdvancedRAGEngine:
                 return answer, {"search_result": search_result}
             return answer
         
-        # 生成答案
+        # 准备上下文
         sorted_evidence = search_result["nodes"]
+        
+        # [Phase 1 优化] 小空间模式使用更多证据节点
+        is_small_space = (doc_filter is not None and len(doc_filter) <= 20)
+        if is_small_space:
+            from src.config import MAX_EVIDENCE_NODES_SMALL_SPACE
+            max_evidence = MAX_EVIDENCE_NODES_SMALL_SPACE
+        else:
+            from src.config import MAX_EVIDENCE_NODES_FOR_LLM
+            max_evidence = MAX_EVIDENCE_NODES_FOR_LLM
+        
+        # 限制证据节点数量（避免超长 Context）
+        sorted_evidence = sorted_evidence[:max_evidence]
+        
         context_str = "\n\n".join([f"[{n['title']}] {n['text']}" for n in sorted_evidence])
         best_path_str = search_result["best_path"]
         
@@ -337,8 +350,10 @@ class AdvancedRAGEngine:
 **Question:** {user_query}
 """
         else:
-            # 普通问题 Prompt - 强制 Answer-only 契约
-            prompt = f"""You are a precise QA system. Answer the question based on the provided context.
+            # 普通问题: v2.1 增强稳健版 (With Path & Anchor)
+            # 1. 保留 Reasoning Path 以利用图谱优势
+            # 2. 保留 Answer: 锚点以诱导直接输出
+            prompt = f"""You are a precise QA system. Answer the question based on the Context.
 
 **Output Format (STRICTLY REQUIRED):**
 - Output ONLY ONE LINE: Answer: <your answer>
@@ -352,7 +367,7 @@ class AdvancedRAGEngine:
 {context_str}
 
 **Question:** {user_query}
-"""
+**Answer:**"""
         
         raw_answer = self.llm.invoke(prompt).content
         
