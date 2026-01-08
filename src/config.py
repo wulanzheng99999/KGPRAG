@@ -97,7 +97,7 @@ ENTITY_LABELS = [
     "Person", "Organization", "Location", "Event", "Product", "Concept",
     "Work", "Facility", "Date", "Award", "Technology", "Sport", "Animal"
 ]
-ENTITY_THRESHOLD = 0.2  # 降低阈值提高召回
+ENTITY_THRESHOLD = 0.4  # 降低阈值提高召回
 
 # ================= Neo4j Configuration =================
 NEO4J_URI = os.environ.get("NEO4J_URI", "bolt://localhost:7687")
@@ -112,8 +112,8 @@ TRUST_THRESHOLD = 0.01   # 保持 0.2，避免过早剪枝
 
 # === 自适应搜索域策略 (Context-Aware Retrieval Strategy) ===
 # 当 doc_filter 存在且大小 <= 此阈值时，采用"全量加载+重排"策略
-# HotpotQA Distractor = 10 个文档，设为 20 留有余量
-SMALL_SPACE_THRESHOLD = 20
+# HotpotQA Distractor = 10 个文档，分块后约 30-50 个 Chunk，设为 100 留有余量
+SMALL_SPACE_THRESHOLD = 100
 
 # 小空间模式下，强制保留的最小候选数（防止被 TRUST_THRESHOLD 全部剪枝）
 # 在只有 10 个文档时，相对排名 > 绝对阈值

@@ -1,0 +1,852 @@
+2026-01-04 11:43:57 - [INFO] - 🚀 日志系统初始化完成。日志文件路径: /root/KGPRAG/logs/kgprag_eval_20260104_114357.log
+2026-01-04 11:43:57 - [INFO] - 
+================================================================================
+2026-01-04 11:43:57 - [INFO] - 🚀 正在启动 Advanced GraphRAG 引擎 (全量建图 + 限定检索模式)...
+2026-01-04 11:43:57 - [INFO] -    📂 索引目录: /root/KGPRAG/data/hotpotqa
+2026-01-04 11:43:57 - [INFO] -    ✅ 对标 KG2RAG 论文实验设置
+2026-01-04 11:43:57 - [INFO] -    ✅ 全量图谱 + doc_filter 限制检索范围
+2026-01-04 11:43:57 - [INFO] -    ✅ 多信号可信度评分: Enabled
+2026-01-04 11:43:57 - [INFO] - ================================================================================
+
+2026-01-04 11:43:57 - [INFO] - 📁 加载样本-文档映射: 7405 个样本
+2026-01-04 11:44:10 - [INFO] - 📂 正在加载数据集: /root/KGPRAG/data/hotpot_dev_distractor_v1.json ...
+2026-01-04 11:44:10 - [INFO] - ✅ 成功加载 7405 条数据。
+2026-01-04 11:44:10 - [INFO] - 
+🎯 开始评测 (跑 7405 条数据)
+2026-01-04 11:44:10 - [INFO] - ⚙️ 参数: Beam Width=8, Hops=3
+2026-01-04 11:44:10 - [INFO] - 💾 结果将实时保存到: /root/KGPRAG/data/advanced_rag_results.jsonl
+
+2026-01-04 11:44:10 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:44:10 - [INFO] - 进度: [1/7405] | Query ID: 5a8b57f25542995d1e6f1371
+2026-01-04 11:44:10 - [INFO] - ❓ 问题: Were Scott Derrickson and Ed Wood of the same nationality?
+2026-01-04 11:44:10 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:44:19 - [INFO] - 🤖 预测: yes
+2026-01-04 11:44:19 - [INFO] - ✅ 真值: yes
+2026-01-04 11:44:19 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.45s)
+2026-01-04 11:44:19 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:44:19 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:44:19 - [INFO] - 进度: [2/7405] | Query ID: 5a8c7595554299585d9e36b6
+2026-01-04 11:44:19 - [INFO] - ❓ 问题: What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?
+2026-01-04 11:44:19 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:44:27 - [INFO] - 🤖 预测: Secretary
+2026-01-04 11:44:27 - [INFO] - ✅ 真值: Chief of Protocol
+2026-01-04 11:44:27 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.00)
+2026-01-04 11:44:27 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ✅ Sem-Match (耗时: 7.89s)
+2026-01-04 11:44:27 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:44:27 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:44:27 - [INFO] - 进度: [3/7405] | Query ID: 5a85ea095542994775f606a8
+2026-01-04 11:44:27 - [INFO] - ❓ 问题: What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?
+2026-01-04 11:44:27 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:44:34 - [INFO] - 🤖 预测: Animorphs
+2026-01-04 11:44:34 - [INFO] - ✅ 真值: Animorphs
+2026-01-04 11:44:34 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.58s)
+2026-01-04 11:44:34 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:44:34 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:44:34 - [INFO] - 进度: [4/7405] | Query ID: 5adbf0a255429947ff17385a
+2026-01-04 11:44:34 - [INFO] - ❓ 问题: Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?
+2026-01-04 11:44:34 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:44:42 - [INFO] - 🤖 预测: no
+2026-01-04 11:44:42 - [INFO] - ✅ 真值: no
+2026-01-04 11:44:42 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.12s)
+2026-01-04 11:44:42 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:44:42 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:44:42 - [INFO] - 进度: [5/7405] | Query ID: 5a8e3ea95542995a26add48d
+2026-01-04 11:44:42 - [INFO] - ❓ 问题: The director of the romantic comedy "Big Stone Gap" is based in what New York city?
+2026-01-04 11:44:42 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:44:50 - [INFO] - 🤖 预测: Greenwich Village
+2026-01-04 11:44:50 - [INFO] - ✅ 真值: Greenwich Village, New York City
+2026-01-04 11:44:50 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.57)
+2026-01-04 11:44:50 - [INFO] - 📊 指标: F1=0.57 | P=1.00 | R=0.40 | ✅ Sem-Match (耗时: 8.05s)
+2026-01-04 11:44:50 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:44:50 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:44:50 - [INFO] - 进度: [6/7405] | Query ID: 5abd94525542992ac4f382d2
+2026-01-04 11:44:50 - [INFO] - ❓ 问题: 2014 S/S is the debut album of a South Korean boy group that was formed by who?
+2026-01-04 11:44:50 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:44:58 - [INFO] - 🤖 预测: YG Entertainment
+2026-01-04 11:44:58 - [INFO] - ✅ 真值: YG Entertainment
+2026-01-04 11:44:58 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.76s)
+2026-01-04 11:44:58 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:44:58 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:44:58 - [INFO] - 进度: [7/7405] | Query ID: 5a85b2d95542997b5ce40028
+2026-01-04 11:44:58 - [INFO] - ❓ 问题: Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?
+2026-01-04 11:44:58 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:45:05 - [INFO] - 🤖 预测: Eenasul Fateh
+2026-01-04 11:45:05 - [INFO] - ✅ 真值: Eenasul Fateh
+2026-01-04 11:45:05 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.31s)
+2026-01-04 11:45:05 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:45:05 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:45:05 - [INFO] - 进度: [8/7405] | Query ID: 5a87ab905542996e4f3088c1
+2026-01-04 11:45:05 - [INFO] - ❓ 问题: The arena where the Lewiston Maineiacs played their home games can seat how many people?
+2026-01-04 11:45:05 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:45:13 - [INFO] - 🤖 预测: 3,677
+2026-01-04 11:45:13 - [INFO] - ✅ 真值: 3,677 seated
+2026-01-04 11:45:13 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.67)
+2026-01-04 11:45:13 - [INFO] - 📊 指标: F1=0.67 | P=1.00 | R=0.50 | ✅ Sem-Match (耗时: 7.99s)
+2026-01-04 11:45:13 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:45:13 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:45:13 - [INFO] - 进度: [9/7405] | Query ID: 5a7bbb64554299042af8f7cc
+2026-01-04 11:45:13 - [INFO] - ❓ 问题: Who is older, Annie Morton or Terry Richardson?
+2026-01-04 11:45:13 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:45:22 - [INFO] - 🤖 预测: Annie Morton
+2026-01-04 11:45:22 - [INFO] - ✅ 真值: Terry Richardson
+2026-01-04 11:45:22 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.28s)
+2026-01-04 11:45:22 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:45:22 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:45:22 - [INFO] - 进度: [10/7405] | Query ID: 5a8db19d5542994ba4e3dd00
+2026-01-04 11:45:22 - [INFO] - ❓ 问题: Are Local H and For Against both from the United States?
+2026-01-04 11:45:22 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:45:29 - [INFO] - 🤖 预测: yes
+2026-01-04 11:45:29 - [INFO] - ✅ 真值: yes
+2026-01-04 11:45:29 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.51s)
+2026-01-04 11:45:29 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:45:29 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:45:29 - [INFO] - 进度: [11/7405] | Query ID: 5a7166395542994082a3e814
+2026-01-04 11:45:29 - [INFO] - ❓ 问题: What is the name of the fight song of the university whose main campus is in Lawrence, Kansas and whose branch campuses are in the Kansas City metropolitan area?
+2026-01-04 11:45:29 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:45:37 - [INFO] - 🤖 预测: Kansas Song
+2026-01-04 11:45:37 - [INFO] - ✅ 真值: Kansas Song
+2026-01-04 11:45:37 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.49s)
+2026-01-04 11:45:37 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:45:37 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:45:37 - [INFO] - 进度: [12/7405] | Query ID: 5a877e5d5542993e715abf7d
+2026-01-04 11:45:37 - [INFO] - ❓ 问题: What screenwriter with credits for "Evolution" co-wrote a film starring Nicolas Cage and Téa Leoni?
+2026-01-04 11:45:37 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:45:44 - [INFO] - 🤖 预测: David Weissman
+2026-01-04 11:45:44 - [INFO] - ✅ 真值: David Weissman
+2026-01-04 11:45:44 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.61s)
+2026-01-04 11:45:44 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=1 | support=2 hit_docs=2
+2026-01-04 11:45:44 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:45:44 - [INFO] - 进度: [13/7405] | Query ID: 5ab3b0bf5542992ade7c6e39
+2026-01-04 11:45:44 - [INFO] - ❓ 问题: What year did Guns N Roses perform a promo for a movie starring Arnold Schwarzenegger as a former New York Police detective?
+2026-01-04 11:45:44 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:45:52 - [INFO] - 🤖 预测: 1999
+2026-01-04 11:45:52 - [INFO] - ✅ 真值: 1999
+2026-01-04 11:45:52 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.66s)
+2026-01-04 11:45:52 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:45:52 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:45:52 - [INFO] - 进度: [14/7405] | Query ID: 5ab56e32554299637185c594
+2026-01-04 11:45:52 - [INFO] - ❓ 问题: Are Random House Tower and 888 7th Avenue both used for real estate?
+2026-01-04 11:45:52 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:46:01 - [INFO] - 🤖 预测: yes
+2026-01-04 11:46:01 - [INFO] - ✅ 真值: no
+2026-01-04 11:46:01 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.74s)
+2026-01-04 11:46:01 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:46:01 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:46:01 - [INFO] - 进度: [15/7405] | Query ID: 5ab6d09255429954757d337d
+2026-01-04 11:46:01 - [INFO] - ❓ 问题: The football manager who recruited David Beckham managed Manchester United during what timeframe?
+2026-01-04 11:46:01 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:46:09 - [INFO] - 🤖 预测: 1986-2013
+2026-01-04 11:46:09 - [INFO] - ✅ 真值: from 1986 to 2013
+2026-01-04 11:46:09 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.67)
+2026-01-04 11:46:09 - [INFO] - 📊 指标: F1=0.67 | P=1.00 | R=0.50 | ✅ Sem-Match (耗时: 7.87s)
+2026-01-04 11:46:09 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:46:09 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:46:09 - [INFO] - 进度: [16/7405] | Query ID: 5a75e05c55429976ec32bc5f
+2026-01-04 11:46:09 - [INFO] - ❓ 问题: Brown State Fishing Lake is in a country that has a population of how many inhabitants ?
+2026-01-04 11:46:09 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:46:16 - [INFO] - 🤖 预测: United States 9,984
+2026-01-04 11:46:16 - [INFO] - ✅ 真值: 9,984
+2026-01-04 11:46:16 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.50)
+2026-01-04 11:46:16 - [INFO] - 📊 指标: F1=0.50 | P=0.33 | R=1.00 | ✅ Sem-Match (耗时: 7.73s)
+2026-01-04 11:46:16 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:46:16 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:46:16 - [INFO] - 进度: [17/7405] | Query ID: 5ab3e45655429976abd1bcd4
+2026-01-04 11:46:16 - [INFO] - ❓ 问题: The Vermont Catamounts men's soccer team currently competes in a conference that was formerly known as what from 1988 to 1996?
+2026-01-04 11:46:16 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:46:24 - [INFO] - 🤖 预测: North Atlantic Conference
+2026-01-04 11:46:24 - [INFO] - ✅ 真值: the North Atlantic Conference
+2026-01-04 11:46:24 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.46s)
+2026-01-04 11:46:24 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:46:24 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:46:24 - [INFO] - 进度: [18/7405] | Query ID: 5ab29c24554299449642c932
+2026-01-04 11:46:24 - [INFO] - ❓ 问题: Are Giuseppe Verdi and Ambroise Thomas both Opera composers ?
+2026-01-04 11:46:24 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:46:32 - [INFO] - 🤖 预测: yes
+2026-01-04 11:46:32 - [INFO] - ✅ 真值: yes
+2026-01-04 11:46:32 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.13s)
+2026-01-04 11:46:32 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:46:32 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:46:32 - [INFO] - 进度: [19/7405] | Query ID: 5ae0d4c9554299603e418468
+2026-01-04 11:46:32 - [INFO] - ❓ 问题: Roger O. Egeberg was Assistant Secretary for Health and Scientific Affairs during the administration of a president that served during what years?
+2026-01-04 11:46:32 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:46:40 - [INFO] - 🤖 预测: Richard Nixon
+2026-01-04 11:46:40 - [INFO] - ✅ 真值: 1969 until 1974
+2026-01-04 11:46:40 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.02s)
+2026-01-04 11:46:40 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:46:40 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:46:40 - [INFO] - 进度: [20/7405] | Query ID: 5a8133725542995ce29dcbdb
+2026-01-04 11:46:40 - [INFO] - ❓ 问题: Which writer was from England, Henry Roth or Robert Erskine Childers?
+2026-01-04 11:46:40 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:46:48 - [INFO] - 🤖 预测: Robert Erskine Childers
+2026-01-04 11:46:48 - [INFO] - ✅ 真值: Robert Erskine Childers DSC
+2026-01-04 11:46:48 - [INFO] - 📊 指标: F1=0.86 | P=1.00 | R=0.75 | 🎉 High F1 (0.86) (耗时: 7.94s)
+2026-01-04 11:46:48 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:46:48 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:46:48 - [INFO] - 进度: [21/7405] | Query ID: 5ae7a8175542993210983ed8
+2026-01-04 11:46:48 - [INFO] - ❓ 问题: Which other Mexican Formula One race car driver has held the podium besides the Force India driver born in 1990?
+2026-01-04 11:46:48 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:46:55 - [INFO] - 🤖 预测: Pedro Rodríguez
+2026-01-04 11:46:55 - [INFO] - ✅ 真值: Pedro Rodríguez
+2026-01-04 11:46:55 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.61s)
+2026-01-04 11:46:55 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:46:55 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:46:55 - [INFO] - 进度: [22/7405] | Query ID: 5ae6050f55429929b0807a5e
+2026-01-04 11:46:55 - [INFO] - ❓ 问题: This singer of A Rather Blustery Day also voiced what hedgehog?
+2026-01-04 11:46:55 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:47:03 - [INFO] - 🤖 预测: Jim Cummings
+2026-01-04 11:47:03 - [INFO] - ✅ 真值: Sonic
+2026-01-04 11:47:03 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.87s)
+2026-01-04 11:47:03 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:47:03 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:47:03 - [INFO] - 进度: [23/7405] | Query ID: 5adddccd5542997dc7907069
+2026-01-04 11:47:03 - [INFO] - ❓ 问题: Aside from the Apple Remote, what other device can control the program Apple Remote was originally designed to interact with?
+2026-01-04 11:47:03 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:47:11 - [INFO] - 🤖 预测: Macintosh computers
+2026-01-04 11:47:11 - [INFO] - ✅ 真值: keyboard function keys
+2026-01-04 11:47:11 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.83s)
+2026-01-04 11:47:11 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:47:11 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:47:11 - [INFO] - 进度: [24/7405] | Query ID: 5ae2070a5542994d89d5b313
+2026-01-04 11:47:11 - [INFO] - ❓ 问题: Which performance act has a higher instrument to person ratio, Badly Drawn Boy or Wolf Alice? 
+2026-01-04 11:47:11 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:47:19 - [INFO] - 🤖 预测: Badly Drawn Boy
+2026-01-04 11:47:19 - [INFO] - ✅ 真值: Badly Drawn Boy
+2026-01-04 11:47:19 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.85s)
+2026-01-04 11:47:19 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:47:19 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:47:19 - [INFO] - 进度: [25/7405] | Query ID: 5ae22b8d554299234fd0440f
+2026-01-04 11:47:19 - [INFO] - ❓ 问题: What was the father of Kasper Schmeichel voted to be by the IFFHS in 1992?
+2026-01-04 11:47:19 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:47:27 - [INFO] - 🤖 预测: Peter Schmeichel
+2026-01-04 11:47:27 - [INFO] - ✅ 真值: World's Best Goalkeeper
+2026-01-04 11:47:27 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.00)
+2026-01-04 11:47:27 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ✅ Sem-Match (耗时: 8.07s)
+2026-01-04 11:47:27 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:47:27 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:47:27 - [INFO] - 进度: [26/7405] | Query ID: 5a722b8655429971e9dc9329
+2026-01-04 11:47:27 - [INFO] - ❓ 问题: Who was the writer of These Boots Are Made for Walkin' and who died in 2007?
+2026-01-04 11:47:27 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:47:35 - [INFO] - 🤖 预测: Lee Hazlewood
+2026-01-04 11:47:35 - [INFO] - ✅ 真值: Barton Lee Hazlewood
+2026-01-04 11:47:35 - [INFO] - 📊 指标: F1=0.80 | P=1.00 | R=0.67 | 🎉 High F1 (0.80) (耗时: 7.52s)
+2026-01-04 11:47:35 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:47:35 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:47:35 - [INFO] - 进度: [27/7405] | Query ID: 5adf37a95542995ec70e8f97
+2026-01-04 11:47:35 - [INFO] - ❓ 问题: The 2011–12 VCU Rams men's basketball team, led by third year head coach Shaka Smart, represented Virginia Commonwealth University which was founded in what year?
+2026-01-04 11:47:35 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:47:42 - [INFO] - 🤖 预测: 1838
+2026-01-04 11:47:42 - [INFO] - ✅ 真值: 1838
+2026-01-04 11:47:42 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.73s)
+2026-01-04 11:47:42 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:47:42 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:47:42 - [INFO] - 进度: [28/7405] | Query ID: 5abd259d55429924427fcf1a
+2026-01-04 11:47:42 - [INFO] - ❓ 问题: Are both Dictyosperma, and Huernia described as a genus?
+2026-01-04 11:47:42 - [INFO] - 📋 doc_filter: 2 个文档
+2026-01-04 11:47:50 - [INFO] - 🤖 预测: yes
+2026-01-04 11:47:50 - [INFO] - ✅ 真值: yes
+2026-01-04 11:47:50 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.60s)
+2026-01-04 11:47:50 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:47:50 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:47:50 - [INFO] - 进度: [29/7405] | Query ID: 5a828c8355429966c78a6a50
+2026-01-04 11:47:50 - [INFO] - ❓ 问题: Kaiser Ventures corporation was founded by an American industrialist who became known as the father of modern American shipbuilding?
+2026-01-04 11:47:50 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:47:57 - [INFO] - 🤖 预测: Henry J. Kaiser
+2026-01-04 11:47:57 - [INFO] - ✅ 真值: Henry J. Kaiser
+2026-01-04 11:47:57 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.54s)
+2026-01-04 11:47:57 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:47:57 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:47:57 - [INFO] - 进度: [30/7405] | Query ID: 5a8a3e745542996c9b8d5e70
+2026-01-04 11:47:57 - [INFO] - ❓ 问题: What is the name for the adventure in "Tunnels and Trolls", a game designed by Ken St. Andre?
+2026-01-04 11:47:57 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:48:06 - [INFO] - 🤖 预测: Tunnels and Trolls
+2026-01-04 11:48:06 - [INFO] - ✅ 真值: Arena of Khazan
+2026-01-04 11:48:06 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.32s)
+2026-01-04 11:48:06 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:48:06 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:48:06 - [INFO] - 进度: [31/7405] | Query ID: 5ac23ff0554299636651994d
+2026-01-04 11:48:06 - [INFO] - ❓ 问题: When was Poison's album "Shut Up, Make Love" released?
+2026-01-04 11:48:06 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:48:13 - [INFO] - 🤖 预测: 2000
+2026-01-04 11:48:13 - [INFO] - ✅ 真值: 2000
+2026-01-04 11:48:13 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.70s)
+2026-01-04 11:48:13 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:48:13 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:48:13 - [INFO] - 进度: [32/7405] | Query ID: 5ae4a3265542995ad6573de5
+2026-01-04 11:48:13 - [INFO] - ❓ 问题: Hayden is a singer-songwriter from Canada, but where does Buck-Tick hail from?
+2026-01-04 11:48:13 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:48:21 - [INFO] - 🤖 预测: Fujioka, Gunma
+2026-01-04 11:48:21 - [INFO] - ✅ 真值: Fujioka, Gunma
+2026-01-04 11:48:21 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.95s)
+2026-01-04 11:48:21 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:48:21 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:48:21 - [INFO] - 进度: [33/7405] | Query ID: 5ae0361155429925eb1afc2c
+2026-01-04 11:48:21 - [INFO] - ❓ 问题: Which  French ace pilot and adventurer fly L'Oiseau Blanc
+2026-01-04 11:48:21 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:48:29 - [INFO] - 🤖 预测: François Coli
+2026-01-04 11:48:29 - [INFO] - ✅ 真值: Charles Eugène
+2026-01-04 11:48:29 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.02s)
+2026-01-04 11:48:29 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:48:29 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:48:29 - [INFO] - 进度: [34/7405] | Query ID: 5abc0a5d5542993f40c73c64
+2026-01-04 11:48:29 - [INFO] - ❓ 问题: Are Freakonomics and In the Realm of the Hackers both American documentaries?
+2026-01-04 11:48:29 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:48:37 - [INFO] - 🤖 预测: no
+2026-01-04 11:48:37 - [INFO] - ✅ 真值: no
+2026-01-04 11:48:37 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.89s)
+2026-01-04 11:48:37 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:48:37 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:48:37 - [INFO] - 进度: [35/7405] | Query ID: 5a7cc50e554299452d57ba3e
+2026-01-04 11:48:37 - [INFO] - ❓ 问题: Which band, Letters to Cleo or Screaming Trees, had more members?
+2026-01-04 11:48:37 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:48:45 - [INFO] - 🤖 预测: Screaming Trees
+2026-01-04 11:48:45 - [INFO] - ✅ 真值: Letters to Cleo
+2026-01-04 11:48:45 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.27s)
+2026-01-04 11:48:45 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:48:45 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:48:45 - [INFO] - 进度: [36/7405] | Query ID: 5abf63f15542997ec76fd3ea
+2026-01-04 11:48:45 - [INFO] - ❓ 问题: Alexander Kerensky was defeated and destroyed by the Bolsheviks in the course of a civil war that ended when ?
+2026-01-04 11:48:45 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:48:52 - [INFO] - 🤖 预测: October 1922
+2026-01-04 11:48:52 - [INFO] - ✅ 真值: October 1922
+2026-01-04 11:48:52 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.68s)
+2026-01-04 11:48:52 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:48:52 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:48:52 - [INFO] - 进度: [37/7405] | Query ID: 5a8ef2a75542995a26add583
+2026-01-04 11:48:52 - [INFO] - ❓ 问题: Seven Brief Lessons on Physics was written by an Italian physicist that has worked in France since what year?
+2026-01-04 11:48:52 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:49:00 - [INFO] - 🤖 预测: 2000
+2026-01-04 11:49:00 - [INFO] - ✅ 真值: 2000
+2026-01-04 11:49:00 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.50s)
+2026-01-04 11:49:00 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:49:00 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:49:00 - [INFO] - 进度: [38/7405] | Query ID: 5a80721b554299485f5985ef
+2026-01-04 11:49:00 - [INFO] - ❓ 问题: The Livesey Hal War Memorial commemorates the fallen of which war, that had over 60 million casualties?
+2026-01-04 11:49:00 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:49:07 - [INFO] - 🤖 预测: World War II
+2026-01-04 11:49:07 - [INFO] - ✅ 真值: World War II
+2026-01-04 11:49:07 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.17s)
+2026-01-04 11:49:07 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:49:07 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:49:07 - [INFO] - 进度: [39/7405] | Query ID: 5ab51dae5542991779162d82
+2026-01-04 11:49:07 - [INFO] - ❓ 问题: Are both Elko Regional Airport and Gerald R. Ford International Airport located in Michigan?
+2026-01-04 11:49:07 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:49:15 - [INFO] - 🤖 预测: no
+2026-01-04 11:49:15 - [INFO] - ✅ 真值: no
+2026-01-04 11:49:15 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.78s)
+2026-01-04 11:49:15 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:49:15 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:49:15 - [INFO] - 进度: [40/7405] | Query ID: 5a7571135542992d0ec05f98
+2026-01-04 11:49:15 - [INFO] - ❓ 问题: Ralph Hefferline was a psychology professor at a university that is located in what city?
+2026-01-04 11:49:15 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:49:23 - [INFO] - 🤖 预测: New York City
+2026-01-04 11:49:23 - [INFO] - ✅ 真值: New York City
+2026-01-04 11:49:23 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.13s)
+2026-01-04 11:49:23 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:49:23 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:49:23 - [INFO] - 进度: [41/7405] | Query ID: 5a7a0e1e5542990783324e1a
+2026-01-04 11:49:23 - [INFO] - ❓ 问题: Which dog's ancestors include Gordon and Irish Setters: the Manchester Terrier or the Scotch Collie?
+2026-01-04 11:49:23 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:49:30 - [INFO] - 🤖 预测: Scotch Collie
+2026-01-04 11:49:30 - [INFO] - ✅ 真值: Scotch Collie
+2026-01-04 11:49:30 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.32s)
+2026-01-04 11:49:30 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:49:30 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:49:30 - [INFO] - 进度: [42/7405] | Query ID: 5a74106b55429979e288289e
+2026-01-04 11:49:30 - [INFO] - ❓ 问题: Where is the company that Sachin Warrier worked for as a software engineer headquartered? 
+2026-01-04 11:49:30 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:49:38 - [INFO] - 🤖 预测: Tata Consultancy Services
+2026-01-04 11:49:38 - [INFO] - ✅ 真值: Mumbai
+2026-01-04 11:49:38 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.98s)
+2026-01-04 11:49:38 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:49:38 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:49:38 - [INFO] - 进度: [43/7405] | Query ID: 5a79311755429970f5fffe67
+2026-01-04 11:49:38 - [INFO] - ❓ 问题: A Japanese manga series based on a 16 year old high school student Ichitaka Seto, is written and illustrated by someone born in what year?
+2026-01-04 11:49:38 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:49:46 - [INFO] - 🤖 预测: Masakazu Katsura
+2026-01-04 11:49:46 - [INFO] - ✅ 真值: 1962
+2026-01-04 11:49:46 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.22s)
+2026-01-04 11:49:46 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:49:46 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:49:46 - [INFO] - 进度: [44/7405] | Query ID: 5ab2d3df554299194fa9352c
+2026-01-04 11:49:46 - [INFO] - ❓ 问题: The battle in which Giuseppe Arimondi lost his life secured what for Ethiopia?
+2026-01-04 11:49:46 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:49:54 - [INFO] - 🤖 预测: Sovereignty
+2026-01-04 11:49:54 - [INFO] - ✅ 真值: sovereignty
+2026-01-04 11:49:54 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.76s)
+2026-01-04 11:49:54 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:49:54 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:49:54 - [INFO] - 进度: [45/7405] | Query ID: 5a760ab65542994ccc918697
+2026-01-04 11:49:54 - [INFO] - ❓ 问题: Alfred Balk served as the secretary of the Committee on the Employment of Minority Groups in the News Media under which United States Vice President?
+2026-01-04 11:49:54 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:50:02 - [INFO] - 🤖 预测: Nelson Rockefeller
+2026-01-04 11:50:02 - [INFO] - ✅ 真值: Nelson Rockefeller
+2026-01-04 11:50:02 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.72s)
+2026-01-04 11:50:02 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:50:02 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:50:02 - [INFO] - 进度: [46/7405] | Query ID: 5a7d54165542995f4f402256
+2026-01-04 11:50:02 - [INFO] - ❓ 问题: A medieval fortress in Dirleton, East Lothian, Scotland borders on the south side of what coastal area?
+2026-01-04 11:50:02 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:50:10 - [INFO] - 🤖 预测: Dirleton Castle borders on the south side of Yellowcraigs
+2026-01-04 11:50:10 - [INFO] - ✅ 真值: Yellowcraig
+2026-01-04 11:50:10 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.30s)
+2026-01-04 11:50:10 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:50:10 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:50:10 - [INFO] - 进度: [47/7405] | Query ID: 5ab859a955429934fafe6d7b
+2026-01-04 11:50:10 - [INFO] - ❓ 问题: Who is the writer of this song that was inspired by words on a tombstone and was the first track on the box set Back to Mono?
+2026-01-04 11:50:10 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:50:18 - [INFO] - 🤖 预测: Phil Spector
+2026-01-04 11:50:18 - [INFO] - ✅ 真值: Phil Spector
+2026-01-04 11:50:18 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.83s)
+2026-01-04 11:50:18 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:50:18 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:50:18 - [INFO] - 进度: [48/7405] | Query ID: 5add61d65542995b365fab21
+2026-01-04 11:50:18 - [INFO] - ❓ 问题: What type of forum did a former Soviet statesman initiate?
+2026-01-04 11:50:18 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:50:26 - [INFO] - 🤖 预测: Public
+2026-01-04 11:50:26 - [INFO] - ✅ 真值: Organizations could come together to address global issues
+2026-01-04 11:50:26 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.02s)
+2026-01-04 11:50:26 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:50:26 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:50:26 - [INFO] - 进度: [49/7405] | Query ID: 5a8e068b5542995085b37384
+2026-01-04 11:50:26 - [INFO] - ❓ 问题: Are Ferocactus and Silene both types of plant?
+2026-01-04 11:50:26 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:50:34 - [INFO] - 🤖 预测: yes
+2026-01-04 11:50:34 - [INFO] - ✅ 真值: yes
+2026-01-04 11:50:34 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.05s)
+2026-01-04 11:50:34 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:50:34 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:50:34 - [INFO] - 进度: [50/7405] | Query ID: 5abbf698554299114383a0b5
+2026-01-04 11:50:34 - [INFO] - ❓ 问题: Which British first-generation jet-powered medium bomber was used in the South West Pacific theatre of World War II?
+2026-01-04 11:50:34 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:50:41 - [INFO] - 🤖 预测: English Electric Canberra
+2026-01-04 11:50:41 - [INFO] - ✅ 真值: English Electric Canberra
+2026-01-04 11:50:41 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.44s)
+2026-01-04 11:50:41 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:50:41 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:50:41 - [INFO] - 进度: [51/7405] | Query ID: 5a8e1027554299653c1aa15f
+2026-01-04 11:50:41 - [INFO] - ❓ 问题: Which year and which conference was the 14th season for this conference as part of the NCAA Division that the Colorado Buffaloes played in with a record of 2-6 in conference play?
+2026-01-04 11:50:41 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:50:49 - [INFO] - 🤖 预测: 2009 Big 12
+2026-01-04 11:50:49 - [INFO] - ✅ 真值: 2009 Big 12 Conference
+2026-01-04 11:50:49 - [INFO] - 📊 指标: F1=0.86 | P=1.00 | R=0.75 | 🎉 High F1 (0.86) (耗时: 7.53s)
+2026-01-04 11:50:49 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:50:49 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:50:49 - [INFO] - 进度: [52/7405] | Query ID: 5ab84bf555429916710eb01f
+2026-01-04 11:50:49 - [INFO] - ❓ 问题: In 1991 Euromarché was bought by a chain that operated how any hypermarkets at the end of 2016?
+2026-01-04 11:50:49 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:50:56 - [INFO] - 🤖 预测: 1462
+2026-01-04 11:50:56 - [INFO] - ✅ 真值: 1,462
+2026-01-04 11:50:56 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.32s)
+2026-01-04 11:50:56 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:50:56 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:50:56 - [INFO] - 进度: [53/7405] | Query ID: 5a77724455429972597f153e
+2026-01-04 11:50:56 - [INFO] - ❓ 问题: What race track in the midwest hosts a 500 mile race eavery May?
+2026-01-04 11:50:56 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:51:04 - [INFO] - 🤖 预测: Indianapolis Motor Speedway
+2026-01-04 11:51:04 - [INFO] - ✅ 真值: Indianapolis Motor Speedway
+2026-01-04 11:51:04 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.71s)
+2026-01-04 11:51:04 - [INFO] - 🔎 Hits: retrieval=0 bridge=0 path=0 | support=2 hit_docs=0
+2026-01-04 11:51:04 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:51:04 - [INFO] - 进度: [54/7405] | Query ID: 5a87c13f5542996e4f30890c
+2026-01-04 11:51:04 - [INFO] - ❓ 问题: In what city did the "Prince of tenors" star in a film based on an opera by Giacomo Puccini?
+2026-01-04 11:51:04 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:51:12 - [INFO] - 🤖 预测: Rome
+2026-01-04 11:51:12 - [INFO] - ✅ 真值: Rome
+2026-01-04 11:51:12 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.62s)
+2026-01-04 11:51:12 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=1 | support=2 hit_docs=2
+2026-01-04 11:51:12 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:51:12 - [INFO] - 进度: [55/7405] | Query ID: 5ab96ab755429970cfb8eacd
+2026-01-04 11:51:12 - [INFO] - ❓ 问题: Ellie Goulding worked with what other writers on her third studio album, Delirium?
+2026-01-04 11:51:12 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:51:20 - [INFO] - 🤖 预测: Max Martin, Savan Kotecha, Ilya Salmanzadeh
+2026-01-04 11:51:20 - [INFO] - ✅ 真值: Max Martin, Savan Kotecha and Ilya Salmanzadeh
+2026-01-04 11:51:20 - [INFO] - 📊 指标: F1=0.92 | P=1.00 | R=0.86 | 🎉 High F1 (0.92) (耗时: 8.25s)
+2026-01-04 11:51:20 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:51:20 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:51:20 - [INFO] - 进度: [56/7405] | Query ID: 5a8a43eb5542996c9b8d5e82
+2026-01-04 11:51:20 - [INFO] - ❓ 问题: Which Australian city founded in 1838 contains a boarding school opened by a Prime Minister of Australia and named after a school in London of the same name.
+2026-01-04 11:51:20 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:51:28 - [INFO] - 🤖 预测: Adelaide
+2026-01-04 11:51:28 - [INFO] - ✅ 真值: Marion, South Australia
+2026-01-04 11:51:28 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.75s)
+2026-01-04 11:51:28 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:51:28 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:51:28 - [INFO] - 进度: [57/7405] | Query ID: 5ae73acb5542991e8301cc07
+2026-01-04 11:51:28 - [INFO] - ❓ 问题: D1NZ is a series based on what oversteering technique?
+2026-01-04 11:51:28 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:51:36 - [INFO] - 🤖 预测: Drifting
+2026-01-04 11:51:36 - [INFO] - ✅ 真值: Drifting
+2026-01-04 11:51:36 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.79s)
+2026-01-04 11:51:36 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:51:36 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:51:36 - [INFO] - 进度: [58/7405] | Query ID: 5a7320565542991f9a20c61d
+2026-01-04 11:51:36 - [INFO] - ❓ 问题: who is younger Keith Bostic or Jerry Glanville ?
+2026-01-04 11:51:36 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:51:44 - [INFO] - 🤖 预测: Keith Bostic
+2026-01-04 11:51:44 - [INFO] - ✅ 真值: Keith Bostic
+2026-01-04 11:51:44 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.85s)
+2026-01-04 11:51:44 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:51:44 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:51:44 - [INFO] - 进度: [59/7405] | Query ID: 5ae32e125542991a06ce9946
+2026-01-04 11:51:44 - [INFO] - ❓ 问题: According to the 2001 census, what was the population of the city in which Kirton End is located?
+2026-01-04 11:51:44 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:51:52 - [INFO] - 🤖 预测: 273
+2026-01-04 11:51:52 - [INFO] - ✅ 真值: 35,124
+2026-01-04 11:51:52 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.05s)
+2026-01-04 11:51:52 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:51:52 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:51:52 - [INFO] - 进度: [60/7405] | Query ID: 5adc53f75542996e6852530a
+2026-01-04 11:51:52 - [INFO] - ❓ 问题: Are both Cypress and Ajuga genera?
+2026-01-04 11:51:52 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:52:01 - [INFO] - 🤖 预测: no
+2026-01-04 11:52:01 - [INFO] - ✅ 真值: no
+2026-01-04 11:52:01 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.70s)
+2026-01-04 11:52:01 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:52:01 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:52:01 - [INFO] - 进度: [61/7405] | Query ID: 5a8b20335542996c9b8d5fb3
+2026-01-04 11:52:01 - [INFO] - ❓ 问题: What distinction is held by the former NBA player who was a member of the Charlotte Hornets during their 1992-93 season and was head coach for the WNBA team Charlotte Sting?
+2026-01-04 11:52:01 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:52:09 - [INFO] - 🤖 预测: Shortest player ever
+2026-01-04 11:52:09 - [INFO] - ✅ 真值: shortest player ever to play in the National Basketball Association
+2026-01-04 11:52:09 - [INFO] - 📊 指标: F1=0.50 | P=1.00 | R=0.33 | 🎉 High F1 (0.50) (耗时: 7.77s)
+2026-01-04 11:52:09 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:52:09 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:52:09 - [INFO] - 进度: [62/7405] | Query ID: 5a85fb085542994775f606de
+2026-01-04 11:52:09 - [INFO] - ❓ 问题: What is the name of the executive producer of the film that has a score composed by Jerry Goldsmith?
+2026-01-04 11:52:09 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:52:17 - [INFO] - 🤖 预测: Stanley O'Toole
+2026-01-04 11:52:17 - [INFO] - ✅ 真值: Ronald Shusett
+2026-01-04 11:52:17 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.83s)
+2026-01-04 11:52:17 - [INFO] - 🔎 Hits: retrieval=0 bridge=0 path=0 | support=2 hit_docs=0
+2026-01-04 11:52:17 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:52:17 - [INFO] - 进度: [63/7405] | Query ID: 5a7be2595542997c3ec972ac
+2026-01-04 11:52:17 - [INFO] - ❓ 问题: Who was born earlier, Emma Bull or Virginia Woolf?
+2026-01-04 11:52:17 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:52:24 - [INFO] - 🤖 预测: Virginia Woolf
+2026-01-04 11:52:24 - [INFO] - ✅ 真值: Adeline Virginia Woolf
+2026-01-04 11:52:24 - [INFO] - 📊 指标: F1=0.80 | P=1.00 | R=0.67 | 🎉 High F1 (0.80) (耗时: 7.30s)
+2026-01-04 11:52:24 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:52:24 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:52:24 - [INFO] - 进度: [64/7405] | Query ID: 5a77152355429966f1a36c2e
+2026-01-04 11:52:24 - [INFO] - ❓ 问题: What was the Roud Folk Song Index of the nursery rhyme inspiring What Are Little Girls Made Of?
+2026-01-04 11:52:24 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:52:32 - [INFO] - 🤖 预测: 19800
+2026-01-04 11:52:32 - [INFO] - ✅ 真值: 821
+2026-01-04 11:52:32 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.14s)
+2026-01-04 11:52:32 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:52:32 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:52:32 - [INFO] - 进度: [65/7405] | Query ID: 5a8f4c8d554299458435d5a3
+2026-01-04 11:52:32 - [INFO] - ❓ 问题: Scott Parkin has been a vocal critic of Exxonmobil and another corporation that has operations in how many countries ?
+2026-01-04 11:52:32 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:52:40 - [INFO] - 🤖 预测: Halliburton
+2026-01-04 11:52:40 - [INFO] - ✅ 真值: more than 70 countries
+2026-01-04 11:52:40 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.50s)
+2026-01-04 11:52:40 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:52:40 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:52:40 - [INFO] - 进度: [66/7405] | Query ID: 5a80840f554299485f59863b
+2026-01-04 11:52:40 - [INFO] - ❓ 问题: What WB supernatrual drama series was Jawbreaker star Rose Mcgowan best known for being in?
+2026-01-04 11:52:40 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:52:47 - [INFO] - 🤖 预测: Charmed
+2026-01-04 11:52:47 - [INFO] - ✅ 真值: Charmed
+2026-01-04 11:52:47 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.77s)
+2026-01-04 11:52:47 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:52:47 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:52:47 - [INFO] - 进度: [67/7405] | Query ID: 5a8361b65542992ef85e22a0
+2026-01-04 11:52:47 - [INFO] - ❓ 问题: Vince Phillips held a junior welterweight title by an organization recognized by what larger Hall of Fame?
+2026-01-04 11:52:47 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:52:55 - [INFO] - 🤖 预测: International Boxing Hall of Fame
+2026-01-04 11:52:55 - [INFO] - ✅ 真值: International Boxing Hall of Fame
+2026-01-04 11:52:55 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.67s)
+2026-01-04 11:52:55 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:52:55 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:52:55 - [INFO] - 进度: [68/7405] | Query ID: 5ae7ba7a5542993210983f12
+2026-01-04 11:52:55 - [INFO] - ❓ 问题: What is the name of the singer who's song was released as the lead single from the album "Confessions", and that had popular song stuck behind for eight consecutive weeks?
+2026-01-04 11:52:55 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:53:03 - [INFO] - 🤖 预测: Usher
+2026-01-04 11:53:03 - [INFO] - ✅ 真值: Usher
+2026-01-04 11:53:03 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.49s)
+2026-01-04 11:53:03 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:53:03 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:53:03 - [INFO] - 进度: [69/7405] | Query ID: 5ac2acff55429921a00ab02b
+2026-01-04 11:53:03 - [INFO] - ❓ 问题: who is the younger brother of The episode guest stars of The Hard Easy 
+2026-01-04 11:53:03 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:53:10 - [INFO] - 🤖 预测: Bill Murray
+2026-01-04 11:53:10 - [INFO] - ✅ 真值: Bill Murray
+2026-01-04 11:53:10 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.88s)
+2026-01-04 11:53:10 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:53:10 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:53:10 - [INFO] - 进度: [70/7405] | Query ID: 5aba7cfe554299232ef4a2fd
+2026-01-04 11:53:10 - [INFO] - ❓ 问题: The 2017–18 Wigan Athletic F.C. season will be a year in which the team competes in the league cup known as what for sponsorship reasons?
+2026-01-04 11:53:10 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:53:18 - [INFO] - 🤖 预测: Carabao Cup
+2026-01-04 11:53:18 - [INFO] - ✅ 真值: Carabao Cup
+2026-01-04 11:53:18 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.77s)
+2026-01-04 11:53:18 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:53:18 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:53:18 - [INFO] - 进度: [71/7405] | Query ID: 5ae5aba0554299546bf82f17
+2026-01-04 11:53:18 - [INFO] - ❓ 问题: Which of Tara Strong major voice role in animated series is an American animated television series based on the DC Comics fictional superhero team, the "Teen Titans"?
+2026-01-04 11:53:18 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:53:26 - [INFO] - 🤖 预测: Teen Titans
+2026-01-04 11:53:26 - [INFO] - ✅ 真值: Teen Titans Go!
+2026-01-04 11:53:26 - [INFO] - 📊 指标: F1=0.80 | P=1.00 | R=0.67 | 🎉 High F1 (0.80) (耗时: 7.98s)
+2026-01-04 11:53:26 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:53:26 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:53:26 - [INFO] - 进度: [72/7405] | Query ID: 5ae1f4cb554299234fd0436d
+2026-01-04 11:53:26 - [INFO] - ❓ 问题: What is the inhabitant of the city where  122nd SS-Standarte was formed in2014
+2026-01-04 11:53:26 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:53:33 - [INFO] - 🤖 预测: 276,170
+2026-01-04 11:53:33 - [INFO] - ✅ 真值: 276,170 inhabitants
+2026-01-04 11:53:33 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.67)
+2026-01-04 11:53:33 - [INFO] - 📊 指标: F1=0.67 | P=1.00 | R=0.50 | ✅ Sem-Match (耗时: 7.18s)
+2026-01-04 11:53:33 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:53:33 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:53:33 - [INFO] - 进度: [73/7405] | Query ID: 5ae7e1fc55429952e35ea9cc
+2026-01-04 11:53:33 - [INFO] - ❓ 问题: What color clothing do people of the Netherlands wear during Oranjegekte or to celebrate the national holiday Koningsdag? 
+2026-01-04 11:53:33 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:53:41 - [INFO] - 🤖 预测: Orange
+2026-01-04 11:53:41 - [INFO] - ✅ 真值: orange
+2026-01-04 11:53:41 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.99s)
+2026-01-04 11:53:41 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:53:41 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:53:41 - [INFO] - 进度: [74/7405] | Query ID: 5ae37c765542992f92d822d4
+2026-01-04 11:53:41 - [INFO] - ❓ 问题: What was the name of the 1996 loose adaptation of William Shakespeare's "Romeo & Juliet" written by James Gunn?
+2026-01-04 11:53:41 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:53:49 - [INFO] - 🤖 预测: Tromeo and Juliet
+2026-01-04 11:53:49 - [INFO] - ✅ 真值: Tromeo and Juliet
+2026-01-04 11:53:49 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.84s)
+2026-01-04 11:53:49 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:53:49 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:53:49 - [INFO] - 进度: [75/7405] | Query ID: 5ae33c4d5542992f92d82262
+2026-01-04 11:53:49 - [INFO] - ❓ 问题: Robert Suettinger was the national intelligence officer under which former Governor of Arkansas?
+2026-01-04 11:53:49 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:53:57 - [INFO] - 🤖 预测: Bill Clinton
+2026-01-04 11:53:57 - [INFO] - ✅ 真值: William Jefferson Clinton
+2026-01-04 11:53:57 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.40)
+2026-01-04 11:53:57 - [INFO] - 📊 指标: F1=0.40 | P=0.50 | R=0.33 | ✅ Sem-Match (耗时: 7.79s)
+2026-01-04 11:53:57 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:53:57 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:53:57 - [INFO] - 进度: [76/7405] | Query ID: 5a77cb335542997042120b3a
+2026-01-04 11:53:57 - [INFO] - ❓ 问题: What American professional Hawaiian surfer born 18 October 1992 won the Rip Curl Pro Portugal?
+2026-01-04 11:53:57 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:54:05 - [INFO] - 🤖 预测: John John Florence
+2026-01-04 11:54:05 - [INFO] - ✅ 真值: John John Florence
+2026-01-04 11:54:05 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.07s)
+2026-01-04 11:54:05 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:54:05 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:54:05 - [INFO] - 进度: [77/7405] | Query ID: 5a8979f4554299669944a52e
+2026-01-04 11:54:05 - [INFO] - ❓ 问题: What is the middle name of the actress who plays Bobbi Bacha in Suburban Madness?
+2026-01-04 11:54:05 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:54:13 - [INFO] - 🤖 预测: Alexandra
+2026-01-04 11:54:13 - [INFO] - ✅ 真值: Ann
+2026-01-04 11:54:13 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.72s)
+2026-01-04 11:54:13 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:54:13 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:54:13 - [INFO] - 进度: [78/7405] | Query ID: 5a713ea95542994082a3e6e4
+2026-01-04 11:54:13 - [INFO] - ❓ 问题: Alvaro Mexia had a diplomatic mission with which tribe of indigenous people?
+2026-01-04 11:54:13 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:54:21 - [INFO] - 🤖 预测: Ais
+2026-01-04 11:54:21 - [INFO] - ✅ 真值: Apalachees
+2026-01-04 11:54:21 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.86s)
+2026-01-04 11:54:21 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:54:21 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:54:21 - [INFO] - 进度: [79/7405] | Query ID: 5a78bd9b554299078472774a
+2026-01-04 11:54:21 - [INFO] - ❓ 问题: What nationality were social anthropologists Alfred Gell and Edmund Leach?
+2026-01-04 11:54:21 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:54:29 - [INFO] - 🤖 预测: British
+2026-01-04 11:54:29 - [INFO] - ✅ 真值: British
+2026-01-04 11:54:29 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.14s)
+2026-01-04 11:54:29 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:54:29 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:54:29 - [INFO] - 进度: [80/7405] | Query ID: 5a7625e8554299109176e66a
+2026-01-04 11:54:29 - [INFO] - ❓ 问题: In which year was the King who made the 1925 Birthday Honours born?
+2026-01-04 11:54:29 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:54:36 - [INFO] - 🤖 预测: 1865
+2026-01-04 11:54:36 - [INFO] - ✅ 真值: 1865
+2026-01-04 11:54:36 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.10s)
+2026-01-04 11:54:36 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:54:36 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:54:36 - [INFO] - 进度: [81/7405] | Query ID: 5ae2dd2055429928c423950d
+2026-01-04 11:54:36 - [INFO] - ❓ 问题: What is the county seat of the county where East Lempster, New Hampshire is located?
+2026-01-04 11:54:36 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:54:44 - [INFO] - 🤖 预测: Newport
+2026-01-04 11:54:44 - [INFO] - ✅ 真值: Newport
+2026-01-04 11:54:44 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.64s)
+2026-01-04 11:54:44 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:54:44 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:54:44 - [INFO] - 进度: [82/7405] | Query ID: 5abdf12255429976d4830a2f
+2026-01-04 11:54:44 - [INFO] - ❓ 问题: The Album Against the Wind was the 11th Album of a Rock singer Robert C Seger born may 6 1945. What was the Rock singers stage name ?
+2026-01-04 11:54:44 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:54:51 - [INFO] - 🤖 预测: Bob Seger
+2026-01-04 11:54:51 - [INFO] - ✅ 真值: Bob Seger
+2026-01-04 11:54:51 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.61s)
+2026-01-04 11:54:51 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:54:51 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:54:51 - [INFO] - 进度: [83/7405] | Query ID: 5a88658955429938390d3f47
+2026-01-04 11:54:51 - [INFO] - ❓ 问题: Rostker v. Goldberg held that the practice of what way of filling armed forces vacancies was consitutional?
+2026-01-04 11:54:51 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:54:59 - [INFO] - 🤖 预测: requiring only men
+2026-01-04 11:54:59 - [INFO] - ✅ 真值: Conscription
+2026-01-04 11:54:59 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.96s)
+2026-01-04 11:54:59 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:54:59 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:54:59 - [INFO] - 进度: [84/7405] | Query ID: 5a86ebac55429960ec39b6d6
+2026-01-04 11:54:59 - [INFO] - ❓ 问题: Handi-Snacks are a snack food product line sold by what American multinational confectionery, food, and beverage company that is based in Illinois?
+2026-01-04 11:54:59 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:55:07 - [INFO] - 🤖 预测: Mondelez International
+2026-01-04 11:55:07 - [INFO] - ✅ 真值: Mondelez International, Inc.
+2026-01-04 11:55:07 - [INFO] - 📊 指标: F1=0.80 | P=1.00 | R=0.67 | 🎉 High F1 (0.80) (耗时: 7.73s)
+2026-01-04 11:55:07 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:55:07 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:55:07 - [INFO] - 进度: [85/7405] | Query ID: 5aba5d2e55429901930fa799
+2026-01-04 11:55:07 - [INFO] - ❓ 问题: What was the name of a woman from the book titled "Their Lives: The Women Targeted by the Clinton Machine " and was also a former white house intern?
+2026-01-04 11:55:07 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:55:14 - [INFO] - 🤖 预测: Monica Lewinsky
+2026-01-04 11:55:14 - [INFO] - ✅ 真值: Monica Lewinsky
+2026-01-04 11:55:14 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.63s)
+2026-01-04 11:55:14 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:55:14 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:55:14 - [INFO] - 进度: [86/7405] | Query ID: 5ae5736e5542990ba0bbb2b3
+2026-01-04 11:55:14 - [INFO] - ❓ 问题: When was the American lawyer, lobbyist and political consultant who was a senior member of the presidential campaign of Donald Trump born?
+2026-01-04 11:55:14 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:55:22 - [INFO] - 🤖 预测: April 1, 1949
+2026-01-04 11:55:22 - [INFO] - ✅ 真值: April 1, 1949
+2026-01-04 11:55:22 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.63s)
+2026-01-04 11:55:22 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:55:22 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:55:22 - [INFO] - 进度: [87/7405] | Query ID: 5ae005b555429942ec259bec
+2026-01-04 11:55:22 - [INFO] - ❓ 问题: In what year was the novel that Lourenço Mutarelli based "Nina" on based first published?
+2026-01-04 11:55:22 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:55:30 - [INFO] - 🤖 预测: 1866
+2026-01-04 11:55:30 - [INFO] - ✅ 真值: 1866
+2026-01-04 11:55:30 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.35s)
+2026-01-04 11:55:30 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:55:30 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:55:30 - [INFO] - 进度: [88/7405] | Query ID: 5a7759fc5542993569682d60
+2026-01-04 11:55:30 - [INFO] - ❓ 问题: Where are Teide National Park and Garajonay National Park located?
+2026-01-04 11:55:30 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:55:37 - [INFO] - 🤖 预测: Canary Islands
+2026-01-04 11:55:37 - [INFO] - ✅ 真值: Canary Islands, Spain
+2026-01-04 11:55:37 - [INFO] - 📊 指标: F1=0.80 | P=1.00 | R=0.67 | 🎉 High F1 (0.80) (耗时: 6.96s)
+2026-01-04 11:55:37 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:55:37 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:55:37 - [INFO] - 进度: [89/7405] | Query ID: 5a835478554299123d8c20ed
+2026-01-04 11:55:37 - [INFO] - ❓ 问题: How many copies of Roald Dahl's variation on a popular anecdote sold?
+2026-01-04 11:55:37 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:55:45 - [INFO] - 🤖 预测: None
+2026-01-04 11:55:45 - [INFO] - ✅ 真值: 250 million
+2026-01-04 11:55:45 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.99s)
+2026-01-04 11:55:45 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:55:45 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:55:45 - [INFO] - 进度: [90/7405] | Query ID: 5aba749055429901930fa7d8
+2026-01-04 11:55:45 - [INFO] - ❓ 问题: What occupation do Chris Menges and Aram Avakian share?
+2026-01-04 11:55:45 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:55:53 - [INFO] - 🤖 预测: Film Director/Cinematographer
+2026-01-04 11:55:53 - [INFO] - ✅ 真值: director
+2026-01-04 11:55:53 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.00)
+2026-01-04 11:55:53 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ✅ Sem-Match (耗时: 7.97s)
+2026-01-04 11:55:53 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:55:53 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:55:53 - [INFO] - 进度: [91/7405] | Query ID: 5abfb3425542990832d3a1c0
+2026-01-04 11:55:53 - [INFO] - ❓ 问题: Andrew Jaspan was the co-founder of what not-for-profit media outlet?
+2026-01-04 11:55:53 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:56:01 - [INFO] - 🤖 预测: The Conversation
+2026-01-04 11:56:01 - [INFO] - ✅ 真值: The Conversation
+2026-01-04 11:56:01 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.58s)
+2026-01-04 11:56:01 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:56:01 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:56:01 - [INFO] - 进度: [92/7405] | Query ID: 5ac3165c5542995ef918c10a
+2026-01-04 11:56:01 - [INFO] - ❓ 问题: Which American film director hosted the 18th Independent Spirit Awards in 2002?
+2026-01-04 11:56:01 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:56:08 - [INFO] - 🤖 预测: John Waters
+2026-01-04 11:56:08 - [INFO] - ✅ 真值: John Waters
+2026-01-04 11:56:08 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.35s)
+2026-01-04 11:56:08 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:56:08 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:56:08 - [INFO] - 进度: [93/7405] | Query ID: 5ae53b545542990ba0bbb23c
+2026-01-04 11:56:08 - [INFO] - ❓ 问题: Where does the hotel and casino located in which Bill Cosby's third album was recorded?
+2026-01-04 11:56:08 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:56:16 - [INFO] - 🤖 预测: Las Vegas
+2026-01-04 11:56:16 - [INFO] - ✅ 真值: Las Vegas Strip in Paradise
+2026-01-04 11:56:16 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.57)
+2026-01-04 11:56:16 - [INFO] - 📊 指标: F1=0.57 | P=1.00 | R=0.40 | ✅ Sem-Match (耗时: 7.70s)
+2026-01-04 11:56:16 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:56:16 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:56:16 - [INFO] - 进度: [94/7405] | Query ID: 5ae224da554299234fd043ee
+2026-01-04 11:56:16 - [INFO] - ❓ 问题: Do the drinks Gibson and Zurracapote both contain gin?
+2026-01-04 11:56:16 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:56:24 - [INFO] - 🤖 预测: no
+2026-01-04 11:56:24 - [INFO] - ✅ 真值: no
+2026-01-04 11:56:24 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.12s)
+2026-01-04 11:56:24 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:56:24 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:56:24 - [INFO] - 进度: [95/7405] | Query ID: 5ae2b770554299495565db0f
+2026-01-04 11:56:24 - [INFO] - ❓ 问题: In what month is the annual documentary film festival, that is presented by the fortnightly published British journal of literary essays, held? 
+2026-01-04 11:56:24 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:56:32 - [INFO] - 🤖 预测: March
+2026-01-04 11:56:32 - [INFO] - ✅ 真值: March and April
+2026-01-04 11:56:32 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.50)
+2026-01-04 11:56:32 - [INFO] - 📊 指标: F1=0.50 | P=1.00 | R=0.33 | ✅ Sem-Match (耗时: 7.63s)
+2026-01-04 11:56:32 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:56:32 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:56:32 - [INFO] - 进度: [96/7405] | Query ID: 5a80b3a9554299485f5986cc
+2026-01-04 11:56:32 - [INFO] - ❓ 问题: Tysons Galleria is located in what county?
+2026-01-04 11:56:32 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:56:40 - [INFO] - 🤖 预测: Fairfax
+2026-01-04 11:56:40 - [INFO] - ✅ 真值: Fairfax County
+2026-01-04 11:56:40 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.67)
+2026-01-04 11:56:40 - [INFO] - 📊 指标: F1=0.67 | P=1.00 | R=0.50 | ✅ Sem-Match (耗时: 8.22s)
+2026-01-04 11:56:40 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:56:40 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:56:40 - [INFO] - 进度: [97/7405] | Query ID: 5a8e0a005542995085b373a1
+2026-01-04 11:56:40 - [INFO] - ❓ 问题: Bordan Tkachuk was the CEO of a company that provides what sort of products?
+2026-01-04 11:56:40 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:56:47 - [INFO] - 🤖 预测: IT products
+2026-01-04 11:56:47 - [INFO] - ✅ 真值: IT products and services
+2026-01-04 11:56:47 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.67)
+2026-01-04 11:56:47 - [INFO] - 📊 指标: F1=0.67 | P=1.00 | R=0.50 | ✅ Sem-Match (耗时: 7.23s)
+2026-01-04 11:56:47 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:56:47 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:56:47 - [INFO] - 进度: [98/7405] | Query ID: 5ac1b8ee5542994d76dccedc
+2026-01-04 11:56:47 - [INFO] - ❓ 问题: Which filmmaker was known for animation, Lev Yilmaz or Pamela B. Green?
+2026-01-04 11:56:47 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:56:55 - [INFO] - 🤖 预测: Lev Yilmaz
+2026-01-04 11:56:55 - [INFO] - ✅ 真值: Levni Yilmaz
+2026-01-04 11:56:55 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.50)
+2026-01-04 11:56:55 - [INFO] - 📊 指标: F1=0.50 | P=0.50 | R=0.50 | ✅ Sem-Match (耗时: 8.15s)
+2026-01-04 11:56:55 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:56:55 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:56:55 - [INFO] - 进度: [99/7405] | Query ID: 5adccd795542990d50227d2c
+2026-01-04 11:56:55 - [INFO] - ❓ 问题: In which city is the ambassador of the Rabat-Salé-Kénitra administrative region to China based?
+2026-01-04 11:56:55 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:57:03 - [INFO] - 🤖 预测: Beijing
+2026-01-04 11:57:03 - [INFO] - ✅ 真值: Beijing
+2026-01-04 11:57:03 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.66s)
+2026-01-04 11:57:03 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:57:03 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:57:03 - [INFO] - 进度: [100/7405] | Query ID: 5a84c4135542994c784dda31
+2026-01-04 11:57:03 - [INFO] - ❓ 问题: Are Yingkou and Fuding the same level of city?
+2026-01-04 11:57:03 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:57:12 - [INFO] - 🤖 预测: no
+2026-01-04 11:57:12 - [INFO] - ✅ 真值: no
+2026-01-04 11:57:12 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 9.02s)
+2026-01-04 11:57:12 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:57:12 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:57:12 - [INFO] - 进度: [101/7405] | Query ID: 5a85eed75542996432c5713b
+2026-01-04 11:57:12 - [INFO] - ❓ 问题: Where did the descendants of the group of black Indians associated with the Seminole people settle?
+2026-01-04 11:57:12 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:57:20 - [INFO] - 🤖 预测: Oklahoma
+2026-01-04 11:57:20 - [INFO] - ✅ 真值: Coahuila, Mexico
+2026-01-04 11:57:20 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.87s)
+2026-01-04 11:57:20 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2026-01-04 11:57:20 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:57:20 - [INFO] - 进度: [102/7405] | Query ID: 5a774e9c55429972597f14f3
+2026-01-04 11:57:20 - [INFO] - ❓ 问题: David Huntsinger has worked with this gospel singer born in the month of July?
+2026-01-04 11:57:20 - [INFO] - 📋 doc_filter: 10 个文档
+2026-01-04 11:57:28 - [INFO] - 🤖 预测: Larnelle Harris
+2026-01-04 11:57:28 - [INFO] - ✅ 真值: Larnelle Harris
+2026-01-04 11:57:28 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.75s)
+2026-01-04 11:57:28 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2026-01-04 11:57:28 - [INFO] - ------------------------------------------------------------
+2026-01-04 11:57:28 - [INFO] - 进度: [103/7405] | Query ID: 5ae738f75542991bbc9761c4
+2026-01-04 11:57:28 - [INFO] - ❓ 问题: What year was the brother of this first round draft pick by the Washington Redskins drafted?
+2026-01-04 11:57:28 - [INFO] - 📋 doc_filter: 10 个文档

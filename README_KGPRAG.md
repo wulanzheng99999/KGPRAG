@@ -1,160 +1,224 @@
-# KGPRAG: 知识图谱增强 RAG 系统 (Knowledge Graph-Augmented RAG)
+# KGPRAG 使用说明（README_KGPRAG）
 
-本文档详细介绍了 KGPRAG 系统的技术实现细节。该系统采用混合方法，结合了向量检索与三层知识图谱，以执行多跳推理并实现高精度的问答。
-
-## 1. 系统架构 (System Architecture)
-
-核心架构包含三个主要阶段：
-1.  **图谱构建 (Graph Construction - Offline):** 将原始文档处理成丰富的知识图谱。
-2.  **索引 (Indexing):** 存储向量嵌入（Embedding）以支持快速初始检索。
-3.  **推理 (Inference - Online):** 执行自适应多跳检索与答案生成。
+本文档以当前代码为准，补充完整流程与使用方法，并重点细化 A. 图谱构建（`src/graph_builder_offline.py`）。
 
 ---
 
-## 2. 源代码解析 (Source Code Analysis)
+## 1. 项目定位与整体流程
 
-### `src/config.py` - 全局配置中心
-*   **作用**: 集中管理所有系统参数，包括模型选择（LLM, Embedding, Reranker）、Neo4j 连接信息、检索参数（Beam Width, Hops）以及实体抽取的阈值和停用词。
-*   **关键参数**:
-    *   `DEFAULT_BEAM_WIDTH`: 控制每跳保留的候选路径数。
-    *   `TRUST_THRESHOLD`: 剪枝的最低置信度阈值。
-    *   `HARD_EDGE_ENTITY_TYPES`: 定义哪些实体类型用于构建硬边。
+KGPRAG 是面向多跳问答（Multi-Hop QA）的 GraphRAG 引擎，整体分为两阶段：
 
-### `src/engine.py` - 核心引擎与编排器
-*   **作用**: 系统的总指挥，协调各模块（检索器、图存储、向量存储）完成端到端的 RAG 流程。
-*   **核心类 `AdvancedRAGEngine`**:
-    *   `__init__`: 初始化所有组件，支持内存模式和持久化模式。
-    *   `query`: 接收用户问题，调用 `retriever.search` 获取上下文，根据问题类型（Yes/No 或普通）选择 Prompt，调用 LLM 生成答案。
-    *   `_post_process_answer`: 规范化 LLM 输出（如统一 Yes/No 格式）。
-
-### `src/entity_extractor.py` - 实体与关系抽取
-*   **作用**: 封装了 GLiNER 和 REBEL 模型，负责从文本中提取结构化信息。
-*   **核心功能**:
-    *   `extract_entities`: 使用 GLiNER 识别命名实体，并应用归一化和过滤规则。
-    *   `extract_relations`: 使用 REBEL 生成 (Subject, Relation, Object) 三元组。
-    *   `extract_query_entities`: 专门提取用户 Query 中的实体，作为检索的种子节点。
-
-### `src/graph_builder_offline.py` - 离线图构建器
-*   **作用**: 执行繁重的图谱构建任务，将文档集转化为知识图谱。
-*   **核心逻辑**:
-    *   **Pipeline**: 预处理 -> Embedding -> 实体/关系抽取 -> 摘要树生成 -> 语义边计算 -> 实体桥构建 -> 写入 Neo4j。
-    *   **创新点**: 包含复杂的实体桥 (`:ENTITY_BRIDGE`) 构建算法，基于稀有实体共现来创建硬连接。
-
-### `src/graph_store.py` - Neo4j 图数据库接口
-*   **作用**: 封装所有与 Neo4j 的交互操作。
-*   **核心功能**:
-    *   `write_chunks/summaries/edges`: 批量写入各类节点和关系。
-    *   `expand_node`: 检索中最重要的函数，给定一个节点，返回其所有类型的邻居（顺序、语义、实体桥、关系路径），支持多路召回。
-
-### `src/retriever.py` - 多跳检索器
-*   **作用**: 实现核心的检索算法。
-*   **核心算法 `MultiHopRetriever`**:
-    *   `search`: 执行自适应 Beam Search。根据文档数量自动切换“小空间全量模式”和“大空间检索模式”。
-    *   `compute_trust_score`: 多维度打分函数，融合 Reranker 分数、PPR、实体覆盖率等信号。
-    *   **混合策略**: 在图游走的同时，动态调用 `vector_store` 进行 Vector Jump，补充非连通的语义相关节点。
-
-### `src/vector_store.py` - 向量数据库接口
-*   **作用**: 封装 ChromaDB 的操作，管理 Embeddings。
-*   **核心功能**:
-    *   `similarity_search_with_score`: 基础的 KNN 检索。
-    *   `hybrid_retrieval`: 使用“Query + 上下文”进行增强检索。
-    *   `summary_guided_retrieval`: 自顶向下的检索策略，先找摘要再找 Chunk。
-
-### `src/vector_store_persistent.py` - 持久化向量存储
-*   **作用**: `VectorStore` 的持久化版本，用于加载预先构建好的 ChromaDB 索引，避免每次重启都重新 Embedding。
+- **离线阶段：全量构图与索引**  
+  将原始文档转成三层知识图谱 + 向量索引（Neo4j + Chroma）。
+- **在线阶段：多跳检索与回答生成**  
+  检索候选 -> 多跳扩展 -> 可信度评分 -> 生成答案。
 
 ---
 
-## 3. 详细技术实现 (Technical Implementation Details)
+## 2. 快速开始（HotpotQA / 通用文档）
 
-### A. 图谱构建 (`src/graph_builder_offline.py`)
+### 2.1 环境准备
+- Python 3.10+
+- Neo4j 5.x（连接信息在 `src/config.py`）
+- 依赖安装
 
-系统构建了一个 **三层知识图谱 (3-Layer Knowledge Graph)** 以捕捉不同粒度的信息：
-*   **第 1 层 (Tree):** 文档 (Document) -> 二级摘要 (L2) -> 一级摘要 (L1) -> 文本块 (Chunk)
-*   **第 2 层 (Passage):** 文本块 <-> 文本块 (通过 顺序/语义/实体桥 连接)
-*   **第 3 层 (Entity):** 文本块 -> 实体, 实体 -> 实体 (关系三元组)
+```bash
+pip install -r requirements.txt
+```
 
-**构建流程详解：**
+> 模型路径支持环境变量覆盖：`EMBED_MODEL`、`RERANKER_MODEL`、`GLINER_MODEL`、`REBEL_MODEL`、`LOCAL_MODEL_DIR`。  
+> LLM 使用 OpenAI 兼容接口，默认指向本地 Ollama（`OPENAI_BASE_URL`）。
 
-1.  **文本预处理 (Text Preprocessing):** 将文档切分为固定大小的文本块 (Chunks)。
-2.  **向量嵌入 (Vector Embedding):**
-    *   模型: `BAAI/bge-m3` (默认)
-    *   将每个文本块映射到高维向量空间。
-3.  **实体抽取 (Entity Extraction - `GLiNER`):**
-    *   模型: `urchade/gliner_medium-v2.1`
-    *   从每个 Chunk 中抽取实体 (人名、地名、组织机构等)。
-    *   **过滤机制:** 剔除停用词、过短实体及纯数字（保留年份）。
-4.  **关系抽取 (Relation Extraction - `REBEL`):**
-    *   模型: `Babelscape/rebel-large`
-    *   对包含 >= 2 个实体的 Chunk，抽取结构化三元组 (主语, 关系, 宾语)。
-5.  **摘要树构建 (Summary Tree Construction):**
-    *   **聚类:** 使用 K-Means 对文档内的 Chunk 进行聚类。
-    *   **摘要生成:** 为每个聚类生成 L1 摘要，为整篇文档生成 L2 摘要（支持启发式或 LLM 生成）。
-    *   **链接:** 创建 `CONTAINS_SUMMARY` 和 `CONTAINS_CHUNK` 边，形成层级树状结构。
-6.  **语义边计算 (Semantic Edge - `:RELATED`):**
-    *   计算所有 Chunk 嵌入向量间的余弦相似度。
-    *   将相似度 > 阈值 (默认 0.7) 的 Chunk 连接到其 Top-K (默认 3) 邻居。
-7.  **实体桥构建 (Entity Bridge - `:ENTITY_BRIDGE`) [核心创新]:**
-    *   **目的:** 连接共享稀有且关键实体的远距离 Chunk，实现图谱上的“瞬移”能力，解决多跳断链问题。
-    *   **逻辑:**
-        1.  **倒排索引:** 建立 `实体 -> Chunk列表` 的映射。
-        2.  **频率过滤:** 仅考虑出现次数在 `MIN_ENTITY_OCCURRENCES` (2) 到 `MAX_ENTITY_OCCURRENCES` (50) 之间的实体。剔除“国家”、“人”等高频通用词，防止产生超级节点。
-        3.  **连边策略:**
-            *   **全连接:** 若实体出现的 Chunk 数 <= 20，则这些 Chunk 两两全连接。
-            *   **采样连接:** 若 > 20，则进行随机采样连接，控制边密度。
-    *   **存储:** 在 Neo4j 中直接存储为 Chunk 间的 `:ENTITY_BRIDGE` 关系。
+### 2.2 构建 HotpotQA 全量图谱（推荐）
 
----
+```bash
+python scripts/build_hotpot_global_kg.py \
+  --input data/hotpot_dev_distractor_v1.json \
+  --persist_dir data/hotpotqa \
+  --reset
+```
 
-### B. 检索流水线 (`src/retriever.py`)
+可选参数：
+- `--use_llm_summary`：用 LLM 生成摘要（默认启发式摘要）
+- `--skip_existing`：断点续建
 
-`MultiHopRetriever` 实现了 **自适应 Beam Search (Adaptive Beam Search)** 策略，其中包含了核心创新机制：**可信子图选择 (Trusted Subgraph Selection)**。
+### 2.3 构建通用文档图谱
 
-**1. 可信子图选择机制 (Trusted Subgraph Selection)** [核心创新]
-本系统并非简单地检索Top-K文档，而是在巨大的知识图谱中，动态“生长”并筛选出一棵**高信噪比的推理子图**。该机制通过多方式评判来识别噪声，确保证据链的纯净与鲁棒性。
+```bash
+python scripts/build_index.py \
+  --input data/documents.json \
+  --persist_dir ./index \
+  --reset
+```
 
-*   **多方式评判 (Multi-Way Evaluation):** `compute_trust_score` 函数融合了 5 种异构信号来综合评判节点的可信度：
-    1.  **语义相关性 (Semantic Relevance, 50%):** 利用 Cross-Encoder (`FlagReranker`) 进行深层语义匹配，这是最强的信号。
-    2.  **拓扑重要性 (Topological Importance, 10%):** 利用 **PPR (Personalized PageRank)** 算法计算节点在局部图谱中的中心度。
-    3.  **实体覆盖率 (Entity Coverage, 15%):** 计算节点包含多少查询实体，作为显式的关键词匹配信号。
-    4.  **路径长度惩罚 (Path Penalty, 12%):** 优先选择推理路径较短的证据，防止过深推理引入噪声。
-    5.  **来源类型先验 (Source Type Prior, 13%):** 对不同类型的边赋予不同的置信度（例如，硬性实体桥 `EntBridge` > 软性语义边 `Sem`）。
+输入格式：
 
-*   **噪声剔除与高可信保留 (Noise Elimination & Retention):**
-    *   **动态剪枝 (Dynamic Pruning):** 在 Beam Search 的每一跳，系统会计算所有候选节点的 `Trust Score`。任何低于 `TRUST_THRESHOLD` 的节点被视为噪声直接剔除，防止错误路径扩散。
-    *   **智能兜底 (Smart Fallback):** 在小样本空间（如 Distractor 设置）下，引入 `Force Keep` 机制，强制保留前 `MIN_CANDIDATES_KEEP` 个最佳候选，防止因阈值过高导致召回失败。
+```json
+[
+  {"title": "Doc A", "text": "...."},
+  {"title": "Doc B", "text": "...."}
+]
+```
 
-通过这种机制，系统最终返回的 `final_selected_nodes` 和 `best_path` 本质上就是从全量数据中提炼出的**“高可信推理子图”**。
+### 2.4 评测（HotpotQA）
 
-**2. 自适应搜索空间策略 (Context-Aware Search Strategy)**
-系统根据候选文档集的大小（如 HotpotQA Distractor vs. Full Wiki）动态调整策略：
-1.  **小空间模式 (<= 20 文档):**
-    *   策略: **全量加载 + 重排 (Full Load & Rerank)**。
-    *   理由: 在小范围内，向量检索容易漏掉微弱的多跳线索。全量评分最安全。
-2.  **大/开放空间模式:**
-    *   策略: **向量检索 + 摘要引导**。
-    *   理由: 利用 Embedding 快速定位初始候选，或通过摘要树下钻。
+```bash
+python evaluate.py
+```
 
-**3. Beam Search 循环 (Multi-Hop)**
-1.  **启动:** 选取 Top-K (Beam Width) 个初始节点。
-2.  **迭代 (最大跳数 Max Hops = 3):**
-    *   **剪枝 (Pruning):** 保留 `Trust Score > TRUST_THRESHOLD` 的节点。(在小空间模式下，强制保留前 `MIN_CANDIDATES_KEEP` 名)。
-    *   **扩展 (Expansion - `graph_store.expand_node`):**
-        *   **顺序边:** 上下文 Chunk (`:NEXT`)。
-        *   **语义边:** 相似 Chunk (`:RELATED`)。
-        *   **实体桥 (Entity Bridge):** 基于稀有实体共现的硬边 (`:ENTITY_BRIDGE`)。**优先级最高**。
-        *   **关系路径:** 通过 REBEL 三元组扩展 (`Chunk -> Entity -> Entity -> Chunk`)。
-    *   **向量跳跃 (Vector Jump):** 如果图谱邻居不足，利用当前路径的上下文进行新一轮向量检索，寻找“隐形”关联。
-    *   **重排 (Reranking):** 使用 `FlagReranker` 对所有新候选打分并更新 Frontier。
+### 2.5 在线检索（交互/单次查询）
+
+```bash
+python scripts/query_index.py --persist_dir ./index --query "your question"
+# 或
+python scripts/query_index.py --persist_dir ./index --interactive
+```
 
 ---
 
-### C. 答案生成 (`src/engine.py`)
+## 3. A. 图谱构建（`src/graph_builder_offline.py`）
 
-1.  **上下文组装:** 拼接最终 Beam 中排名最高的节点文本。
-2.  **Prompt 工程:**
-    *   **Yes/No 分类器:** 自动检测是否为是非题。
-    *   **专用 Prompt:**
-        *   *Yes/No 类:* 要求先进行简短推理，然后严格输出 "yes" 或 "no"。
-        *   *标准类:* 强制要求极其简练的实体级答案 (日期、人名)，禁止输出完整句子，以最大化 F1 分数。
-3.  **后处理:** 标准化答案格式 (例如 "Answer: yes" -> "yes") 以匹配评测标准。
+### 3.1 输入与输出
+
+- **输入**：`documents: List[{"title": str, "text": str}]`
+- **输出**：
+  - Neo4j 图数据（Chunk、Summary、Entity、关系边）
+  - Chroma 向量索引（Chunk + Summary）
+  - `doc_cache.json`（chunk_id -> {text, title}）
+  - HotpotQA 专用映射（见 `scripts/build_hotpot_global_kg.py`）
+
+### 3.2 三层图谱结构
+
+- **Tree 层（层级摘要树）**
+  - `Document -[:HAS_SUMMARY]-> Summary`
+  - `Summary -[:CONTAINS]-> Summary/Chunk`
+  - `Document -[:CONTAINS]-> Chunk`
+- **Passage 层（段落/语义连接）**
+  - `Chunk -[:NEXT]-> Chunk`（同文档内顺序）
+  - `Chunk -[:RELATED]-> Chunk`（语义相似）
+- **Entity 层（实体与关系）**
+  - `Chunk -[:MENTIONS]-> Entity`
+  - `Entity -[:RELATION]-> Entity`（REBEL）
+  - `Chunk -[:ENTITY_BRIDGE]-> Chunk`（稀有实体桥）
+
+### 3.3 构建步骤（与代码一致）
+
+**Step 1/5：预处理文档**  
+- 读取所有 `text/title`，形成 doc 列表。
+
+**Step 2/5：文档级 Embedding（批量）**  
+- 使用 `vector_store.embed_documents(texts)`。  
+- 该结果在当前流程中不直接参与语义边/摘要（真正用于后续的是 Chunk embedding）。
+
+**Step 3/5：文档级实体抽取（GLiNER）**  
+- `extract_entities_batch` 批量处理，文本截断到 3000 字符。  
+- 过滤停用词、过短实体与纯数字（保留年份）。
+
+**Step 4/5：文档级关系抽取（REBEL）**  
+- 仅对实体数 ≥2 的文档执行（早退优化）。  
+- 文本截断到 512 字符，批量抽取三元组。
+
+**Step 5/5：Chunk 组装（启用分块）**  
+- 分块策略（滑窗 + 句边界回退）：
+
+```text
+chunk_size = 500
+overlap = 100
+cut at [. ! ? \n] within 50 chars (if possible)
+```
+
+- 对每个 Chunk：
+  - 分配 `chunk_id`，写入 `doc_cache`
+  - **实体过滤**：仅保留在当前 chunk 文本中出现的实体  
+  - **关系过滤**：仅保留 source/target 都出现在当前 chunk 的关系  
+  - 仅在**同一文档内部**串联 `prev_id`，用于 `NEXT` 边
+
+**Step 5.1：Chunk Embedding 补算**  
+- 对所有 Chunk 文本重新计算 embedding（语义边与摘要聚类都基于它）。
+
+**Step 6：摘要树构建（Summary Tree）**  
+- 按文档聚合 chunk  
+- `n_clusters = max(1, min(len(chunks)//3, 5))`  
+- 对每个簇生成 **L1 Summary**  
+  - 默认启发式摘要（前 1~3 句 / 300 字）  
+  - `--use_llm_summary` 时调用 LLM  
+- 若 L1 Summary > 1，则生成 **L2 Summary**
+
+**Step 7：写入向量库（Chroma）**  
+- 写入所有 Chunk + Summary  
+- `metadata` 中标注 `doc_id / title / type`
+
+**Step 8：语义边构建（Top-K KNN）**  
+参数（代码固定）：  
+- `TOP_K_NEIGHBORS = 3`  
+- `MIN_SIM_THRESHOLD = 0.5`  
+- `BATCH_SIZE_KNN = 1000`  
+流程：  
+1) 归一化 embedding  
+2) 批量点积计算相似度矩阵  
+3) 为每个 Chunk 取 Top-K 且大于阈值  
+4) 写入 `:RELATED`（Neo4j 中以无向边存储）
+
+**Step 8.5：实体桥硬边（ENTITY_BRIDGE）**  
+流程：  
+- 倒排索引：entity -> chunk_ids  
+- 频率过滤：`MIN_ENTITY_OCCURRENCES` ~ `MAX_ENTITY_OCCURRENCES`  
+- 若出现次数 ≤ `MAX_CHUNKS_PER_ENTITY_FOR_FULL_CONNECT`：全连接  
+- 否则采样连接（上限 `MAX_EDGES_PER_ENTITY`）
+
+**Step 9：写入 Neo4j**  
+- `write_chunks`：Chunk + Entity + RELATION + NEXT  
+- `write_summaries`：Summary + CONTAINS/HAS_SUMMARY  
+- `write_semantic_edges`：RELATED  
+- `write_entity_bridge_edges`：ENTITY_BRIDGE
+
+### 3.4 关键参数（来自 `src/config.py`）
+
+- `BATCH_SIZE`：批量推理大小（影响 GLiNER/REBEL/Embedding）
+- `HARD_EDGE_ENTITY_TYPES`：实体桥允许的类型
+- `MIN_ENTITY_OCCURRENCES / MAX_ENTITY_OCCURRENCES`
+- `MAX_CHUNKS_PER_ENTITY_FOR_FULL_CONNECT / MAX_EDGES_PER_ENTITY`
+- `MIN_ENTITY_NAME_LENGTH`
+- 分块策略固定：`chunk_size=500, overlap=100`
+- 语义边策略固定：`K=3, min_sim=0.5`
+
+### 3.5 构建产物（HotpotQA）
+
+`scripts/build_hotpot_global_kg.py` 在构建完成后额外生成：
+
+- `doc_cache.json`：`chunk_id -> {text, title}`
+- `sample_doc_mapping.json`：`sample_id -> [chunk_ids]`
+- `title_to_doc_id.json`：`title -> [chunk_ids]`
+
+这些文件是 `evaluate.py` 的必需输入。
+
+---
+
+## 4. B. 在线检索与推理流程（概览）
+
+在线阶段主要逻辑在 `src/retriever.py` + `src/graph_store.py`：
+
+- **候选获取**  
+  - 有 `doc_filter` 且数量小于 `SMALL_SPACE_THRESHOLD` → 全量加载 + rerank  
+  - 否则向量检索
+- **多跳扩展（GraphStore.expand_node）**
+  - `Seq`：NEXT
+  - `SemHigh`：RELATED ≥ 0.70  
+  - `SemLow`：0.55 ≤ RELATED < 0.70  
+  - `EntMention`：共享实体  
+  - `RelPath`：REBEL 关系路径  
+  - `EntBridge`：ENTITY_BRIDGE  
+  - `QueryEnt`：查询实体模糊匹配
+- **评分（compute_trust_score）**
+  - Reranker + PPR + 实体覆盖 + 路径惩罚 + 来源类型权重  
+  - SemHigh / SemLow 进一步用 `edge_score` 降权
+- **多样性过滤（Diversity Filter V2）**
+  - 以 `doc_title` 和 `source_type` 防止同质化
+
+---
+
+## 5. 使用注意事项
+
+- **修改分块/实体/语义边参数后必须重建图谱**（`--reset`）。  
+- 语义边计算为 O(N²)，CPU 计算时间长属正常；GPU 显存对该步骤影响有限。  
+- HotpotQA 的评测必须与构建时的 `persist_dir` 一致，且映射文件齐全。

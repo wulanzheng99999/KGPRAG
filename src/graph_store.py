@@ -206,19 +206,51 @@ class GraphStore:
         data: Dict[str, Dict] = {}
         query_entities = query_entities or []
         
+        # [V3] 类型优先级定义 (越高越优先)
+        TYPE_PRIORITY = {
+            "EntBridge": 10,
+            "RelPath": 8,
+            "SemHigh": 7,
+            "SemLow": 6,
+            "EntMention": 5,
+            "Seq": 4,
+            "QueryEnt": 9, 
+            "Sem": 6, # Default Sem
+        }
+
+        def update_if_higher_priority(node_id, new_data):
+            if node_id not in data:
+                data[node_id] = new_data
+                return
+            
+            old_type = data[node_id].get("title", "Seq")
+            new_type = new_data.get("title", "Seq")
+            
+            old_p = TYPE_PRIORITY.get(old_type, 0)
+            new_p = TYPE_PRIORITY.get(new_type, 0)
+            
+            # 如果新类型优先级更高，则覆盖
+            if new_p > old_p:
+                data[node_id] = new_data
+            # 如果优先级相同但新数据有 edge_score 而旧数据没有，也更新 (主要针对 Sem 变体)
+            elif new_p == old_p and "edge_score" in new_data and "edge_score" not in data[node_id]:
+                data[node_id]["edge_score"] = new_data["edge_score"]
+
+        
         # 基础扩展查询（不含硬边，避免混淆）
+        # V3 修改：将语义边拆分为 SemHigh/SemLow 独立查询，此处移除
         base_query = """
         MATCH (s:Chunk {id: $id})
         // 1. Sequential expansion
         OPTIONAL MATCH (s)-[:NEXT]-(n:Chunk) WHERE NOT n.id IN $vis
-        // 2. Semantic similarity expansion (仅 :RELATED 边，阈值过滤)
-        OPTIONAL MATCH (s)-[r:RELATED]-(sem:Chunk) WHERE r.score > 0.7 AND NOT sem.id IN $vis
+        // 2. Semantic similarity expansion (MOVED to separate queries)
+        // OPTIONAL MATCH (s)-[r:RELATED]-(sem:Chunk) WHERE r.score > 0.7 AND NOT sem.id IN $vis
         // 3. Entity co-mention expansion (通过 :MENTIONS 边)
         OPTIONAL MATCH (s)-[:MENTIONS]->(:Entity)<-[:MENTIONS]-(b:Chunk) WHERE NOT b.id IN $vis
         // 4. REBEL Relation Path expansion
         OPTIONAL MATCH (s)-[:MENTIONS]->(:Entity)-[:RELATION]->(:Entity)<-[:MENTIONS]-(rel:Chunk) WHERE NOT rel.id IN $vis
         
-        RETURN n.id, n.text, sem.id, sem.text, b.id, b.text, rel.id, rel.text LIMIT 15
+        RETURN n.id, n.text, b.id, b.text, rel.id, rel.text LIMIT 15
         """
         
         try:
@@ -226,15 +258,55 @@ class GraphStore:
                 res = s.run(base_query, id=chunk_id, vis=list(visited))
                 for r in res:
                     if r["n.id"]:
-                        data[r["n.id"]] = {"text": r["n.text"], "title": "Seq"}
-                    if r["sem.id"]:
-                        data[r["sem.id"]] = {"text": r["sem.text"], "title": "Sem"}
+                        update_if_higher_priority(r["n.id"], {"text": r["n.text"], "title": "Seq"})
+                    # Sem 移除了
                     if r["b.id"]:
-                        data[r["b.id"]] = {"text": r["b.text"], "title": "EntMention"}
+                        update_if_higher_priority(r["b.id"], {"text": r["b.text"], "title": "EntMention"})
                     if r["rel.id"]:
-                        data[r["rel.id"]] = {"text": r["rel.text"], "title": "RelPath"}
+                        update_if_higher_priority(r["rel.id"], {"text": r["rel.text"], "title": "RelPath"})
         except Exception as e:
             print(f"⚠️ Graph Expand Error: {e}")
+
+        # [V3 新增] 分档语义查询 (SemHigh / SemLow)
+        # 1. SemHigh: score >= 0.70
+        sem_high_query = """
+        MATCH (s:Chunk {id: $id})-[r:RELATED]-(sem:Chunk)
+        WHERE r.score >= 0.70 AND NOT sem.id IN $vis
+        RETURN sem.id AS id, sem.text AS text, r.score AS score
+        ORDER BY r.score DESC LIMIT 10
+        """
+        try:
+            with self.driver.session() as s:
+                res = s.run(sem_high_query, id=chunk_id, vis=list(visited))
+                for r in res:
+                    if r["id"]:
+                        update_if_higher_priority(r["id"], {
+                            "text": r["text"], 
+                            "title": "SemHigh", 
+                            "edge_score": r["score"]
+                        })
+        except Exception as e:
+            print(f"⚠️ SemHigh Expand Error: {e}")
+
+        # 2. SemLow: 0.55 <= score < 0.70
+        sem_low_query = """
+        MATCH (s:Chunk {id: $id})-[r:RELATED]-(sem:Chunk)
+        WHERE r.score >= 0.55 AND r.score < 0.70 AND NOT sem.id IN $vis
+        RETURN sem.id AS id, sem.text AS text, r.score AS score
+        ORDER BY r.score DESC LIMIT 6
+        """
+        try:
+            with self.driver.session() as s:
+                res = s.run(sem_low_query, id=chunk_id, vis=list(visited))
+                for r in res:
+                    if r["id"]:
+                        update_if_higher_priority(r["id"], {
+                            "text": r["text"], 
+                            "title": "SemLow", 
+                            "edge_score": r["score"]
+                        })
+        except Exception as e:
+            print(f"⚠️ SemLow Expand Error: {e}")
         
         # 5. Entity Bridge 硬边扩展（独立查询，独立配额）
         # 硬边是基于稀有实体共现预计算的，优先级高于普通 co-mention
@@ -247,8 +319,8 @@ class GraphStore:
             with self.driver.session() as s:
                 res = s.run(hard_edge_query, id=chunk_id, vis=list(visited))
                 for r in res:
-                    if r["id"] and r["id"] not in data:
-                        data[r["id"]] = {"text": r["text"], "title": "EntBridge"}
+                    if r["id"]:
+                        update_if_higher_priority(r["id"], {"text": r["text"], "title": "EntBridge"})
         except Exception as e:
             print(f"⚠️ Hard Edge Expand Error: {e}")
         
@@ -269,8 +341,8 @@ class GraphStore:
                     with self.driver.session() as s:
                         res = s.run(entity_query, entity=qe_norm, vis=list(visited))
                         for r in res:
-                            if r["id"] and r["id"] not in data:
-                                data[r["id"]] = {"text": r["text"], "title": "QueryEnt"}
+                            if r["id"]:
+                                update_if_higher_priority(r["id"], {"text": r["text"], "title": "QueryEnt"})
                 except Exception:
                     pass
         

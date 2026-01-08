@@ -51,6 +51,29 @@ class GraphBuilder:
             clean_text = text.replace("\n", " ").strip()
             return f"[{hint}] " + clean_text[:300] + "..."
     
+    def _split_text(self, text: str, chunk_size: int = 500, overlap: int = 100) -> List[str]:
+        """简单的滑动窗口分块"""
+        if not text: return []
+        if len(text) <= chunk_size: return [text]
+        chunks = []
+        start = 0
+        text_len = len(text)
+        while start < text_len:
+            end = min(start + chunk_size, text_len)
+            if end < text_len:
+                lookback = min(50, end - start)
+                for i in range(lookback):
+                    idx = end - i - 1
+                    if text[idx] in ['.', '!', '?', '\n']:
+                        end = idx + 1
+                        break
+            chunk = text[start:end].strip()
+            if chunk: chunks.append(chunk)
+            if end == text_len: break
+            start = end - overlap
+            if start >= end: start = end
+        return chunks
+
     def build(self, documents: List[Dict]):
         """
         三层图谱构建：
@@ -91,30 +114,62 @@ class GraphBuilder:
                 all_relations[idx] = rels
         
         # Step 5: 组装 chunks
+        global_chunk_idx = 0
+        
         for i, doc in enumerate(documents):
-            cid = f"chunk_{i}"
             text = texts[i]
             title = titles[i]
-
-            self.doc_cache[cid] = {"text": text, "title": title}
             
-            gliner_ents = [{"name": k, "type": v} for k, v in all_entities[i].items()]
+            # 1. 切分
+            text_chunks = self._split_text(text)
+            
+            doc_entities = all_entities[i]
+            doc_relations = all_relations[i]
+            
+            prev_chunk_id = None
+            
+            for chunk_text in text_chunks:
+                cid = f"chunk_{global_chunk_idx}"
+                global_chunk_idx += 1
+                
+                self.doc_cache[cid] = {"text": chunk_text, "title": title}
+                
+                # 实体过滤
+                chunk_ents = []
+                chunk_text_lower = chunk_text.lower()
+                for ent_name, ent_type in doc_entities.items():
+                    if ent_name.lower() in chunk_text_lower:
+                        chunk_ents.append({"name": ent_name, "type": ent_type})
+                
+                # 关系过滤
+                chunk_rels = []
+                for rel in doc_relations:
+                    if rel["source"].lower() in chunk_text_lower and rel["target"].lower() in chunk_text_lower:
+                        chunk_rels.append(rel)
 
-            all_chunks.append({
-                "doc_title": title, 
-                "chunk_id": cid, 
-                "text": text, 
-                "embedding": embeddings[i],
-                "entities": gliner_ents,
-                "rebel_rels": all_relations[i],
-                "prev_id": f"chunk_{i-1}" if i > 0 else None,
-            })
+                all_chunks.append({
+                    "doc_title": title, 
+                    "chunk_id": cid, 
+                    "text": chunk_text, 
+                    "embedding": None, # 稍后补算
+                    "entities": chunk_ents,
+                    "rebel_rels": chunk_rels,
+                    "prev_id": prev_chunk_id, # 仅连接同文档上一块
+                })
+                
+                prev_chunk_id = cid
 
-            ids.append(cid)
-            lc_docs.append(Document(
-                page_content=text, 
-                metadata={"doc_id": cid, "title": title, "type": "chunk"}
-            ))
+                ids.append(cid)
+                lc_docs.append(Document(
+                    page_content=chunk_text, 
+                    metadata={"doc_id": cid, "title": title, "type": "chunk"}
+                ))
+        
+        # 补算 Chunk Embeddings
+        chunk_texts = [c["text"] for c in all_chunks]
+        chunk_embeddings = self.vector_store.embed_documents(chunk_texts)
+        for i, c in enumerate(all_chunks):
+            c["embedding"] = chunk_embeddings[i]
 
         # Step 2: 构建摘要树
         docs_map: Dict[str, List[Dict]] = {}
@@ -191,31 +246,55 @@ class GraphBuilder:
         # Step 3: 写入向量库
         self.vector_store.add_documents(lc_docs, ids=ids)
 
-        # Step 4: 计算语义边 (Top-K KNN 而非阈值法)
+        # Step 4: 计算语义边 (Top-K KNN 而非阈值法) - 分批处理版
         semantic_rels = []
-        TOP_K_NEIGHBORS = 3  # 每个节点最多连接 K 个最相似的邻居
-        MIN_SIM_THRESHOLD = 0.5  # 最低相似度阈值，避免噪声边
+        TOP_K_NEIGHBORS = 3
+        MIN_SIM_THRESHOLD = 0.5
+        BATCH_SIZE_KNN = 500
         
         if len(all_chunks) > 1:
-            mat = np.array([c["embedding"] for c in all_chunks])
-            sim_mat = cosine_similarity(mat)
-            
-            # 对每个节点，找 Top-K 最相似的邻居
-            for i in range(len(all_chunks)):
-                # 获取该节点与所有其他节点的相似度
-                similarities = sim_mat[i]
-                # 排除自己，获取 Top-K 索引
-                top_k_indices = np.argsort(similarities)[::-1][1:TOP_K_NEIGHBORS+1]
+            try:
+                embeddings = np.array([c["embedding"] for c in all_chunks], dtype=np.float32)
+                norm = np.linalg.norm(embeddings, axis=1, keepdims=True)
+                embeddings = embeddings / (norm + 1e-10)
                 
-                for j in top_k_indices:
-                    score = float(similarities[j])
-                    # 只添加超过最低阈值的边，且避免重复（i < j）
-                    if score >= MIN_SIM_THRESHOLD and i < j:
-                        semantic_rels.append({
-                            "source": all_chunks[i]["chunk_id"],
-                            "target": all_chunks[j]["chunk_id"],
-                            "score": score,
-                        })
+                num_chunks = len(embeddings)
+                print(f"     开始计算 {num_chunks} 个 Chunk 的语义邻居 (Batch Size: {BATCH_SIZE_KNN})...")
+                import sys
+
+                batch_count = 0
+                for start_idx in range(0, num_chunks, BATCH_SIZE_KNN):
+                    batch_count += 1
+                    end_idx = min(start_idx + BATCH_SIZE_KNN, num_chunks)
+                    
+                    if batch_count % 10 == 0:
+                        print(f"     [Progress] Processing batch {batch_count} ({start_idx}/{num_chunks})...", flush=True)
+
+                    batch_embeddings = embeddings[start_idx:end_idx]
+                    batch_sim = np.dot(batch_embeddings, embeddings.T)
+                    
+                    for i in range(len(batch_embeddings)):
+                        global_idx = start_idx + i
+                        sims = batch_sim[i]
+                        sims[global_idx] = -1.0
+                        
+                        if len(sims) > TOP_K_NEIGHBORS:
+                            k_indices = np.argpartition(sims, -TOP_K_NEIGHBORS)[-TOP_K_NEIGHBORS:]
+                            k_indices = k_indices[np.argsort(sims[k_indices])[::-1]]
+                        else:
+                            k_indices = np.argsort(sims)[::-1]
+                        
+                        for target_idx in k_indices:
+                            score = float(sims[target_idx])
+                            if score >= MIN_SIM_THRESHOLD and global_idx < target_idx:
+                                semantic_rels.append({
+                                    "source": all_chunks[global_idx]["chunk_id"],
+                                    "target": all_chunks[target_idx]["chunk_id"],
+                                    "score": score,
+                                })
+                    del batch_sim
+            except Exception as e:
+                print(f"⚠️ Semantic Edge Calculation Failed: {e}")
 
         # Step 4.5: 计算实体共现硬边 (Entity Co-occurrence Hard Edges)
         hard_edges = []

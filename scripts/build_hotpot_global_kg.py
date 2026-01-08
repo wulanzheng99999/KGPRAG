@@ -15,6 +15,7 @@ import sys
 import time
 from pathlib import Path
 from typing import Dict, List, Set
+from tqdm import tqdm
 
 # 添加项目根目录到 Python 路径
 project_root = Path(__file__).parent.parent
@@ -110,16 +111,8 @@ def main():
     logger.info(f"✅ 提取 {len(documents)} 个唯一文档")
     logger.info(f"   (原始 {len(data) * 10} 个文档，去重率: {1 - len(documents) / (len(data) * 10):.1%})")
     
-    # 4. 保存文档映射（评测时需要用）
-    mapping_path = persist_dir / "sample_doc_mapping.json"
-    with open(mapping_path, "w", encoding="utf-8") as f:
-        json.dump(sample_doc_mapping, f, ensure_ascii=False)
-    logger.info(f"💾 保存样本-文档映射: {mapping_path}")
-    
-    title_mapping_path = persist_dir / "title_to_doc_id.json"
-    with open(title_mapping_path, "w", encoding="utf-8") as f:
-        json.dump(title_to_doc_id, f, ensure_ascii=False)
-    logger.info(f"💾 保存标题-文档ID映射: {title_mapping_path}")
+    # 4. 保存文档映射（延迟到构建完成后，因为现在是一对多映射）
+    # (Removed mapping saving here, moved to after build)
     
     # 5. 初始化模块
     logger.info(f"\n🔧 初始化模块...")
@@ -163,6 +156,44 @@ def main():
     with open(cache_path, "w", encoding="utf-8") as f:
         json.dump(doc_cache, f, ensure_ascii=False)
     logger.info(f"💾 保存文档缓存: {cache_path}")
+    
+    # --- Step 8.5: 重建并保存 Chunk 级映射 ---
+    logger.info(f"\n🗺️ 构建 Chunk 级映射 (1 Doc -> N Chunks)...")
+    
+    # 1. Title -> [ChunkID, ...]
+    title_to_chunk_ids = {}
+    for cid, doc_info in doc_cache.items():
+        t = doc_info["title"]
+        if t not in title_to_chunk_ids:
+            title_to_chunk_ids[t] = []
+        title_to_chunk_ids[t].append(cid)
+    
+    # 2. Sample ID -> [ChunkID, ...]
+    sample_doc_mapping = {}
+    for item in tqdm(data, desc="Mapping Samples"):
+        s_id = item['_id']
+        s_chunk_ids = []
+        
+        # 获取该样本上下文中的所有文档标题
+        doc_titles = [doc_item[0] for doc_item in item['context']]
+        
+        # 查找这些标题对应的所有 chunk_id
+        for t in doc_titles:
+            if t in title_to_chunk_ids:
+                s_chunk_ids.extend(title_to_chunk_ids[t])
+        
+        sample_doc_mapping[s_id] = s_chunk_ids
+
+    # 保存映射
+    mapping_path = persist_dir / "sample_doc_mapping.json"
+    with open(mapping_path, "w", encoding="utf-8") as f:
+        json.dump(sample_doc_mapping, f, ensure_ascii=False)
+    logger.info(f"💾 保存样本-Chunk映射: {mapping_path}")
+    
+    title_mapping_path = persist_dir / "title_to_doc_id.json"
+    with open(title_mapping_path, "w", encoding="utf-8") as f:
+        json.dump(title_to_chunk_ids, f, ensure_ascii=False)
+    logger.info(f"💾 保存标题-Chunk映射: {title_mapping_path}")
     
     # 9. 统计信息
     logger.info(f"\n{'=' * 70}")

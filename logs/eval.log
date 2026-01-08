@@ -1,0 +1,2990 @@
+nohup: ignoring input
+[Config] Running on device: cuda
+2025-12-25 09:28:01 - [INFO] - 🚀 日志系统初始化完成。日志文件路径: /root/KGPRAG/logs/kgprag_eval_20251225_092801.log
+2025-12-25 09:28:01 - [INFO] - 
+================================================================================
+2025-12-25 09:28:01 - [INFO] - 🚀 正在启动 Advanced GraphRAG 引擎 (全量建图 + 限定检索模式)...
+2025-12-25 09:28:01 - [INFO] -    📂 索引目录: /root/KGPRAG/data/hotpotqa
+2025-12-25 09:28:01 - [INFO] -    ✅ 对标 KG2RAG 论文实验设置
+2025-12-25 09:28:01 - [INFO] -    ✅ 全量图谱 + doc_filter 限制检索范围
+2025-12-25 09:28:01 - [INFO] -    ✅ 多信号可信度评分: Enabled
+2025-12-25 09:28:01 - [INFO] - ================================================================================
+
+2025-12-25 09:28:01 - [INFO] - 📁 加载样本-文档映射: 7405 个样本
+🚀 初始化 AdvancedRAG 引擎 (持久化模式: /root/KGPRAG/data/hotpotqa)...
+📦 加载实体模型: urchade/gliner_medium-v2.1
+📦 加载关系抽取模型: Babelscape/rebel-large
+📦 加载嵌入模型: BAAI/bge-m3
+Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+📂 加载持久化向量库: 133162 个文档
+📂 加载 66581 个文档缓存
+📦 加载重排模型: BAAI/bge-reranker-v2-m3
+✅ 引擎初始化完成
+2025-12-25 09:28:26 - [INFO] - 📂 正在加载数据集: /root/KGPRAG/data/hotpot_dev_distractor_v1.json ...
+2025-12-25 09:28:26 - [INFO] - ✅ 成功加载 7405 条数据。
+2025-12-25 09:28:26 - [INFO] - 
+🎯 开始评测 (跑 7405 条数据)
+2025-12-25 09:28:26 - [INFO] - ⚙️ 参数: Beam Width=8, Hops=3
+2025-12-25 09:28:26 - [INFO] - 💾 结果将实时保存到: /root/KGPRAG/data/advanced_rag_results.jsonl
+
+2025-12-25 09:28:26 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:28:26 - [INFO] - 进度: [1/7405] | Query ID: 5a8b57f25542995d1e6f1371
+2025-12-25 09:28:26 - [INFO] - ❓ 问题: Were Scott Derrickson and Ed Wood of the same nationality?
+2025-12-25 09:28:26 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['ed wood', 'scott derrickson']
+  📊 PPR: 66581 nodes, 158906 edges, 20 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Scott Derrickson (Trust: 0.822)
+Failed to send telemetry event CollectionQueryEvent: capture() takes 1 positional argument but 3 were given
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntMention (Trust: 0.803)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: QueryEnt (Trust: 0.833)
+2025-12-25 09:28:39 - [INFO] - 🤖 预测: yes
+2025-12-25 09:28:39 - [INFO] - ✅ 真值: yes
+2025-12-25 09:28:39 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 13.16s)
+2025-12-25 09:28:39 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:28:39 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:28:39 - [INFO] - 进度: [2/7405] | Query ID: 5a8c7595554299585d9e36b6
+2025-12-25 09:28:39 - [INFO] - ❓ 问题: What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?
+2025-12-25 09:28:39 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['woman', 'corliss archer', 'kiss and tell', 'what government position']
+  📊 PPR: 66581 nodes, 158906 edges, 38 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Kiss and Tell (1945 film) (Trust: 0.834)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: A Kiss for Corliss (Trust: 0.606)
+--- Step 3 (Frontier Size: 14) ---
+2025-12-25 09:28:47 - [INFO] - 🤖 预测: Secretary of State
+2025-12-25 09:28:47 - [INFO] - ✅ 真值: Chief of Protocol
+2025-12-25 09:28:47 - [INFO] - 📊 指标: F1=0.33 | P=0.33 | R=0.33 | ⚠️ Low F1 (0.33) (耗时: 7.66s)
+2025-12-25 09:28:47 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:28:47 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:28:47 - [INFO] - 进度: [3/7405] | Query ID: 5a85ea095542994775f606a8
+2025-12-25 09:28:47 - [INFO] - ❓ 问题: What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?
+2025-12-25 09:28:47 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['alien species', 'companion books', 'enslaved worlds', 'what science fantasy young adult series']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Animorphs (Trust: 0.647)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: The Hork-Bajir Chronicles (Trust: 0.522)
+--- Step 3 (Frontier Size: 14) ---
+2025-12-25 09:28:55 - [INFO] - 🤖 预测: Animorphs
+2025-12-25 09:28:55 - [INFO] - ✅ 真值: Animorphs
+2025-12-25 09:28:55 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.63s)
+2025-12-25 09:28:55 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:28:55 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:28:55 - [INFO] - 进度: [4/7405] | Query ID: 5adbf0a255429947ff17385a
+2025-12-25 09:28:55 - [INFO] - ❓ 问题: Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?
+2025-12-25 09:28:55 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['laleli mosque', 'esma sultan mansion']
+  📊 PPR: 66581 nodes, 158906 edges, 19 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Laleli Mosque (Trust: 0.859)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: Esma Sultan Mansion (Trust: 0.806)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:29:03 - [INFO] - 🤖 预测: no
+2025-12-25 09:29:03 - [INFO] - ✅ 真值: no
+2025-12-25 09:29:03 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.12s)
+2025-12-25 09:29:03 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:29:03 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:29:03 - [INFO] - 进度: [5/7405] | Query ID: 5a8e3ea95542995a26add48d
+2025-12-25 09:29:03 - [INFO] - ❓ 问题: The director of the romantic comedy "Big Stone Gap" is based in what New York city?
+2025-12-25 09:29:03 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['big stone gap', 'what new york city', 'director of the romantic comedy']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Big Stone Gap (film) (Trust: 0.811)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: EntMention (Trust: 0.808)
+--- Step 3 (Frontier Size: 13) ---
+  ✅ Selected: EntBridge (Trust: 0.691)
+2025-12-25 09:29:11 - [INFO] - 🤖 预测: Greenwich Village
+2025-12-25 09:29:11 - [INFO] - ✅ 真值: Greenwich Village, New York City
+2025-12-25 09:29:11 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.57)
+2025-12-25 09:29:11 - [INFO] - 📊 指标: F1=0.57 | P=1.00 | R=0.40 | ✅ Sem-Match (耗时: 7.91s)
+2025-12-25 09:29:11 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:29:11 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:29:11 - [INFO] - 进度: [6/7405] | Query ID: 5abd94525542992ac4f382d2
+2025-12-25 09:29:11 - [INFO] - ❓ 问题: 2014 S/S is the debut album of a South Korean boy group that was formed by who?
+2025-12-25 09:29:11 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['who', 'ss', 'south korean boy group', '2014', 'debut album']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: 2014 S/S (Trust: 0.759)
+--- Step 2 (Frontier Size: 14) ---
+  ✅ Selected: Madtown (Trust: 0.759)
+--- Step 3 (Frontier Size: 15) ---
+  ✅ Selected: EntBridge (Trust: 0.758)
+2025-12-25 09:29:18 - [INFO] - 🤖 预测: YG Entertainment
+2025-12-25 09:29:18 - [INFO] - ✅ 真值: YG Entertainment
+2025-12-25 09:29:18 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.59s)
+2025-12-25 09:29:18 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:29:18 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:29:18 - [INFO] - 进度: [7/7405] | Query ID: 5a85b2d95542997b5ce40028
+2025-12-25 09:29:18 - [INFO] - ❓ 问题: Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?
+2025-12-25 09:29:18 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['aladin', 'as a consultant', 'organizations', 'performance']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Eenasul Fateh (Trust: 0.815)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: Management consulting (Trust: 0.618)
+--- Step 3 (Frontier Size: 12) ---
+  ✅ Selected: James P. Comer (Trust: 0.510)
+2025-12-25 09:29:26 - [INFO] - 🤖 预测: Eenasul Fateh
+2025-12-25 09:29:26 - [INFO] - ✅ 真值: Eenasul Fateh
+2025-12-25 09:29:26 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.52s)
+2025-12-25 09:29:26 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:29:26 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:29:26 - [INFO] - 进度: [8/7405] | Query ID: 5a87ab905542996e4f3088c1
+2025-12-25 09:29:26 - [INFO] - ❓ 问题: The arena where the Lewiston Maineiacs played their home games can seat how many people?
+2025-12-25 09:29:26 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['arena', 'lewiston maineiacs', 'home games']
+  📊 PPR: 66581 nodes, 158906 edges, 26 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Lewiston Maineiacs (Trust: 0.847)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.838)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:29:33 - [INFO] - 🤖 预测: 3,677
+2025-12-25 09:29:33 - [INFO] - ✅ 真值: 3,677 seated
+2025-12-25 09:29:33 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.67)
+2025-12-25 09:29:33 - [INFO] - 📊 指标: F1=0.67 | P=1.00 | R=0.50 | ✅ Sem-Match (耗时: 7.68s)
+2025-12-25 09:29:33 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:29:33 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:29:33 - [INFO] - 进度: [9/7405] | Query ID: 5a7bbb64554299042af8f7cc
+2025-12-25 09:29:33 - [INFO] - ❓ 问题: Who is older, Annie Morton or Terry Richardson?
+2025-12-25 09:29:33 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['annie morton', 'terry richardson']
+  📊 PPR: 66581 nodes, 158906 edges, 19 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Annie Morton (Trust: 0.905)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: VectorJump (Trust: 0.667)
+--- Step 3 (Frontier Size: 13) ---
+  ✅ Selected: Kenton Richardson (Trust: 0.637)
+2025-12-25 09:29:42 - [INFO] - 🤖 预测: Annie Morton
+2025-12-25 09:29:42 - [INFO] - ✅ 真值: Terry Richardson
+2025-12-25 09:29:42 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.19s)
+2025-12-25 09:29:42 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:29:42 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:29:42 - [INFO] - 进度: [10/7405] | Query ID: 5a8db19d5542994ba4e3dd00
+2025-12-25 09:29:42 - [INFO] - ❓ 问题: Are Local H and For Against both from the United States?
+2025-12-25 09:29:42 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['local h', 'for against', 'united states']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: For Against (Trust: 0.870)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: Local H (Trust: 0.838)
+--- Step 3 (Frontier Size: 15) ---
+  ✅ Selected: EntBridge (Trust: 0.808)
+2025-12-25 09:29:49 - [INFO] - 🤖 预测: yes
+2025-12-25 09:29:49 - [INFO] - ✅ 真值: yes
+2025-12-25 09:29:49 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.50s)
+2025-12-25 09:29:49 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:29:49 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:29:49 - [INFO] - 进度: [11/7405] | Query ID: 5a7166395542994082a3e814
+2025-12-25 09:29:49 - [INFO] - ❓ 问题: What is the name of the fight song of the university whose main campus is in Lawrence, Kansas and whose branch campuses are in the Kansas City metropolitan area?
+2025-12-25 09:29:49 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['lawrence', 'fight song', 'main campus', 'branch campuses', 'kansas', 'kansas city metropolitan area', 'university']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Kansas Song (Trust: 0.806)
+--- Step 2 (Frontier Size: 15) ---
+  ✅ Selected: University of Kansas (Trust: 0.803)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:29:57 - [INFO] - 🤖 预测: Kansas Song
+2025-12-25 09:29:57 - [INFO] - ✅ 真值: Kansas Song
+2025-12-25 09:29:57 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.35s)
+2025-12-25 09:29:57 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:29:57 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:29:57 - [INFO] - 进度: [12/7405] | Query ID: 5a877e5d5542993e715abf7d
+2025-12-25 09:29:57 - [INFO] - ❓ 问题: What screenwriter with credits for "Evolution" co-wrote a film starring Nicolas Cage and Téa Leoni?
+2025-12-25 09:29:57 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['screenwriter', 'nicolas cage', 'evolution', 'téa leoni']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: The Family Man (Trust: 0.711)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.726)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:30:04 - [INFO] - 🤖 预测: David Weissman
+2025-12-25 09:30:04 - [INFO] - ✅ 真值: David Weissman
+2025-12-25 09:30:04 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.50s)
+2025-12-25 09:30:04 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=1 | support=2 hit_docs=2
+2025-12-25 09:30:04 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:30:04 - [INFO] - 进度: [13/7405] | Query ID: 5ab3b0bf5542992ade7c6e39
+2025-12-25 09:30:04 - [INFO] - ❓ 问题: What year did Guns N Roses perform a promo for a movie starring Arnold Schwarzenegger as a former New York Police detective?
+2025-12-25 09:30:04 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['guns n roses', 'year', 'new york police', 'starring arnold schwarzenegger', 'movie', 'promo']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Oh My God (Guns N' Roses song) (Trust: 0.739)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: End of Days (film) (Trust: 0.733)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:30:11 - [INFO] - 🤖 预测: 1999
+2025-12-25 09:30:11 - [INFO] - ✅ 真值: 1999
+2025-12-25 09:30:11 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.40s)
+2025-12-25 09:30:11 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:30:11 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:30:11 - [INFO] - 进度: [14/7405] | Query ID: 5ab56e32554299637185c594
+2025-12-25 09:30:11 - [INFO] - ❓ 问题: Are Random House Tower and 888 7th Avenue both used for real estate?
+2025-12-25 09:30:11 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['real estate', 'random house', '888 7th avenue']
+  📊 PPR: 66581 nodes, 158906 edges, 26 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: 888 7th Avenue (Trust: 0.759)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: Random House Tower (Trust: 0.725)
+--- Step 3 (Frontier Size: 14) ---
+  ✅ Selected: EntBridge (Trust: 0.713)
+2025-12-25 09:30:20 - [INFO] - 🤖 预测: yes
+2025-12-25 09:30:20 - [INFO] - ✅ 真值: no
+2025-12-25 09:30:20 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.66s)
+2025-12-25 09:30:20 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:30:20 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:30:20 - [INFO] - 进度: [15/7405] | Query ID: 5ab6d09255429954757d337d
+2025-12-25 09:30:20 - [INFO] - ❓ 问题: The football manager who recruited David Beckham managed Manchester United during what timeframe?
+2025-12-25 09:30:20 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['manchester united', 'david beckham', 'football manager']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: 1995–96 Manchester United F.C. season (Trust: 0.721)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: Alex Ferguson (Trust: 0.699)
+--- Step 3 (Frontier Size: 15) ---
+  ✅ Selected: Ernest Mangnall (Trust: 0.667)
+2025-12-25 09:30:28 - [INFO] - 🤖 预测: Alex Ferguson
+2025-12-25 09:30:28 - [INFO] - ✅ 真值: from 1986 to 2013
+2025-12-25 09:30:28 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.68s)
+2025-12-25 09:30:28 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:30:28 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:30:28 - [INFO] - 进度: [16/7405] | Query ID: 5a75e05c55429976ec32bc5f
+2025-12-25 09:30:28 - [INFO] - ❓ 问题: Brown State Fishing Lake is in a country that has a population of how many inhabitants ?
+2025-12-25 09:30:28 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['country', 'brown state fishing lake']
+  📊 PPR: 66581 nodes, 158906 edges, 19 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Brown State Fishing Lake (Trust: 0.803)
+--- Step 2 (Frontier Size: 15) ---
+  ✅ Selected: EntMention (Trust: 0.677)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:30:35 - [INFO] - 🤖 预测: 9,984
+2025-12-25 09:30:35 - [INFO] - ✅ 真值: 9,984
+2025-12-25 09:30:35 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.48s)
+2025-12-25 09:30:35 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:30:35 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:30:35 - [INFO] - 进度: [17/7405] | Query ID: 5ab3e45655429976abd1bcd4
+2025-12-25 09:30:35 - [INFO] - ❓ 问题: The Vermont Catamounts men's soccer team currently competes in a conference that was formerly known as what from 1988 to 1996?
+2025-12-25 09:30:35 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['conference', 'vermont catamounts men', '1988 to 1996']
+  📊 PPR: 66581 nodes, 158906 edges, 27 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Vermont Catamounts men's soccer (Trust: 0.788)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: America East Conference (Trust: 0.746)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:30:42 - [INFO] - 🤖 预测: North Atlantic Conference
+2025-12-25 09:30:42 - [INFO] - ✅ 真值: the North Atlantic Conference
+2025-12-25 09:30:42 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.24s)
+2025-12-25 09:30:42 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:30:42 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:30:42 - [INFO] - 进度: [18/7405] | Query ID: 5ab29c24554299449642c932
+2025-12-25 09:30:42 - [INFO] - ❓ 问题: Are Giuseppe Verdi and Ambroise Thomas both Opera composers ?
+2025-12-25 09:30:42 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['ambroise thomas', 'opera composers', 'giuseppe verdi']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Ambroise Thomas (Trust: 0.824)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: Seq (Trust: 0.759)
+--- Step 3 (Frontier Size: 11) ---
+  ✅ Selected: Seq (Trust: 0.709)
+2025-12-25 09:30:51 - [INFO] - 🤖 预测: yes
+2025-12-25 09:30:51 - [INFO] - ✅ 真值: yes
+2025-12-25 09:30:51 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.02s)
+2025-12-25 09:30:51 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:30:51 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:30:51 - [INFO] - 进度: [19/7405] | Query ID: 5ae0d4c9554299603e418468
+2025-12-25 09:30:51 - [INFO] - ❓ 问题: Roger O. Egeberg was Assistant Secretary for Health and Scientific Affairs during the administration of a president that served during what years?
+2025-12-25 09:30:51 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['during the administration', 'president', 'health and scientific affairs', 'roger o egeberg']
+  📊 PPR: 66581 nodes, 158906 edges, 39 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Roger O. Egeberg (Trust: 0.752)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: Richard Nixon (Trust: 0.585)
+--- Step 3 (Frontier Size: 12) ---
+  ✅ Selected: Douglas J. Bennet (Trust: 0.455)
+2025-12-25 09:30:58 - [INFO] - 🤖 预测: Richard Nixon
+2025-12-25 09:30:58 - [INFO] - ✅ 真值: 1969 until 1974
+2025-12-25 09:30:58 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.82s)
+2025-12-25 09:30:58 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:30:58 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:30:58 - [INFO] - 进度: [20/7405] | Query ID: 5a8133725542995ce29dcbdb
+2025-12-25 09:30:58 - [INFO] - ❓ 问题: Which writer was from England, Henry Roth or Robert Erskine Childers?
+2025-12-25 09:30:58 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['henry roth', 'robert erskine childers', 'england']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Robert Erskine Childers (Trust: 0.861)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Henry Roth (Trust: 0.847)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.823)
+2025-12-25 09:31:06 - [INFO] - 🤖 预测: Robert Erskine Childers
+2025-12-25 09:31:06 - [INFO] - ✅ 真值: Robert Erskine Childers DSC
+2025-12-25 09:31:06 - [INFO] - 📊 指标: F1=0.86 | P=1.00 | R=0.75 | 🎉 High F1 (0.86) (耗时: 7.64s)
+2025-12-25 09:31:06 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:31:06 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:31:06 - [INFO] - 进度: [21/7405] | Query ID: 5ae7a8175542993210983ed8
+2025-12-25 09:31:06 - [INFO] - ❓ 问题: Which other Mexican Formula One race car driver has held the podium besides the Force India driver born in 1990?
+2025-12-25 09:31:06 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['podium', 'born in 1990', 'force india', 'driver', 'which other mexican formula one race car driver']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Sergio Pérez (Trust: 0.808)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: Formula One drivers from Mexico (Trust: 0.716)
+--- Step 3 (Frontier Size: 14) ---
+2025-12-25 09:31:13 - [INFO] - 🤖 预测: Pedro Rodríguez
+2025-12-25 09:31:13 - [INFO] - ✅ 真值: Pedro Rodríguez
+2025-12-25 09:31:13 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.46s)
+2025-12-25 09:31:13 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:31:13 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:31:13 - [INFO] - 进度: [22/7405] | Query ID: 5ae6050f55429929b0807a5e
+2025-12-25 09:31:13 - [INFO] - ❓ 问题: This singer of A Rather Blustery Day also voiced what hedgehog?
+2025-12-25 09:31:13 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['what hedgehog', 'singer', 'rather blustery day']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: A Rather Blustery Day (Trust: 0.688)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntMention (Trust: 0.608)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.624)
+2025-12-25 09:31:21 - [INFO] - 🤖 预测: Tigger
+2025-12-25 09:31:21 - [INFO] - ✅ 真值: Sonic
+2025-12-25 09:31:21 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.69s)
+2025-12-25 09:31:21 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:31:21 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:31:21 - [INFO] - 进度: [23/7405] | Query ID: 5adddccd5542997dc7907069
+2025-12-25 09:31:21 - [INFO] - ❓ 问题: Aside from the Apple Remote, what other device can control the program Apple Remote was originally designed to interact with?
+2025-12-25 09:31:21 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['program', 'apple remote']
+  📊 PPR: 66581 nodes, 158906 edges, 20 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Apple Remote (Trust: 0.799)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Siri Remote (Trust: 0.744)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:31:29 - [INFO] - 🤖 预测: iSight iMac G5
+2025-12-25 09:31:29 - [INFO] - ✅ 真值: keyboard function keys
+2025-12-25 09:31:29 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.66s)
+2025-12-25 09:31:29 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:31:29 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:31:29 - [INFO] - 进度: [24/7405] | Query ID: 5ae2070a5542994d89d5b313
+2025-12-25 09:31:29 - [INFO] - ❓ 问题: Which performance act has a higher instrument to person ratio, Badly Drawn Boy or Wolf Alice? 
+2025-12-25 09:31:29 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['badly drawn boy', 'performance act', 'wolf alice']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Wolf Alice (Trust: 0.840)
+--- Step 2 (Frontier Size: 10) ---
+  ✅ Selected: Badly Drawn Boy (Trust: 0.824)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: Seq (Trust: 0.766)
+2025-12-25 09:31:36 - [INFO] - 🤖 预测: Badly Drawn Boy
+2025-12-25 09:31:36 - [INFO] - ✅ 真值: Badly Drawn Boy
+2025-12-25 09:31:36 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.69s)
+2025-12-25 09:31:36 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:31:36 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:31:36 - [INFO] - 进度: [25/7405] | Query ID: 5ae22b8d554299234fd0440f
+2025-12-25 09:31:36 - [INFO] - ❓ 问题: What was the father of Kasper Schmeichel voted to be by the IFFHS in 1992?
+2025-12-25 09:31:36 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['in 1992', 'kasper schmeichel', 'voted', 'iffhs']
+  📊 PPR: 66581 nodes, 158906 edges, 39 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Peter Schmeichel (Trust: 0.723)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: QueryEnt (Trust: 0.790)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:31:45 - [INFO] - 🤖 预测: Peter Schmeichel
+2025-12-25 09:31:45 - [INFO] - ✅ 真值: World's Best Goalkeeper
+2025-12-25 09:31:45 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.00)
+2025-12-25 09:31:45 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ✅ Sem-Match (耗时: 8.02s)
+2025-12-25 09:31:45 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:31:45 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:31:45 - [INFO] - 进度: [26/7405] | Query ID: 5a722b8655429971e9dc9329
+2025-12-25 09:31:45 - [INFO] - ❓ 问题: Who was the writer of These Boots Are Made for Walkin' and who died in 2007?
+2025-12-25 09:31:45 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['2007', 'writer', 'who', 'walkin']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: These Boots Are Made for Walkin' (Trust: 0.845)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.827)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:31:52 - [INFO] - 🤖 预测: Lee Hazlewood
+2025-12-25 09:31:52 - [INFO] - ✅ 真值: Barton Lee Hazlewood
+2025-12-25 09:31:52 - [INFO] - 📊 指标: F1=0.80 | P=1.00 | R=0.67 | 🎉 High F1 (0.80) (耗时: 7.54s)
+2025-12-25 09:31:52 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:31:52 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:31:52 - [INFO] - 进度: [27/7405] | Query ID: 5adf37a95542995ec70e8f97
+2025-12-25 09:31:52 - [INFO] - ❓ 问题: The 2011–12 VCU Rams men's basketball team, led by third year head coach Shaka Smart, represented Virginia Commonwealth University which was founded in what year?
+2025-12-25 09:31:52 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['third year head coach', '201112', 'virginia commonwealth university', 'vcu', 'what year', 'shaka smart', 'basketball']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: 2011–12 VCU Rams men's basketball team (Trust: 0.886)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Virginia Commonwealth University (Trust: 0.812)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:32:00 - [INFO] - 🤖 预测: 1838
+2025-12-25 09:32:00 - [INFO] - ✅ 真值: 1838
+2025-12-25 09:32:00 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.80s)
+2025-12-25 09:32:00 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:32:00 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:32:00 - [INFO] - 进度: [28/7405] | Query ID: 5abd259d55429924427fcf1a
+2025-12-25 09:32:00 - [INFO] - ❓ 问题: Are both Dictyosperma, and Huernia described as a genus?
+2025-12-25 09:32:00 - [INFO] - 📋 doc_filter: 2 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 2 docs)
+🎯 Query Entities (normalized): ['huernia', 'genus', 'dictyosperma']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (2 docs)
+--- Step 1 (Frontier Size: 2) ---
+  ✅ Selected: Huernia (Trust: 0.875)
+--- Step 2 (Frontier Size: 2) ---
+  ✅ Selected: Dictyosperma (Trust: 0.875)
+--- Step 3 (Frontier Size: 1) ---
+2025-12-25 09:32:08 - [INFO] - 🤖 预测: yes
+2025-12-25 09:32:08 - [INFO] - ✅ 真值: yes
+2025-12-25 09:32:08 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.79s)
+2025-12-25 09:32:08 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:32:08 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:32:08 - [INFO] - 进度: [29/7405] | Query ID: 5a828c8355429966c78a6a50
+2025-12-25 09:32:08 - [INFO] - ❓ 问题: Kaiser Ventures corporation was founded by an American industrialist who became known as the father of modern American shipbuilding?
+2025-12-25 09:32:08 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['industrialist', 'father', 'american shipbuilding', 'american', 'kaiser ventures']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Henry J. Kaiser (Trust: 0.863)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Kaiser Ventures (Trust: 0.770)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:32:15 - [INFO] - 🤖 预测: Henry J. Kaiser
+2025-12-25 09:32:15 - [INFO] - ✅ 真值: Henry J. Kaiser
+2025-12-25 09:32:15 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.49s)
+2025-12-25 09:32:15 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:32:15 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:32:15 - [INFO] - 进度: [30/7405] | Query ID: 5a8a3e745542996c9b8d5e70
+2025-12-25 09:32:15 - [INFO] - ❓ 问题: What is the name for the adventure in "Tunnels and Trolls", a game designed by Ken St. Andre?
+2025-12-25 09:32:15 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['adventure', 'tunnels and trolls', 'ken st andre']
+  📊 PPR: 66581 nodes, 158906 edges, 28 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Tunnels &amp; Trolls (Trust: 0.664)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.715)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.697)
+2025-12-25 09:32:23 - [INFO] - 🤖 预测: EntBridge
+2025-12-25 09:32:23 - [INFO] - ✅ 真值: Arena of Khazan
+2025-12-25 09:32:23 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.01s)
+2025-12-25 09:32:23 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:32:23 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:32:23 - [INFO] - 进度: [31/7405] | Query ID: 5ac23ff0554299636651994d
+2025-12-25 09:32:23 - [INFO] - ❓ 问题: When was Poison's album "Shut Up, Make Love" released?
+2025-12-25 09:32:23 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['album', 'shut up make love', 'released', 'poison', 'when was']
+  📊 PPR: 66581 nodes, 158906 edges, 41 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Shut Up, Make Love (Trust: 0.778)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: Sem (Trust: 0.718)
+--- Step 3 (Frontier Size: 15) ---
+2025-12-25 09:32:31 - [INFO] - 🤖 预测: 2000
+2025-12-25 09:32:31 - [INFO] - ✅ 真值: 2000
+2025-12-25 09:32:31 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.59s)
+2025-12-25 09:32:31 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:32:31 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:32:31 - [INFO] - 进度: [32/7405] | Query ID: 5ae4a3265542995ad6573de5
+2025-12-25 09:32:31 - [INFO] - ❓ 问题: Hayden is a singer-songwriter from Canada, but where does Buck-Tick hail from?
+2025-12-25 09:32:31 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['bucktick', 'hayden', 'canada', 'singersongwriter']
+  📊 PPR: 66581 nodes, 158906 edges, 39 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Hayden (musician) (Trust: 0.724)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: Buck-Tick (Trust: 0.700)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.669)
+2025-12-25 09:32:39 - [INFO] - 🤖 预测: Japan
+2025-12-25 09:32:39 - [INFO] - ✅ 真值: Fujioka, Gunma
+2025-12-25 09:32:39 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.79s)
+2025-12-25 09:32:39 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:32:39 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:32:39 - [INFO] - 进度: [33/7405] | Query ID: 5ae0361155429925eb1afc2c
+2025-12-25 09:32:39 - [INFO] - ❓ 问题: Which  French ace pilot and adventurer fly L'Oiseau Blanc
+2025-12-25 09:32:39 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['pilot', 'adventurer', 'loiseau blanc', 'ace']
+  📊 PPR: 66581 nodes, 158906 edges, 39 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: François Coli (Trust: 0.708)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.739)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: VectorJump (Trust: 0.734)
+2025-12-25 09:32:47 - [INFO] - 🤖 预测: Charles Nungesser
+2025-12-25 09:32:47 - [INFO] - ✅ 真值: Charles Eugène
+2025-12-25 09:32:47 - [INFO] - 📊 指标: F1=0.50 | P=0.50 | R=0.50 | 🎉 High F1 (0.50) (耗时: 8.01s)
+2025-12-25 09:32:47 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:32:47 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:32:47 - [INFO] - 进度: [34/7405] | Query ID: 5abc0a5d5542993f40c73c64
+2025-12-25 09:32:47 - [INFO] - ❓ 问题: Are Freakonomics and In the Realm of the Hackers both American documentaries?
+2025-12-25 09:32:47 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['american', 'freakonomics', 'in the realm of the hackers']
+  📊 PPR: 66581 nodes, 158906 edges, 27 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: In the Realm of the Hackers (Trust: 0.846)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: Seq (Trust: 0.831)
+--- Step 3 (Frontier Size: 14) ---
+2025-12-25 09:32:55 - [INFO] - 🤖 预测: no
+2025-12-25 09:32:55 - [INFO] - ✅ 真值: no
+2025-12-25 09:32:55 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.29s)
+2025-12-25 09:32:55 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:32:55 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:32:55 - [INFO] - 进度: [35/7405] | Query ID: 5a7cc50e554299452d57ba3e
+2025-12-25 09:32:55 - [INFO] - ❓ 问题: Which band, Letters to Cleo or Screaming Trees, had more members?
+2025-12-25 09:32:55 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['screaming trees', 'band', 'letters to cleo']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Screaming Trees discography (Trust: 0.790)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Letters to Cleo (Trust: 0.786)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: Screaming Trees (Trust: 0.781)
+2025-12-25 09:33:02 - [INFO] - 🤖 预测: Letters to Cleo
+2025-12-25 09:33:02 - [INFO] - ✅ 真值: Letters to Cleo
+2025-12-25 09:33:02 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.67s)
+2025-12-25 09:33:02 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:33:02 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:33:02 - [INFO] - 进度: [36/7405] | Query ID: 5abf63f15542997ec76fd3ea
+2025-12-25 09:33:02 - [INFO] - ❓ 问题: Alexander Kerensky was defeated and destroyed by the Bolsheviks in the course of a civil war that ended when ?
+2025-12-25 09:33:02 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['in the course of a civil war', 'alexander kerensky', 'bolsheviks']
+  📊 PPR: 66581 nodes, 158906 edges, 28 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Socialist Revolutionary Party (Trust: 0.773)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: Alexander Kerensky (Trust: 0.706)
+--- Step 3 (Frontier Size: 15) ---
+  ✅ Selected: Russian Civil War (Trust: 0.676)
+2025-12-25 09:33:10 - [INFO] - 🤖 预测: 1923
+2025-12-25 09:33:10 - [INFO] - ✅ 真值: October 1922
+2025-12-25 09:33:10 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.96s)
+2025-12-25 09:33:10 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:33:10 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:33:10 - [INFO] - 进度: [37/7405] | Query ID: 5a8ef2a75542995a26add583
+2025-12-25 09:33:10 - [INFO] - ❓ 问题: Seven Brief Lessons on Physics was written by an Italian physicist that has worked in France since what year?
+2025-12-25 09:33:10 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['italian physicist', 'france', 'seven brief lessons on physics', 'since what year']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Seven Brief Lessons on Physics (Trust: 0.876)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: Carlo Rovelli (Trust: 0.683)
+--- Step 3 (Frontier Size: 15) ---
+2025-12-25 09:33:18 - [INFO] - 🤖 预测: 2000
+2025-12-25 09:33:18 - [INFO] - ✅ 真值: 2000
+2025-12-25 09:33:18 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.45s)
+2025-12-25 09:33:18 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:33:18 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:33:18 - [INFO] - 进度: [38/7405] | Query ID: 5a80721b554299485f5985ef
+2025-12-25 09:33:18 - [INFO] - ❓ 问题: The Livesey Hal War Memorial commemorates the fallen of which war, that had over 60 million casualties?
+2025-12-25 09:33:18 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['war', 'livesey hal', 'fallen']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Livesey Hall War Memorial (Trust: 0.924)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: World War II casualties (Trust: 0.685)
+--- Step 3 (Frontier Size: 13) ---
+  ✅ Selected: Rainham War Memorial (Trust: 0.473)
+2025-12-25 09:33:25 - [INFO] - 🤖 预测: World War II
+2025-12-25 09:33:25 - [INFO] - ✅ 真值: World War II
+2025-12-25 09:33:25 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.41s)
+2025-12-25 09:33:25 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:33:25 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:33:25 - [INFO] - 进度: [39/7405] | Query ID: 5ab51dae5542991779162d82
+2025-12-25 09:33:25 - [INFO] - ❓ 问题: Are both Elko Regional Airport and Gerald R. Ford International Airport located in Michigan?
+2025-12-25 09:33:25 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['michigan', 'elko regional airport', 'gerald r ford international airport']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Elko Regional Airport (Trust: 0.771)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: Gerald R. Ford International Airport (Trust: 0.750)
+--- Step 3 (Frontier Size: 12) ---
+2025-12-25 09:33:33 - [INFO] - 🤖 预测: no
+2025-12-25 09:33:33 - [INFO] - ✅ 真值: no
+2025-12-25 09:33:33 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.47s)
+2025-12-25 09:33:33 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:33:33 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:33:33 - [INFO] - 进度: [40/7405] | Query ID: 5a7571135542992d0ec05f98
+2025-12-25 09:33:33 - [INFO] - ❓ 问题: Ralph Hefferline was a psychology professor at a university that is located in what city?
+2025-12-25 09:33:33 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['ralph hefferline', 'that is located in what city', 'university', 'psychology professor']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Ralph Hefferline (Trust: 0.766)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: Columbia University (Trust: 0.594)
+--- Step 3 (Frontier Size: 11) ---
+  ✅ Selected: Princeton Neuroscience Institute (Trust: 0.569)
+2025-12-25 09:33:40 - [INFO] - 🤖 预测: New York City
+2025-12-25 09:33:40 - [INFO] - ✅ 真值: New York City
+2025-12-25 09:33:40 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.42s)
+2025-12-25 09:33:40 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:33:40 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:33:40 - [INFO] - 进度: [41/7405] | Query ID: 5a7a0e1e5542990783324e1a
+2025-12-25 09:33:40 - [INFO] - ❓ 问题: Which dog's ancestors include Gordon and Irish Setters: the Manchester Terrier or the Scotch Collie?
+2025-12-25 09:33:40 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['irish setters', 'scotch collie', 'gordon', 'manchester terrier']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Scotch Collie (Trust: 0.880)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: Manchester Terrier (Trust: 0.714)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: English Setter (Trust: 0.712)
+2025-12-25 09:33:48 - [INFO] - 🤖 预测: Scotch Collie
+2025-12-25 09:33:48 - [INFO] - ✅ 真值: Scotch Collie
+2025-12-25 09:33:48 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.71s)
+2025-12-25 09:33:48 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:33:48 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:33:48 - [INFO] - 进度: [42/7405] | Query ID: 5a74106b55429979e288289e
+2025-12-25 09:33:48 - [INFO] - ❓ 问题: Where is the company that Sachin Warrier worked for as a software engineer headquartered? 
+2025-12-25 09:33:48 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['sachin warrier', 'software engineer', 'company', 'where', 'headquartered']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Sachin Warrier (Trust: 0.736)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntMention (Trust: 0.706)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: EntMention (Trust: 0.690)
+2025-12-25 09:33:56 - [INFO] - 🤖 预测: Tata Consultancy Services
+2025-12-25 09:33:56 - [INFO] - ✅ 真值: Mumbai
+2025-12-25 09:33:56 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.17s)
+2025-12-25 09:33:56 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:33:56 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:33:56 - [INFO] - 进度: [43/7405] | Query ID: 5a79311755429970f5fffe67
+2025-12-25 09:33:56 - [INFO] - ❓ 问题: A Japanese manga series based on a 16 year old high school student Ichitaka Seto, is written and illustrated by someone born in what year?
+2025-12-25 09:33:56 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['16 year old', 'high school student', 'japanese', 'ichitaka seto', 'what year', 'manga series']
+  📊 PPR: 66581 nodes, 158906 edges, 41 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: I&quot;s (Trust: 0.880)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: Silver Spoon (manga) (Trust: 0.586)
+--- Step 3 (Frontier Size: 14) ---
+  ✅ Selected: Neuro: Supernatural Detective (Trust: 0.584)
+2025-12-25 09:34:04 - [INFO] - 🤖 预测: Masakazu Katsura
+2025-12-25 09:34:04 - [INFO] - ✅ 真值: 1962
+2025-12-25 09:34:04 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.08s)
+2025-12-25 09:34:04 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:34:04 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:34:04 - [INFO] - 进度: [44/7405] | Query ID: 5ab2d3df554299194fa9352c
+2025-12-25 09:34:04 - [INFO] - ❓ 问题: The battle in which Giuseppe Arimondi lost his life secured what for Ethiopia?
+2025-12-25 09:34:04 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['secured', 'giuseppe arimondi', 'battle', 'ethiopia']
+  📊 PPR: 66581 nodes, 158906 edges, 37 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Battle of Adwa (Trust: 0.715)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.752)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: Sem (Trust: 0.739)
+2025-12-25 09:34:12 - [INFO] - 🤖 预测: Sovereignty
+2025-12-25 09:34:12 - [INFO] - ✅ 真值: sovereignty
+2025-12-25 09:34:12 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.58s)
+2025-12-25 09:34:12 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:34:12 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:34:12 - [INFO] - 进度: [45/7405] | Query ID: 5a760ab65542994ccc918697
+2025-12-25 09:34:12 - [INFO] - ❓ 问题: Alfred Balk served as the secretary of the Committee on the Employment of Minority Groups in the News Media under which United States Vice President?
+2025-12-25 09:34:12 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['united states vice president', 'committee on the employment of minority groups', 'news media', 'alfred balk']
+  📊 PPR: 66581 nodes, 158906 edges, 39 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Alfred Balk (Trust: 0.908)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: Nelson Rockefeller (Trust: 0.591)
+--- Step 3 (Frontier Size: 14) ---
+  ✅ Selected: Gerald Ford (Trust: 0.575)
+2025-12-25 09:34:20 - [INFO] - 🤖 预测: Nelson Rockefeller
+2025-12-25 09:34:20 - [INFO] - ✅ 真值: Nelson Rockefeller
+2025-12-25 09:34:20 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.75s)
+2025-12-25 09:34:20 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:34:20 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:34:20 - [INFO] - 进度: [46/7405] | Query ID: 5a7d54165542995f4f402256
+2025-12-25 09:34:20 - [INFO] - ❓ 问题: A medieval fortress in Dirleton, East Lothian, Scotland borders on the south side of what coastal area?
+2025-12-25 09:34:20 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['east lothian', 'medieval fortress', 'coastal area', 'scotland', 'dirleton']
+  📊 PPR: 66581 nodes, 158906 edges, 36 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Dirleton Castle (Trust: 0.841)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Yellowcraigs (Trust: 0.810)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:34:27 - [INFO] - 🤖 预测: Yellowcraigs
+2025-12-25 09:34:27 - [INFO] - ✅ 真值: Yellowcraig
+2025-12-25 09:34:27 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.00)
+2025-12-25 09:34:27 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ✅ Sem-Match (耗时: 7.80s)
+2025-12-25 09:34:27 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:34:27 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:34:27 - [INFO] - 进度: [47/7405] | Query ID: 5ab859a955429934fafe6d7b
+2025-12-25 09:34:27 - [INFO] - ❓ 问题: Who is the writer of this song that was inspired by words on a tombstone and was the first track on the box set Back to Mono?
+2025-12-25 09:34:27 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['writer', 'tombstone', 'words', 'box set', 'back to mono', 'this song', 'first track']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Back to Mono (1958–1969) (Trust: 0.821)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: To Know Him Is to Love Him (Trust: 0.699)
+--- Step 3 (Frontier Size: 14) ---
+2025-12-25 09:34:35 - [INFO] - 🤖 预测: Phil Spector
+2025-12-25 09:34:35 - [INFO] - ✅ 真值: Phil Spector
+2025-12-25 09:34:35 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.84s)
+2025-12-25 09:34:35 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:34:35 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:34:35 - [INFO] - 进度: [48/7405] | Query ID: 5add61d65542995b365fab21
+2025-12-25 09:34:35 - [INFO] - ❓ 问题: What type of forum did a former Soviet statesman initiate?
+2025-12-25 09:34:35 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['soviet statesman', 'initiate', 'forum']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Mikhail Gorbachev (Trust: 0.646)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: VectorJump (Trust: 0.632)
+--- Step 3 (Frontier Size: 15) ---
+  ✅ Selected: World Summit of Nobel Peace Laureates (Trust: 0.608)
+2025-12-25 09:34:43 - [INFO] - 🤖 预测: Peace Laureates
+2025-12-25 09:34:43 - [INFO] - ✅ 真值: Organizations could come together to address global issues
+2025-12-25 09:34:43 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.99s)
+2025-12-25 09:34:43 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:34:43 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:34:43 - [INFO] - 进度: [49/7405] | Query ID: 5a8e068b5542995085b37384
+2025-12-25 09:34:43 - [INFO] - ❓ 问题: Are Ferocactus and Silene both types of plant?
+2025-12-25 09:34:43 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['plant', 'silene', 'ferocactus']
+  📊 PPR: 66581 nodes, 158906 edges, 27 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Silene (Trust: 0.788)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Sex determination in Silene (Trust: 0.769)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:34:51 - [INFO] - 🤖 预测: yes
+2025-12-25 09:34:51 - [INFO] - ✅ 真值: yes
+2025-12-25 09:34:51 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.92s)
+2025-12-25 09:34:51 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:34:51 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:34:51 - [INFO] - 进度: [50/7405] | Query ID: 5abbf698554299114383a0b5
+2025-12-25 09:34:51 - [INFO] - ❓ 问题: Which British first-generation jet-powered medium bomber was used in the South West Pacific theatre of World War II?
+2025-12-25 09:34:51 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['south west pacific theatre', 'world war ii', 'british', 'jetpowered medium bomber']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: English Electric Canberra (Trust: 0.710)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: South West Pacific theatre of World War II (Trust: 0.621)
+--- Step 3 (Frontier Size: 13) ---
+  ✅ Selected: South West Pacific Area (command) (Trust: 0.596)
+2025-12-25 09:34:58 - [INFO] - 🤖 预测: English Electric Canberra
+2025-12-25 09:34:58 - [INFO] - ✅ 真值: English Electric Canberra
+2025-12-25 09:34:58 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.38s)
+2025-12-25 09:34:58 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:34:58 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:34:58 - [INFO] - 进度: [51/7405] | Query ID: 5a8e1027554299653c1aa15f
+2025-12-25 09:34:58 - [INFO] - ❓ 问题: Which year and which conference was the 14th season for this conference as part of the NCAA Division that the Colorado Buffaloes played in with a record of 2-6 in conference play?
+2025-12-25 09:34:58 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['colorado buffaloes', 'which year', '14th season', 'in conference play']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: 2009 Colorado Buffaloes football team (Trust: 0.614)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: 2009 Big 12 Conference football season (Trust: 0.608)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: 2014 Colorado Buffaloes football team (Trust: 0.564)
+2025-12-25 09:35:06 - [INFO] - 🤖 预测: 2009 Big 12
+2025-12-25 09:35:06 - [INFO] - ✅ 真值: 2009 Big 12 Conference
+2025-12-25 09:35:06 - [INFO] - 📊 指标: F1=0.86 | P=1.00 | R=0.75 | 🎉 High F1 (0.86) (耗时: 7.84s)
+2025-12-25 09:35:06 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:35:06 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:35:06 - [INFO] - 进度: [52/7405] | Query ID: 5ab84bf555429916710eb01f
+2025-12-25 09:35:06 - [INFO] - ❓ 问题: In 1991 Euromarché was bought by a chain that operated how any hypermarkets at the end of 2016?
+2025-12-25 09:35:06 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['chain', 'in 1991', 'euromarché', 'hypermarkets', 'at the end of 2016']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Euromarché (Trust: 0.822)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: EntBridge (Trust: 0.744)
+--- Step 3 (Frontier Size: 14) ---
+2025-12-25 09:35:14 - [INFO] - 🤖 预测: 1462
+2025-12-25 09:35:14 - [INFO] - ✅ 真值: 1,462
+2025-12-25 09:35:14 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.39s)
+2025-12-25 09:35:14 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:35:14 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:35:14 - [INFO] - 进度: [53/7405] | Query ID: 5a77724455429972597f153e
+2025-12-25 09:35:14 - [INFO] - ❓ 问题: What race track in the midwest hosts a 500 mile race eavery May?
+2025-12-25 09:35:14 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['race track', '500 mile race', 'in the midwest', 'eavery may']
+  📊 PPR: 66581 nodes, 158906 edges, 34 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Louis Schwitzer Award (Trust: 0.623)
+--- Step 2 (Frontier Size: 14) ---
+  ✅ Selected: Carolina Dodge Dealers 400 (Trust: 0.549)
+--- Step 3 (Frontier Size: 14) ---
+2025-12-25 09:35:21 - [INFO] - 🤖 预测: Indianapolis
+2025-12-25 09:35:21 - [INFO] - ✅ 真值: Indianapolis Motor Speedway
+2025-12-25 09:35:21 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.50)
+2025-12-25 09:35:21 - [INFO] - 📊 指标: F1=0.50 | P=1.00 | R=0.33 | ✅ Sem-Match (耗时: 7.60s)
+2025-12-25 09:35:21 - [INFO] - 🔎 Hits: retrieval=0 bridge=0 path=0 | support=2 hit_docs=0
+2025-12-25 09:35:21 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:35:21 - [INFO] - 进度: [54/7405] | Query ID: 5a87c13f5542996e4f30890c
+2025-12-25 09:35:21 - [INFO] - ❓ 问题: In what city did the "Prince of tenors" star in a film based on an opera by Giacomo Puccini?
+2025-12-25 09:35:21 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['what city', 'prince of tenors', 'opera', 'film', 'giacomo puccini', 'star']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Tosca (1956 film) (Trust: 0.681)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: Franco Corelli (Trust: 0.649)
+--- Step 3 (Frontier Size: 12) ---
+  ✅ Selected: La Bohème (1988 film) (Trust: 0.638)
+2025-12-25 09:35:29 - [INFO] - 🤖 预测: Rome
+2025-12-25 09:35:29 - [INFO] - ✅ 真值: Rome
+2025-12-25 09:35:29 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.50s)
+2025-12-25 09:35:29 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:35:29 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:35:29 - [INFO] - 进度: [55/7405] | Query ID: 5ab96ab755429970cfb8eacd
+2025-12-25 09:35:29 - [INFO] - ❓ 问题: Ellie Goulding worked with what other writers on her third studio album, Delirium?
+2025-12-25 09:35:29 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['worked', 'writers', 'ellie goulding', 'delirium']
+  📊 PPR: 66581 nodes, 158906 edges, 37 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Delirium (Ellie Goulding album) (Trust: 0.755)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntMention (Trust: 0.770)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: Sem (Trust: 0.730)
+2025-12-25 09:35:37 - [INFO] - 🤖 预测: Max Martin, Savan Kotecha, Ilya Salmanzadeh
+2025-12-25 09:35:37 - [INFO] - ✅ 真值: Max Martin, Savan Kotecha and Ilya Salmanzadeh
+2025-12-25 09:35:37 - [INFO] - 📊 指标: F1=0.92 | P=1.00 | R=0.86 | 🎉 High F1 (0.92) (耗时: 8.45s)
+2025-12-25 09:35:37 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:35:37 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:35:37 - [INFO] - 进度: [56/7405] | Query ID: 5a8a43eb5542996c9b8d5e82
+2025-12-25 09:35:37 - [INFO] - ❓ 问题: Which Australian city founded in 1838 contains a boarding school opened by a Prime Minister of Australia and named after a school in London of the same name.
+2025-12-25 09:35:37 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['prime minister of australia', 'school', 'which australian city', 'in 1838', 'london']
+  📊 PPR: 66581 nodes, 158906 edges, 38 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Westminster School, Adelaide (Trust: 0.668)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: Marion, South Australia (Trust: 0.607)
+--- Step 3 (Frontier Size: 12) ---
+2025-12-25 09:35:44 - [INFO] - 🤖 预测: Adelaide
+2025-12-25 09:35:44 - [INFO] - ✅ 真值: Marion, South Australia
+2025-12-25 09:35:44 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.14s)
+2025-12-25 09:35:44 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:35:44 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:35:44 - [INFO] - 进度: [57/7405] | Query ID: 5ae73acb5542991e8301cc07
+2025-12-25 09:35:44 - [INFO] - ❓ 问题: D1NZ is a series based on what oversteering technique?
+2025-12-25 09:35:44 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['what oversteering technique', 'd1nz', 'series']
+  📊 PPR: 66581 nodes, 158906 edges, 22 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: D1NZ (Trust: 0.696)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: VectorJump (Trust: 0.620)
+--- Step 3 (Frontier Size: 12) ---
+2025-12-25 09:35:53 - [INFO] - 🤖 预测: Drifting
+2025-12-25 09:35:53 - [INFO] - ✅ 真值: Drifting
+2025-12-25 09:35:53 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.52s)
+2025-12-25 09:35:53 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:35:53 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:35:53 - [INFO] - 进度: [58/7405] | Query ID: 5a7320565542991f9a20c61d
+2025-12-25 09:35:53 - [INFO] - ❓ 问题: who is younger Keith Bostic or Jerry Glanville ?
+2025-12-25 09:35:53 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['jerry glanville', 'keith bostic']
+  📊 PPR: 66581 nodes, 158906 edges, 19 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Keith Bostic (American football) (Trust: 0.847)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntMention (Trust: 0.755)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: Keith Bostic (Trust: 0.748)
+2025-12-25 09:36:00 - [INFO] - 🤖 预测: Keith Bostic
+2025-12-25 09:36:00 - [INFO] - ✅ 真值: Keith Bostic
+2025-12-25 09:36:00 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.44s)
+2025-12-25 09:36:00 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:36:00 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:36:00 - [INFO] - 进度: [59/7405] | Query ID: 5ae32e125542991a06ce9946
+2025-12-25 09:36:00 - [INFO] - ❓ 问题: According to the 2001 census, what was the population of the city in which Kirton End is located?
+2025-12-25 09:36:00 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['census', 'city', '2001', 'kirton end']
+  📊 PPR: 66581 nodes, 158906 edges, 39 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Kirton End (Trust: 0.794)
+--- Step 2 (Frontier Size: 14) ---
+  ✅ Selected: EntBridge (Trust: 0.716)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:36:08 - [INFO] - 🤖 预测: 273
+2025-12-25 09:36:08 - [INFO] - ✅ 真值: 35,124
+2025-12-25 09:36:08 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.93s)
+2025-12-25 09:36:08 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:36:08 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:36:08 - [INFO] - 进度: [60/7405] | Query ID: 5adc53f75542996e6852530a
+2025-12-25 09:36:08 - [INFO] - ❓ 问题: Are both Cypress and Ajuga genera?
+2025-12-25 09:36:08 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['ajuga', 'cypress']
+  📊 PPR: 66581 nodes, 158906 edges, 20 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Ajuga (Trust: 0.834)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: EntBridge (Trust: 0.772)
+--- Step 3 (Frontier Size: 13) ---
+  ✅ Selected: Seq (Trust: 0.746)
+2025-12-25 09:36:17 - [INFO] - 🤖 预测: no
+2025-12-25 09:36:17 - [INFO] - ✅ 真值: no
+2025-12-25 09:36:17 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.69s)
+2025-12-25 09:36:17 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:36:17 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:36:17 - [INFO] - 进度: [61/7405] | Query ID: 5a8b20335542996c9b8d5fb3
+2025-12-25 09:36:17 - [INFO] - ❓ 问题: What distinction is held by the former NBA player who was a member of the Charlotte Hornets during their 1992-93 season and was head coach for the WNBA team Charlotte Sting?
+2025-12-25 09:36:17 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['during their 199293 season', 'wnba team charlotte sting', 'nba', 'head coach', 'charlotte']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Muggsy Bogues (Trust: 0.728)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: 1992–93 Charlotte Hornets season (Trust: 0.678)
+--- Step 3 (Frontier Size: 14) ---
+  ✅ Selected: Charlotte Hornets (Trust: 0.597)
+2025-12-25 09:36:25 - [INFO] - 🤖 预测: Shortest NBA player
+2025-12-25 09:36:25 - [INFO] - ✅ 真值: shortest player ever to play in the National Basketball Association
+2025-12-25 09:36:25 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.33)
+2025-12-25 09:36:25 - [INFO] - 📊 指标: F1=0.33 | P=0.67 | R=0.22 | ✅ Sem-Match (耗时: 7.67s)
+2025-12-25 09:36:25 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:36:25 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:36:25 - [INFO] - 进度: [62/7405] | Query ID: 5a85fb085542994775f606de
+2025-12-25 09:36:25 - [INFO] - ❓ 问题: What is the name of the executive producer of the film that has a score composed by Jerry Goldsmith?
+2025-12-25 09:36:25 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['executive producer', 'film', 'jerry goldsmith', 'score']
+  📊 PPR: 66581 nodes, 158906 edges, 38 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Alien (soundtrack) (Trust: 0.846)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Legend (film score) (Trust: 0.824)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: Lionheart (1987 film) (Trust: 0.817)
+2025-12-25 09:36:32 - [INFO] - 🤖 预测: Francis Ford Coppola
+2025-12-25 09:36:32 - [INFO] - ✅ 真值: Ronald Shusett
+2025-12-25 09:36:32 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.70s)
+2025-12-25 09:36:32 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:36:32 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:36:32 - [INFO] - 进度: [63/7405] | Query ID: 5a7be2595542997c3ec972ac
+2025-12-25 09:36:32 - [INFO] - ❓ 问题: Who was born earlier, Emma Bull or Virginia Woolf?
+2025-12-25 09:36:32 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['emma bull', 'virginia woolf']
+  📊 PPR: 66581 nodes, 158906 edges, 20 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Emma Bull (Trust: 0.864)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: Seq (Trust: 0.719)
+--- Step 3 (Frontier Size: 12) ---
+  ✅ Selected: EntMention (Trust: 0.730)
+2025-12-25 09:36:40 - [INFO] - 🤖 预测: Virginia Woolf
+2025-12-25 09:36:40 - [INFO] - ✅ 真值: Adeline Virginia Woolf
+2025-12-25 09:36:40 - [INFO] - 📊 指标: F1=0.80 | P=1.00 | R=0.67 | 🎉 High F1 (0.80) (耗时: 7.58s)
+2025-12-25 09:36:40 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:36:40 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:36:40 - [INFO] - 进度: [64/7405] | Query ID: 5a77152355429966f1a36c2e
+2025-12-25 09:36:40 - [INFO] - ❓ 问题: What was the Roud Folk Song Index of the nursery rhyme inspiring What Are Little Girls Made Of?
+2025-12-25 09:36:40 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['roud folk song index', 'little girls', 'nursery rhyme']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Tweedledum and Tweedledee (Trust: 0.786)
+--- Step 2 (Frontier Size: 15) ---
+  ✅ Selected: EntBridge (Trust: 0.759)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:36:47 - [INFO] - 🤖 预测: None mentioned
+2025-12-25 09:36:47 - [INFO] - ✅ 真值: 821
+2025-12-25 09:36:47 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.61s)
+2025-12-25 09:36:47 - [INFO] - 🔎 Hits: retrieval=0 bridge=0 path=0 | support=2 hit_docs=0
+2025-12-25 09:36:47 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:36:47 - [INFO] - 进度: [65/7405] | Query ID: 5a8f4c8d554299458435d5a3
+2025-12-25 09:36:47 - [INFO] - ❓ 问题: Scott Parkin has been a vocal critic of Exxonmobil and another corporation that has operations in how many countries ?
+2025-12-25 09:36:47 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['exxonmobil', 'vocal critic', 'another corporation', 'scott parkin']
+  📊 PPR: 66581 nodes, 158906 edges, 37 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Scott Parkin (Trust: 0.832)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: Halliburton (Trust: 0.644)
+--- Step 3 (Frontier Size: 12) ---
+2025-12-25 09:36:56 - [INFO] - 🤖 预测: Halliburton
+2025-12-25 09:36:56 - [INFO] - ✅ 真值: more than 70 countries
+2025-12-25 09:36:56 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.15s)
+2025-12-25 09:36:56 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:36:56 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:36:56 - [INFO] - 进度: [66/7405] | Query ID: 5a80840f554299485f59863b
+2025-12-25 09:36:56 - [INFO] - ❓ 问题: What WB supernatrual drama series was Jawbreaker star Rose Mcgowan best known for being in?
+2025-12-25 09:36:56 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['rose mcgowan', 'jawbreaker star', 'wb', 'supernatrual drama series']
+  📊 PPR: 66581 nodes, 158906 edges, 31 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Rose McGowan (Trust: 0.721)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.723)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.721)
+2025-12-25 09:37:03 - [INFO] - 🤖 预测: Charmed
+2025-12-25 09:37:03 - [INFO] - ✅ 真值: Charmed
+2025-12-25 09:37:03 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.32s)
+2025-12-25 09:37:03 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:37:03 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:37:03 - [INFO] - 进度: [67/7405] | Query ID: 5a8361b65542992ef85e22a0
+2025-12-25 09:37:03 - [INFO] - ❓ 问题: Vince Phillips held a junior welterweight title by an organization recognized by what larger Hall of Fame?
+2025-12-25 09:37:03 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['larger hall of fame', 'junior welterweight title', 'organization', 'vince phillips']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Vince Phillips (Trust: 0.741)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: International Boxing Federation (Trust: 0.590)
+--- Step 3 (Frontier Size: 15) ---
+  ✅ Selected: Zab Judah (Trust: 0.431)
+2025-12-25 09:37:11 - [INFO] - 🤖 预测: IBHOF
+2025-12-25 09:37:11 - [INFO] - ✅ 真值: International Boxing Hall of Fame
+2025-12-25 09:37:11 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.00)
+2025-12-25 09:37:11 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ✅ Sem-Match (耗时: 7.79s)
+2025-12-25 09:37:11 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:37:11 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:37:11 - [INFO] - 进度: [68/7405] | Query ID: 5ae7ba7a5542993210983f12
+2025-12-25 09:37:11 - [INFO] - ❓ 问题: What is the name of the singer who's song was released as the lead single from the album "Confessions", and that had popular song stuck behind for eight consecutive weeks?
+2025-12-25 09:37:11 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['song', 'eight consecutive weeks', 'singer', 'confessions', 'lead single']
+  📊 PPR: 66581 nodes, 158906 edges, 47 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Yeah! (Usher song) (Trust: 0.806)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: I Don't Wanna Know (Trust: 0.705)
+--- Step 3 (Frontier Size: 14) ---
+2025-12-25 09:37:18 - [INFO] - 🤖 预测: Usher
+2025-12-25 09:37:18 - [INFO] - ✅ 真值: Usher
+2025-12-25 09:37:18 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.38s)
+2025-12-25 09:37:18 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:37:18 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:37:18 - [INFO] - 进度: [69/7405] | Query ID: 5ac2acff55429921a00ab02b
+2025-12-25 09:37:18 - [INFO] - ❓ 问题: who is the younger brother of The episode guest stars of The Hard Easy 
+2025-12-25 09:37:18 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['hard easy', 'younger brother', 'guest stars']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: The Hard Easy (Adventure Time) (Trust: 0.716)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.664)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.634)
+2025-12-25 09:37:26 - [INFO] - 🤖 预测: Bill Murray
+2025-12-25 09:37:26 - [INFO] - ✅ 真值: Bill Murray
+2025-12-25 09:37:26 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.59s)
+2025-12-25 09:37:26 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:37:26 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:37:26 - [INFO] - 进度: [70/7405] | Query ID: 5aba7cfe554299232ef4a2fd
+2025-12-25 09:37:26 - [INFO] - ❓ 问题: The 2017–18 Wigan Athletic F.C. season will be a year in which the team competes in the league cup known as what for sponsorship reasons?
+2025-12-25 09:37:26 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['wigan athletic fc', 'season', 'league cup', '201718', 'sponsorship reasons']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: 2017–18 Wigan Athletic F.C. season (Trust: 0.769)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: EFL Cup (Trust: 0.728)
+--- Step 3 (Frontier Size: 13) ---
+  ✅ Selected: Trinidad and Tobago League Cup (Trust: 0.714)
+2025-12-25 09:37:33 - [INFO] - 🤖 预测: Carabao Cup
+2025-12-25 09:37:33 - [INFO] - ✅ 真值: Carabao Cup
+2025-12-25 09:37:33 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.60s)
+2025-12-25 09:37:33 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:37:33 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:37:33 - [INFO] - 进度: [71/7405] | Query ID: 5ae5aba0554299546bf82f17
+2025-12-25 09:37:33 - [INFO] - ❓ 问题: Which of Tara Strong major voice role in animated series is an American animated television series based on the DC Comics fictional superhero team, the "Teen Titans"?
+2025-12-25 09:37:33 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['teen titans', 'tara strong', 'animated television series', 'animated series', 'american', 'dc comics']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: List of Teen Titans episodes (Trust: 0.892)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Tara Strong (Trust: 0.877)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: Tara Strong filmography (Trust: 0.877)
+2025-12-25 09:37:41 - [INFO] - 🤖 预测: Teen Titans
+2025-12-25 09:37:41 - [INFO] - ✅ 真值: Teen Titans Go!
+2025-12-25 09:37:41 - [INFO] - 📊 指标: F1=0.80 | P=1.00 | R=0.67 | 🎉 High F1 (0.80) (耗时: 7.41s)
+2025-12-25 09:37:41 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:37:41 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:37:41 - [INFO] - 进度: [72/7405] | Query ID: 5ae1f4cb554299234fd0436d
+2025-12-25 09:37:41 - [INFO] - ❓ 问题: What is the inhabitant of the city where  122nd SS-Standarte was formed in2014
+2025-12-25 09:37:41 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['city', '122nd ssstandarte', 'was formed', 'inhabitant']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: 122nd SS-Standarte (Trust: 0.788)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: EntBridge (Trust: 0.691)
+--- Step 3 (Frontier Size: 13) ---
+2025-12-25 09:37:48 - [INFO] - 🤖 预测: 276,170
+2025-12-25 09:37:48 - [INFO] - ✅ 真值: 276,170 inhabitants
+2025-12-25 09:37:48 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.67)
+2025-12-25 09:37:48 - [INFO] - 📊 指标: F1=0.67 | P=1.00 | R=0.50 | ✅ Sem-Match (耗时: 7.63s)
+2025-12-25 09:37:48 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:37:48 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:37:48 - [INFO] - 进度: [73/7405] | Query ID: 5ae7e1fc55429952e35ea9cc
+2025-12-25 09:37:48 - [INFO] - ❓ 问题: What color clothing do people of the Netherlands wear during Oranjegekte or to celebrate the national holiday Koningsdag? 
+2025-12-25 09:37:48 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['oranjegekte', 'netherlands', 'koningsdag', 'clothing', 'people']
+  📊 PPR: 66581 nodes, 158906 edges, 49 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Oranjegekte (Trust: 0.807)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: Koningsdag (Trust: 0.638)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:37:56 - [INFO] - 🤖 预测: Orange
+2025-12-25 09:37:56 - [INFO] - ✅ 真值: orange
+2025-12-25 09:37:56 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.73s)
+2025-12-25 09:37:56 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:37:56 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:37:56 - [INFO] - 进度: [74/7405] | Query ID: 5ae37c765542992f92d822d4
+2025-12-25 09:37:56 - [INFO] - ❓ 问题: What was the name of the 1996 loose adaptation of William Shakespeare's "Romeo & Juliet" written by James Gunn?
+2025-12-25 09:37:56 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['william shakespeare', 'romeo  juliet', '1996', 'james gunn']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Tromeo and Juliet (Trust: 0.862)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: James Gunn (Trust: 0.795)
+--- Step 3 (Frontier Size: 14) ---
+  ✅ Selected: Romeo + Juliet (Trust: 0.629)
+2025-12-25 09:38:04 - [INFO] - 🤖 预测: Tromeo and Juliet
+2025-12-25 09:38:04 - [INFO] - ✅ 真值: Tromeo and Juliet
+2025-12-25 09:38:04 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.66s)
+2025-12-25 09:38:04 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:38:04 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:38:04 - [INFO] - 进度: [75/7405] | Query ID: 5ae33c4d5542992f92d82262
+2025-12-25 09:38:04 - [INFO] - ❓ 问题: Robert Suettinger was the national intelligence officer under which former Governor of Arkansas?
+2025-12-25 09:38:04 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['robert suettinger', 'national intelligence officer', 'former governor of arkansas']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Robert Suettinger (Trust: 0.834)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: Bill Clinton (Trust: 0.678)
+--- Step 3 (Frontier Size: 12) ---
+2025-12-25 09:38:11 - [INFO] - 🤖 预测: Bill Clinton
+2025-12-25 09:38:11 - [INFO] - ✅ 真值: William Jefferson Clinton
+2025-12-25 09:38:11 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.40)
+2025-12-25 09:38:11 - [INFO] - 📊 指标: F1=0.40 | P=0.50 | R=0.33 | ✅ Sem-Match (耗时: 7.59s)
+2025-12-25 09:38:11 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:38:11 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:38:11 - [INFO] - 进度: [76/7405] | Query ID: 5a77cb335542997042120b3a
+2025-12-25 09:38:11 - [INFO] - ❓ 问题: What American professional Hawaiian surfer born 18 October 1992 won the Rip Curl Pro Portugal?
+2025-12-25 09:38:11 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['professional hawaiian surfer', 'rip curl pro portugal', 'born 18 october 1992']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: John John Florence (Trust: 0.724)
+--- Step 2 (Frontier Size: 14) ---
+  ✅ Selected: Seq (Trust: 0.787)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: EntMention (Trust: 0.807)
+2025-12-25 09:38:19 - [INFO] - 🤖 预测: John John Florence
+2025-12-25 09:38:19 - [INFO] - ✅ 真值: John John Florence
+2025-12-25 09:38:19 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.42s)
+2025-12-25 09:38:19 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:38:19 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:38:19 - [INFO] - 进度: [77/7405] | Query ID: 5a8979f4554299669944a52e
+2025-12-25 09:38:19 - [INFO] - ❓ 问题: What is the middle name of the actress who plays Bobbi Bacha in Suburban Madness?
+2025-12-25 09:38:19 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['suburban madness', 'bobbi bacha', 'actress']
+  📊 PPR: 66581 nodes, 158906 edges, 28 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Bobbi Bacha (Trust: 0.903)
+--- Step 2 (Frontier Size: 14) ---
+  ✅ Selected: Suburban Madness (Trust: 0.864)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:38:26 - [INFO] - 🤖 预测: Elizabeth
+2025-12-25 09:38:26 - [INFO] - ✅ 真值: Ann
+2025-12-25 09:38:26 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.63s)
+2025-12-25 09:38:26 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:38:26 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:38:26 - [INFO] - 进度: [78/7405] | Query ID: 5a713ea95542994082a3e6e4
+2025-12-25 09:38:26 - [INFO] - ❓ 问题: Alvaro Mexia had a diplomatic mission with which tribe of indigenous people?
+2025-12-25 09:38:26 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['alvaro mexia', 'which tribe of indigenous people', 'had a diplomatic mission']
+  📊 PPR: 66581 nodes, 158906 edges, 29 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Alvaro Mexia (Trust: 0.782)
+--- Step 2 (Frontier Size: 14) ---
+  ✅ Selected: VectorJump (Trust: 0.640)
+--- Step 3 (Frontier Size: 14) ---
+  ✅ Selected: Seq (Trust: 0.598)
+2025-12-25 09:38:34 - [INFO] - 🤖 预测: Ais
+2025-12-25 09:38:34 - [INFO] - ✅ 真值: Apalachees
+2025-12-25 09:38:34 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.83s)
+2025-12-25 09:38:34 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:38:34 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:38:34 - [INFO] - 进度: [79/7405] | Query ID: 5a78bd9b554299078472774a
+2025-12-25 09:38:34 - [INFO] - ❓ 问题: What nationality were social anthropologists Alfred Gell and Edmund Leach?
+2025-12-25 09:38:34 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['edmund leach', 'alfred gell', 'social anthropologists']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Edmund Leach (Trust: 0.721)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: Alfred Gell (Trust: 0.703)
+--- Step 3 (Frontier Size: 12) ---
+  ✅ Selected: Seq (Trust: 0.756)
+2025-12-25 09:38:42 - [INFO] - 🤖 预测: British
+2025-12-25 09:38:42 - [INFO] - ✅ 真值: British
+2025-12-25 09:38:42 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.59s)
+2025-12-25 09:38:42 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:38:42 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:38:42 - [INFO] - 进度: [80/7405] | Query ID: 5a7625e8554299109176e66a
+2025-12-25 09:38:42 - [INFO] - ❓ 问题: In which year was the King who made the 1925 Birthday Honours born?
+2025-12-25 09:38:42 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['year', 'king', '1925', 'birthday honours']
+  📊 PPR: 66581 nodes, 158906 edges, 38 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: 1925 Birthday Honours (Trust: 0.852)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntMention (Trust: 0.699)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.690)
+2025-12-25 09:38:49 - [INFO] - 🤖 预测: 1865
+2025-12-25 09:38:49 - [INFO] - ✅ 真值: 1865
+2025-12-25 09:38:49 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.48s)
+2025-12-25 09:38:49 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:38:49 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:38:49 - [INFO] - 进度: [81/7405] | Query ID: 5ae2dd2055429928c423950d
+2025-12-25 09:38:49 - [INFO] - ❓ 问题: What is the county seat of the county where East Lempster, New Hampshire is located?
+2025-12-25 09:38:49 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['county seat', 'east lempster new hampshire', 'county']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: East Lempster, New Hampshire (Trust: 0.737)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.737)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: Lempster, New Hampshire (Trust: 0.721)
+2025-12-25 09:38:57 - [INFO] - 🤖 预测: Newport
+2025-12-25 09:38:57 - [INFO] - ✅ 真值: Newport
+2025-12-25 09:38:57 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.47s)
+2025-12-25 09:38:57 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:38:57 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:38:57 - [INFO] - 进度: [82/7405] | Query ID: 5abdf12255429976d4830a2f
+2025-12-25 09:38:57 - [INFO] - ❓ 问题: The Album Against the Wind was the 11th Album of a Rock singer Robert C Seger born may 6 1945. What was the Rock singers stage name ?
+2025-12-25 09:38:57 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['11th album', 'album against the wind', 'robert c seger', 'rock singers', 'rock singer', 'born may 6 1945']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Against the Wind (album) (Trust: 0.721)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Bob Seger (Trust: 0.657)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:39:04 - [INFO] - 🤖 预测: Bob Seger
+2025-12-25 09:39:04 - [INFO] - ✅ 真值: Bob Seger
+2025-12-25 09:39:04 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.28s)
+2025-12-25 09:39:04 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:39:04 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:39:04 - [INFO] - 进度: [83/7405] | Query ID: 5a88658955429938390d3f47
+2025-12-25 09:39:04 - [INFO] - ❓ 问题: Rostker v. Goldberg held that the practice of what way of filling armed forces vacancies was consitutional?
+2025-12-25 09:39:04 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['goldberg', 'rostker', 'consitutional', 'practice', 'what way of filling armed forces vacancies']
+  📊 PPR: 66581 nodes, 158906 edges, 47 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Rostker v. Goldberg (Trust: 0.819)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: Conscription in the United States (Trust: 0.520)
+--- Step 3 (Frontier Size: 13) ---
+2025-12-25 09:39:12 - [INFO] - 🤖 预测: requiring men only
+2025-12-25 09:39:12 - [INFO] - ✅ 真值: Conscription
+2025-12-25 09:39:12 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.00)
+2025-12-25 09:39:12 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ✅ Sem-Match (耗时: 7.90s)
+2025-12-25 09:39:12 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:39:12 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:39:12 - [INFO] - 进度: [84/7405] | Query ID: 5a86ebac55429960ec39b6d6
+2025-12-25 09:39:12 - [INFO] - ❓ 问题: Handi-Snacks are a snack food product line sold by what American multinational confectionery, food, and beverage company that is based in Illinois?
+2025-12-25 09:39:12 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['confectionery', 'handisnacks', 'american multinational', 'beverage company', 'illinois']
+  📊 PPR: 66581 nodes, 158906 edges, 48 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Handi-Snacks (Trust: 0.828)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: Mondelez International (Trust: 0.812)
+--- Step 3 (Frontier Size: 12) ---
+2025-12-25 09:39:20 - [INFO] - 🤖 预测: Mondelez International
+2025-12-25 09:39:20 - [INFO] - ✅ 真值: Mondelez International, Inc.
+2025-12-25 09:39:20 - [INFO] - 📊 指标: F1=0.80 | P=1.00 | R=0.67 | 🎉 High F1 (0.80) (耗时: 7.95s)
+2025-12-25 09:39:20 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:39:20 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:39:20 - [INFO] - 进度: [85/7405] | Query ID: 5aba5d2e55429901930fa799
+2025-12-25 09:39:20 - [INFO] - ❓ 问题: What was the name of a woman from the book titled "Their Lives: The Women Targeted by the Clinton Machine " and was also a former white house intern?
+2025-12-25 09:39:20 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['their lives', 'white house', 'clinton machine', 'woman', 'book', 'intern']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Their Lives (Trust: 0.874)
+--- Step 2 (Frontier Size: 14) ---
+  ✅ Selected: Monica Lewinsky (Trust: 0.722)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: Once Upon a Secret (Trust: 0.706)
+2025-12-25 09:39:27 - [INFO] - 🤖 预测: Monica Lewinsky
+2025-12-25 09:39:27 - [INFO] - ✅ 真值: Monica Lewinsky
+2025-12-25 09:39:27 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.17s)
+2025-12-25 09:39:27 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:39:27 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:39:27 - [INFO] - 进度: [86/7405] | Query ID: 5ae5736e5542990ba0bbb2b3
+2025-12-25 09:39:27 - [INFO] - ❓ 问题: When was the American lawyer, lobbyist and political consultant who was a senior member of the presidential campaign of Donald Trump born?
+2025-12-25 09:39:27 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['lawyer', 'presidential campaign', 'when', 'lobbyist and political consultant', 'american', 'donald trump']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Paul Manafort (Trust: 0.774)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: Trump campaign–Russian meeting (Trust: 0.717)
+--- Step 3 (Frontier Size: 12) ---
+2025-12-25 09:39:35 - [INFO] - 🤖 预测: April 1, 1949
+2025-12-25 09:39:35 - [INFO] - ✅ 真值: April 1, 1949
+2025-12-25 09:39:35 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.49s)
+2025-12-25 09:39:35 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:39:35 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:39:35 - [INFO] - 进度: [87/7405] | Query ID: 5ae005b555429942ec259bec
+2025-12-25 09:39:35 - [INFO] - ❓ 问题: In what year was the novel that Lourenço Mutarelli based "Nina" on based first published?
+2025-12-25 09:39:35 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['lourenço mutarelli', 'novel', 'nina', 'what year', 'first published']
+  📊 PPR: 66581 nodes, 158906 edges, 44 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Lourenço Mutarelli (Trust: 0.729)
+--- Step 2 (Frontier Size: 14) ---
+  ✅ Selected: EntBridge (Trust: 0.704)
+--- Step 3 (Frontier Size: 15) ---
+  ✅ Selected: Seq (Trust: 0.695)
+2025-12-25 09:39:42 - [INFO] - 🤖 预测: 1866
+2025-12-25 09:39:42 - [INFO] - ✅ 真值: 1866
+2025-12-25 09:39:42 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.87s)
+2025-12-25 09:39:42 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:39:42 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:39:42 - [INFO] - 进度: [88/7405] | Query ID: 5a7759fc5542993569682d60
+2025-12-25 09:39:42 - [INFO] - ❓ 问题: Where are Teide National Park and Garajonay National Park located?
+2025-12-25 09:39:42 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['garajonay national park', 'teide national park']
+  📊 PPR: 66581 nodes, 158906 edges, 19 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Garajonay National Park (Trust: 0.765)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: Teide National Park (Trust: 0.754)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:39:50 - [INFO] - 🤖 预测: Canary Islands, Spain
+2025-12-25 09:39:50 - [INFO] - ✅ 真值: Canary Islands, Spain
+2025-12-25 09:39:50 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.39s)
+2025-12-25 09:39:50 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:39:50 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:39:50 - [INFO] - 进度: [89/7405] | Query ID: 5a835478554299123d8c20ed
+2025-12-25 09:39:50 - [INFO] - ❓ 问题: How many copies of Roald Dahl's variation on a popular anecdote sold?
+2025-12-25 09:39:50 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['roald dahl', 'popular anecdote']
+  📊 PPR: 66581 nodes, 158906 edges, 20 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Mrs. Bixby and the Colonel's Coat (Trust: 0.734)
+--- Step 2 (Frontier Size: 14) ---
+  ✅ Selected: VectorJump (Trust: 0.735)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.668)
+2025-12-25 09:39:58 - [INFO] - 🤖 预测: None mentioned
+2025-12-25 09:39:58 - [INFO] - ✅ 真值: 250 million
+2025-12-25 09:39:58 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.74s)
+2025-12-25 09:39:58 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:39:58 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:39:58 - [INFO] - 进度: [90/7405] | Query ID: 5aba749055429901930fa7d8
+2025-12-25 09:39:58 - [INFO] - ❓ 问题: What occupation do Chris Menges and Aram Avakian share?
+2025-12-25 09:39:58 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['chris menges', 'aram avakian', 'what occupation']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Chris Menges (Trust: 0.736)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: Seq (Trust: 0.767)
+--- Step 3 (Frontier Size: 14) ---
+  ✅ Selected: EntBridge (Trust: 0.800)
+2025-12-25 09:40:05 - [INFO] - 🤖 预测: Film Director
+2025-12-25 09:40:05 - [INFO] - ✅ 真值: director
+2025-12-25 09:40:05 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.67)
+2025-12-25 09:40:05 - [INFO] - 📊 指标: F1=0.67 | P=0.50 | R=1.00 | ✅ Sem-Match (耗时: 7.89s)
+2025-12-25 09:40:05 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:40:05 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:40:05 - [INFO] - 进度: [91/7405] | Query ID: 5abfb3425542990832d3a1c0
+2025-12-25 09:40:05 - [INFO] - ❓ 问题: Andrew Jaspan was the co-founder of what not-for-profit media outlet?
+2025-12-25 09:40:05 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['media outlet', 'andrew jaspan']
+  📊 PPR: 66581 nodes, 158906 edges, 20 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Andrew Jaspan (Trust: 0.777)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: EntBridge (Trust: 0.760)
+--- Step 3 (Frontier Size: 14) ---
+2025-12-25 09:40:13 - [INFO] - 🤖 预测: The Conversation
+2025-12-25 09:40:13 - [INFO] - ✅ 真值: The Conversation
+2025-12-25 09:40:13 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.74s)
+2025-12-25 09:40:13 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:40:13 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:40:13 - [INFO] - 进度: [92/7405] | Query ID: 5ac3165c5542995ef918c10a
+2025-12-25 09:40:13 - [INFO] - ❓ 问题: Which American film director hosted the 18th Independent Spirit Awards in 2002?
+2025-12-25 09:40:13 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['film director', '18th independent spirit awards', 'in 2002']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: 18th Independent Spirit Awards (Trust: 0.605)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: Seq (Trust: 0.650)
+--- Step 3 (Frontier Size: 12) ---
+2025-12-25 09:40:20 - [INFO] - 🤖 预测: John Waters
+2025-12-25 09:40:20 - [INFO] - ✅ 真值: John Waters
+2025-12-25 09:40:20 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 6.70s)
+2025-12-25 09:40:20 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=1 | support=2 hit_docs=2
+2025-12-25 09:40:20 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:40:20 - [INFO] - 进度: [93/7405] | Query ID: 5ae53b545542990ba0bbb23c
+2025-12-25 09:40:20 - [INFO] - ❓ 问题: Where does the hotel and casino located in which Bill Cosby's third album was recorded?
+2025-12-25 09:40:20 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['bill cosby', 'hotel', 'third album']
+  📊 PPR: 66581 nodes, 158906 edges, 27 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Why Is There Air? (Trust: 0.815)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: VectorJump (Trust: 0.704)
+--- Step 3 (Frontier Size: 12) ---
+2025-12-25 09:40:28 - [INFO] - 🤖 预测: Las Vegas
+2025-12-25 09:40:28 - [INFO] - ✅ 真值: Las Vegas Strip in Paradise
+2025-12-25 09:40:28 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.57)
+2025-12-25 09:40:28 - [INFO] - 📊 指标: F1=0.57 | P=1.00 | R=0.40 | ✅ Sem-Match (耗时: 7.70s)
+2025-12-25 09:40:28 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:40:28 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:40:28 - [INFO] - 进度: [94/7405] | Query ID: 5ae224da554299234fd043ee
+2025-12-25 09:40:28 - [INFO] - ❓ 问题: Do the drinks Gibson and Zurracapote both contain gin?
+2025-12-25 09:40:28 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['gibson', 'zurracapote']
+  📊 PPR: 66581 nodes, 158906 edges, 20 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Gibson (cocktail) (Trust: 0.803)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: Zurracapote (Trust: 0.702)
+--- Step 3 (Frontier Size: 12) ---
+  ✅ Selected: Seq (Trust: 0.598)
+2025-12-25 09:40:36 - [INFO] - 🤖 预测: no
+2025-12-25 09:40:36 - [INFO] - ✅ 真值: no
+2025-12-25 09:40:36 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.01s)
+2025-12-25 09:40:36 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:40:36 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:40:36 - [INFO] - 进度: [95/7405] | Query ID: 5ae2b770554299495565db0f
+2025-12-25 09:40:36 - [INFO] - ❓ 问题: In what month is the annual documentary film festival, that is presented by the fortnightly published British journal of literary essays, held? 
+2025-12-25 09:40:36 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['annual documentary film festival', 'british journal of literary essays', 'what month']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: London International Documentary Festival (Trust: 0.690)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: London Review of Books (Trust: 0.686)
+--- Step 3 (Frontier Size: 12) ---
+  ✅ Selected: New Haven Documentary Film Festival (Trust: 0.642)
+2025-12-25 09:40:43 - [INFO] - 🤖 预测: March
+2025-12-25 09:40:43 - [INFO] - ✅ 真值: March and April
+2025-12-25 09:40:43 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.50)
+2025-12-25 09:40:43 - [INFO] - 📊 指标: F1=0.50 | P=1.00 | R=0.33 | ✅ Sem-Match (耗时: 7.47s)
+2025-12-25 09:40:43 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:40:43 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:40:43 - [INFO] - 进度: [96/7405] | Query ID: 5a80b3a9554299485f5986cc
+2025-12-25 09:40:43 - [INFO] - ❓ 问题: Tysons Galleria is located in what county?
+2025-12-25 09:40:43 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['tysons galleria', 'county']
+  📊 PPR: 66581 nodes, 158906 edges, 19 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Tysons, Virginia (Trust: 0.826)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Sem (Trust: 0.830)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:40:51 - [INFO] - 🤖 预测: Fairfax
+2025-12-25 09:40:51 - [INFO] - ✅ 真值: Fairfax County
+2025-12-25 09:40:51 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.67)
+2025-12-25 09:40:51 - [INFO] - 📊 指标: F1=0.67 | P=1.00 | R=0.50 | ✅ Sem-Match (耗时: 7.61s)
+2025-12-25 09:40:51 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:40:51 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:40:51 - [INFO] - 进度: [97/7405] | Query ID: 5a8e0a005542995085b373a1
+2025-12-25 09:40:51 - [INFO] - ❓ 问题: Bordan Tkachuk was the CEO of a company that provides what sort of products?
+2025-12-25 09:40:51 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['bordan tkachuk', 'company', 'products']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Bordan Tkachuk (Trust: 0.728)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: Seq (Trust: 0.663)
+--- Step 3 (Frontier Size: 11) ---
+  ✅ Selected: Seq (Trust: 0.679)
+2025-12-25 09:40:58 - [INFO] - 🤖 预测: IT products
+2025-12-25 09:40:58 - [INFO] - ✅ 真值: IT products and services
+2025-12-25 09:40:58 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.67)
+2025-12-25 09:40:58 - [INFO] - 📊 指标: F1=0.67 | P=1.00 | R=0.50 | ✅ Sem-Match (耗时: 7.66s)
+2025-12-25 09:40:58 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:40:58 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:40:58 - [INFO] - 进度: [98/7405] | Query ID: 5ac1b8ee5542994d76dccedc
+2025-12-25 09:40:58 - [INFO] - ❓ 问题: Which filmmaker was known for animation, Lev Yilmaz or Pamela B. Green?
+2025-12-25 09:40:58 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['pamela b green', 'lev yilmaz', 'animation']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Pamela B. Green (Trust: 0.714)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: Lev Yilmaz (Trust: 0.674)
+--- Step 3 (Frontier Size: 12) ---
+  ✅ Selected: Seq (Trust: 0.627)
+2025-12-25 09:41:06 - [INFO] - 🤖 预测: Lev Yilmaz
+2025-12-25 09:41:06 - [INFO] - ✅ 真值: Levni Yilmaz
+2025-12-25 09:41:06 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.50)
+2025-12-25 09:41:06 - [INFO] - 📊 指标: F1=0.50 | P=0.50 | R=0.50 | ✅ Sem-Match (耗时: 7.87s)
+2025-12-25 09:41:06 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:41:06 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:41:06 - [INFO] - 进度: [99/7405] | Query ID: 5adccd795542990d50227d2c
+2025-12-25 09:41:06 - [INFO] - ❓ 问题: In which city is the ambassador of the Rabat-Salé-Kénitra administrative region to China based?
+2025-12-25 09:41:06 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['china', 'in which city', 'rabatsalékénitra administrative region', 'ambassador']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Moroccan Ambassador to China (Trust: 0.650)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: EntBridge (Trust: 0.641)
+--- Step 3 (Frontier Size: 14) ---
+2025-12-25 09:41:14 - [INFO] - 🤖 预测: Beijing
+2025-12-25 09:41:14 - [INFO] - ✅ 真值: Beijing
+2025-12-25 09:41:14 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.27s)
+2025-12-25 09:41:14 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:41:14 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:41:14 - [INFO] - 进度: [100/7405] | Query ID: 5a84c4135542994c784dda31
+2025-12-25 09:41:14 - [INFO] - ❓ 问题: Are Yingkou and Fuding the same level of city?
+2025-12-25 09:41:14 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['city', 'fuding', 'yingkou']
+  📊 PPR: 66581 nodes, 158906 edges, 27 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Yingkou (Trust: 0.782)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: Seq (Trust: 0.773)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: VectorJump (Trust: 0.799)
+2025-12-25 09:41:22 - [INFO] - 🤖 预测: no
+2025-12-25 09:41:22 - [INFO] - ✅ 真值: no
+2025-12-25 09:41:22 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.87s)
+2025-12-25 09:41:22 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:41:22 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:41:22 - [INFO] - 进度: [101/7405] | Query ID: 5a85eed75542996432c5713b
+2025-12-25 09:41:22 - [INFO] - ❓ 问题: Where did the descendants of the group of black Indians associated with the Seminole people settle?
+2025-12-25 09:41:22 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['associated with the seminole people', 'group of black indians', 'where']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Black Seminoles (Trust: 0.709)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Sem (Trust: 0.663)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:41:30 - [INFO] - 🤖 预测: Florida and Oklahoma
+2025-12-25 09:41:30 - [INFO] - ✅ 真值: Coahuila, Mexico
+2025-12-25 09:41:30 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.79s)
+2025-12-25 09:41:30 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:41:30 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:41:30 - [INFO] - 进度: [102/7405] | Query ID: 5a774e9c55429972597f14f3
+2025-12-25 09:41:30 - [INFO] - ❓ 问题: David Huntsinger has worked with this gospel singer born in the month of July?
+2025-12-25 09:41:30 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['this gospel singer', 'david huntsinger', 'month of july']
+  📊 PPR: 66581 nodes, 158906 edges, 20 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: David Huntsinger (Trust: 0.716)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: Larnelle Harris (Trust: 0.574)
+--- Step 3 (Frontier Size: 12) ---
+  ✅ Selected: Andraé Crouch (Trust: 0.571)
+2025-12-25 09:41:38 - [INFO] - 🤖 预测: Larnelle Harris
+2025-12-25 09:41:38 - [INFO] - ✅ 真值: Larnelle Harris
+2025-12-25 09:41:38 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.81s)
+2025-12-25 09:41:38 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:41:38 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:41:38 - [INFO] - 进度: [103/7405] | Query ID: 5ae738f75542991bbc9761c4
+2025-12-25 09:41:38 - [INFO] - ❓ 问题: What year was the brother of this first round draft pick by the Washington Redskins drafted?
+2025-12-25 09:41:38 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['brother', 'washington redskins', 'first round', 'year', 'drafted', 'draft pick']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Champ Bailey (Trust: 0.734)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: QueryEnt (Trust: 0.694)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: QueryEnt (Trust: 0.708)
+2025-12-25 09:41:54 - [INFO] - 🤖 预测: 1999
+2025-12-25 09:41:54 - [INFO] - ✅ 真值: 2003
+2025-12-25 09:41:54 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 16.03s)
+2025-12-25 09:41:54 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:41:54 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:41:54 - [INFO] - 进度: [104/7405] | Query ID: 5ac32b565542995ef918c154
+2025-12-25 09:41:54 - [INFO] - ❓ 问题: Where is the stadium at which 1964 Georgia Tech Yellow Jackets football team played their home game located? 
+2025-12-25 09:41:54 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['home game', 'georgia tech', '1964', 'where is the stadium']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: 1964 Georgia Tech Yellow Jackets football team (Trust: 0.778)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Bobby Dodd Stadium (Trust: 0.638)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: Georgia Tech Yellow Jackets football (Trust: 0.605)
+2025-12-25 09:42:02 - [INFO] - 🤖 预测: Atlanta, Georgia
+2025-12-25 09:42:02 - [INFO] - ✅ 真值: North Avenue at Techwood Drive
+2025-12-25 09:42:02 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.87s)
+2025-12-25 09:42:02 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:42:02 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:42:02 - [INFO] - 进度: [105/7405] | Query ID: 5abc8d75554299700f9d7900
+2025-12-25 09:42:02 - [INFO] - ❓ 问题: Since 2 June 2017, The Leader of Fine Gael had been held by which Irish Fine Gael politician who has served as Taoiseach and Minister for Defence?
+2025-12-25 09:42:02 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['politician', 'taoiseach', 'fine gael', 'since 2 june 2017', 'minister for defence', 'leader']
+  📊 PPR: 66581 nodes, 158906 edges, 46 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Enda Kenny (Trust: 0.913)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Leo Varadkar (Trust: 0.868)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:42:09 - [INFO] - 🤖 预测: Leo Varadkar
+2025-12-25 09:42:09 - [INFO] - ✅ 真值: Leo Varadkar
+2025-12-25 09:42:09 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.58s)
+2025-12-25 09:42:09 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:42:09 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:42:09 - [INFO] - 进度: [106/7405] | Query ID: 5a8bb29b554299240d9c2089
+2025-12-25 09:42:09 - [INFO] - ❓ 问题: Which American film actor and dancer starred in the 1945 film Johnny Angel?
+2025-12-25 09:42:09 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['johnny angel', 'american', '1945', 'film actor and dancer']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Johnny Angel (Trust: 0.748)
+--- Step 2 (Frontier Size: 15) ---
+  ✅ Selected: VectorJump (Trust: 0.722)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:42:17 - [INFO] - 🤖 预测: George Raft
+2025-12-25 09:42:17 - [INFO] - ✅ 真值: George Raft
+2025-12-25 09:42:17 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.54s)
+2025-12-25 09:42:17 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:42:17 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:42:17 - [INFO] - 进度: [107/7405] | Query ID: 5ab659e355429954757d324e
+2025-12-25 09:42:17 - [INFO] - ❓ 问题: hree Men on a Horse is a play by a playwright born in which year ?
+2025-12-25 09:42:17 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['playwright', 'born', 'horse', 'in which year', 'play', 'hree']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: James Roland MacLaren (Trust: 0.580)
+--- Step 2 (Frontier Size: 14) ---
+  ✅ Selected: Seq (Trust: 0.588)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: QueryEnt (Trust: 0.573)
+2025-12-25 09:42:25 - [INFO] - 🤖 预测: George Abbott
+2025-12-25 09:42:25 - [INFO] - ✅ 真值: 1887
+2025-12-25 09:42:25 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.11s)
+2025-12-25 09:42:25 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:42:25 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:42:25 - [INFO] - 进度: [108/7405] | Query ID: 5a8b8b3155429949d91db5d7
+2025-12-25 09:42:25 - [INFO] - ❓ 问题: What type of activity does Owner earnings and Warren Buffett have in common?
+2025-12-25 09:42:25 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['what type of activity', 'warren buffett', 'owner earnings']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Owner earnings (Trust: 0.802)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntMention (Trust: 0.653)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: QueryEnt (Trust: 0.679)
+2025-12-25 09:42:33 - [INFO] - 🤖 预测: Business
+2025-12-25 09:42:33 - [INFO] - ✅ 真值: business
+2025-12-25 09:42:33 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.75s)
+2025-12-25 09:42:33 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:42:33 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:42:33 - [INFO] - 进度: [109/7405] | Query ID: 5ae7eaf65542994a481bbe1d
+2025-12-25 09:42:33 - [INFO] - ❓ 问题: When was the  former Indian cricketer who made his ODI debuts during the 2000 ICC KnockOut Trophy born? 
+2025-12-25 09:42:33 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['when', 'odi', '2000', 'knockout trophy', 'former indian cricketer', 'icc']
+  📊 PPR: 66581 nodes, 158906 edges, 48 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: 2000 ICC KnockOut Trophy (Trust: 0.825)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: 2000 ICC KnockOut Trophy squads (Trust: 0.700)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:42:40 - [INFO] - 🤖 预测: Zaheer Khan
+2025-12-25 09:42:40 - [INFO] - ✅ 真值: 7 October 1978
+2025-12-25 09:42:40 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.53s)
+2025-12-25 09:42:40 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:42:40 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:42:40 - [INFO] - 进度: [110/7405] | Query ID: 5a8c4c625542995e66a475a1
+2025-12-25 09:42:40 - [INFO] - ❓ 问题: Which airplane was this Major test-flying after whom the base, that 514th Flight Test Squadron is stated at, is named?
+2025-12-25 09:42:40 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['514th flight test squadron', 'base', 'testflying', 'airplane']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: 514th Flight Test Squadron (Trust: 0.818)
+--- Step 2 (Frontier Size: 15) ---
+  ✅ Selected: Hill Air Force Base (Trust: 0.641)
+--- Step 3 (Frontier Size: 15) ---
+2025-12-25 09:42:48 - [INFO] - 🤖 预测: B-17 Flying Fortress
+2025-12-25 09:42:48 - [INFO] - ✅ 真值: B-17 Flying Fortress bomber
+2025-12-25 09:42:48 - [INFO] - 📊 指标: F1=0.89 | P=1.00 | R=0.80 | 🎉 High F1 (0.89) (耗时: 7.54s)
+2025-12-25 09:42:48 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:42:48 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:42:48 - [INFO] - 进度: [111/7405] | Query ID: 5a818387554299260e20a291
+2025-12-25 09:42:48 - [INFO] - ❓ 问题: Based on a True Story... is an album by which country music star, with the single My Eyes?
+2025-12-25 09:42:48 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['my eyes', 'which country music star', 'single', 'album']
+  📊 PPR: 66581 nodes, 158906 edges, 38 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: My Eyes (Blake Shelton song) (Trust: 0.842)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: Based on a True Story... (Trust: 0.745)
+--- Step 3 (Frontier Size: 12) ---
+  ✅ Selected: Seq (Trust: 0.716)
+2025-12-25 09:42:56 - [INFO] - 🤖 预测: Blake Shelton
+2025-12-25 09:42:56 - [INFO] - ✅ 真值: Blake Shelton
+2025-12-25 09:42:56 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.91s)
+2025-12-25 09:42:56 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:42:56 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:42:56 - [INFO] - 进度: [112/7405] | Query ID: 5ab978855542996be2020512
+2025-12-25 09:42:56 - [INFO] - ❓ 问题: Over how many centuries were the "dwelling place of the dead" built?
+2025-12-25 09:42:56 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['dwelling place of the dead', 'built']
+  📊 PPR: 66581 nodes, 158906 edges, 20 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Tabernacle (Trust: 0.607)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: EntBridge (Trust: 0.576)
+--- Step 3 (Frontier Size: 15) ---
+  ✅ Selected: Seq (Trust: 0.577)
+2025-12-25 09:43:04 - [INFO] - 🤖 预测: One
+2025-12-25 09:43:04 - [INFO] - ✅ 真值: three centuries
+2025-12-25 09:43:04 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.75s)
+2025-12-25 09:43:04 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:43:04 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:43:04 - [INFO] - 进度: [113/7405] | Query ID: 5ae63dad55429929b0807afe
+2025-12-25 09:43:04 - [INFO] - ❓ 问题: When was the British author who wrote the novel on which "Here We Go Round the Mulberry Bush" was based born? 
+2025-12-25 09:43:04 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['british author', 'when', 'here we go round the mulberry bush']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Here We Go Round the Mulberry Bush (film) (Trust: 0.718)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Here We Go Round the Mulberry Bush (Trust: 0.618)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:43:11 - [INFO] - 🤖 预测: Hunter Davies
+2025-12-25 09:43:11 - [INFO] - ✅ 真值: 7 January 1936
+2025-12-25 09:43:11 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.53s)
+2025-12-25 09:43:11 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:43:11 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:43:11 - [INFO] - 进度: [114/7405] | Query ID: 5a7a455c5542994f819ef1a7
+2025-12-25 09:43:11 - [INFO] - ❓ 问题: Who died first, George Archainbaud or Ralph Murphy?
+2025-12-25 09:43:11 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['died first', 'george archainbaud', 'ralph murphy']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Ralph Murphy (Trust: 0.842)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: George Archainbaud (Trust: 0.757)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:43:19 - [INFO] - 🤖 预测: George Archainbaud
+2025-12-25 09:43:19 - [INFO] - ✅ 真值: George Archainbaud
+2025-12-25 09:43:19 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.57s)
+2025-12-25 09:43:19 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:43:19 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:43:19 - [INFO] - 进度: [115/7405] | Query ID: 5a7dcc775542990b8f503ab5
+2025-12-25 09:43:19 - [INFO] - ❓ 问题: Which component of shellite has the formula (ON)CHOH?
+2025-12-25 09:43:19 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['choh', 'shellite', 'formula', 'on']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Picric acid (Trust: 0.774)
+--- Step 2 (Frontier Size: 15) ---
+  ✅ Selected: EntMention (Trust: 0.748)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: QueryEnt (Trust: 0.746)
+2025-12-25 09:43:26 - [INFO] - 🤖 预测: Picric acid
+2025-12-25 09:43:26 - [INFO] - ✅ 真值: picric acid
+2025-12-25 09:43:26 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.73s)
+2025-12-25 09:43:26 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:43:26 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:43:26 - [INFO] - 进度: [116/7405] | Query ID: 5a887bc0554299206df2b2b6
+2025-12-25 09:43:26 - [INFO] - ❓ 问题: The Argentine PGA Championship record holder has won how many tournaments worldwide?
+2025-12-25 09:43:26 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['record holder', 'worldwide', 'argentine']
+  📊 PPR: 66581 nodes, 158906 edges, 28 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Argentine PGA Championship (Trust: 0.864)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: Sem (Trust: 0.725)
+--- Step 3 (Frontier Size: 14) ---
+2025-12-25 09:43:34 - [INFO] - 🤖 预测: Over 230
+2025-12-25 09:43:34 - [INFO] - ✅ 真值: 230
+2025-12-25 09:43:34 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.67)
+2025-12-25 09:43:34 - [INFO] - 📊 指标: F1=0.67 | P=0.50 | R=1.00 | ✅ Sem-Match (耗时: 7.60s)
+2025-12-25 09:43:34 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:43:34 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:43:34 - [INFO] - 进度: [117/7405] | Query ID: 5a83880e554299123d8c214e
+2025-12-25 09:43:34 - [INFO] - ❓ 问题: Suicide's 1977 released album features a song based on what brand's comic character?
+2025-12-25 09:43:34 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['song', 'suicide', 'album', 'brand', 'comic character', '1977']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Ghost Rider (Suicide song) (Trust: 0.705)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: VectorJump (Trust: 0.689)
+--- Step 3 (Frontier Size: 11) ---
+2025-12-25 09:43:42 - [INFO] - 🤖 预测: Marvel Comics
+2025-12-25 09:43:42 - [INFO] - ✅ 真值: Marvel
+2025-12-25 09:43:42 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.67)
+2025-12-25 09:43:42 - [INFO] - 📊 指标: F1=0.67 | P=0.50 | R=1.00 | ✅ Sem-Match (耗时: 7.57s)
+2025-12-25 09:43:42 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:43:42 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:43:42 - [INFO] - 进度: [118/7405] | Query ID: 5a879adb5542996e4f30887f
+2025-12-25 09:43:42 - [INFO] - ❓ 问题: What other political position did the person who introduced the DISCLOSE Act hold?
+2025-12-25 09:43:42 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['disclose act', 'what other political position', 'person']
+  📊 PPR: 66581 nodes, 158906 edges, 26 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: DISCLOSE Act (Trust: 0.707)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: VectorJump (Trust: 0.603)
+--- Step 3 (Frontier Size: 13) ---
+  ✅ Selected: Seq (Trust: 0.561)
+2025-12-25 09:43:50 - [INFO] - 🤖 预测: U.S. Representative
+2025-12-25 09:43:50 - [INFO] - ✅ 真值: United States Senator
+2025-12-25 09:43:50 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.90s)
+2025-12-25 09:43:50 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:43:50 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:43:50 - [INFO] - 进度: [119/7405] | Query ID: 5add11935542994734353827
+2025-12-25 09:43:50 - [INFO] - ❓ 问题: Were the bands Skin Yard and Ostava from the U.S.?
+2025-12-25 09:43:50 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['ostava', 'us', 'skin yard']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Skin Yard (Trust: 0.825)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: QueryEnt (Trust: 0.834)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: QueryEnt (Trust: 0.822)
+2025-12-25 09:43:58 - [INFO] - 🤖 预测: no
+2025-12-25 09:43:58 - [INFO] - ✅ 真值: no
+2025-12-25 09:43:58 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 8.30s)
+2025-12-25 09:43:58 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=1 | support=2 hit_docs=2
+2025-12-25 09:43:58 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:43:58 - [INFO] - 进度: [120/7405] | Query ID: 5a8c5569554299240d9c2126
+2025-12-25 09:43:58 - [INFO] - ❓ 问题: Are Daryl Hall and Gerry Marsden both musicians?
+2025-12-25 09:43:58 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['musicians', 'daryl hall', 'gerry marsden']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Daryl Hall (Trust: 0.845)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Sem (Trust: 0.818)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:44:06 - [INFO] - 🤖 预测: no
+2025-12-25 09:44:06 - [INFO] - ✅ 真值: yes
+2025-12-25 09:44:06 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.98s)
+2025-12-25 09:44:06 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:44:06 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:44:06 - [INFO] - 进度: [121/7405] | Query ID: 5a75f0ea5542994ccc91866c
+2025-12-25 09:44:06 - [INFO] - ❓ 问题: What major truck road is located in Backford Cross?
+2025-12-25 09:44:06 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['backford cross', 'major truck road']
+  📊 PPR: 66581 nodes, 158906 edges, 18 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Backford Cross (Trust: 0.761)
+--- Step 2 (Frontier Size: 15) ---
+  ✅ Selected: EntMention (Trust: 0.711)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:44:13 - [INFO] - 🤖 预测: A41
+2025-12-25 09:44:13 - [INFO] - ✅ 真值: The A41
+2025-12-25 09:44:13 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.51s)
+2025-12-25 09:44:13 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:44:13 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:44:13 - [INFO] - 进度: [122/7405] | Query ID: 5a89f5815542993b751ca9c5
+2025-12-25 09:44:13 - [INFO] - ❓ 问题: In which role did Caroline Carver played in a 1999 Hallmark Entertainment made-for-TV fantasy movie?
+2025-12-25 09:44:13 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['1999', 'hallmark entertainment', 'fantasy movie', 'madefortv', 'caroline carver']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: The Magical Legend of the Leprechauns (Trust: 0.788)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: Caroline Carver (actress) (Trust: 0.748)
+--- Step 3 (Frontier Size: 14) ---
+2025-12-25 09:44:21 - [INFO] - 🤖 预测: Princess Jessica
+2025-12-25 09:44:21 - [INFO] - ✅ 真值: Princess Jessica
+2025-12-25 09:44:21 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.37s)
+2025-12-25 09:44:21 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:44:21 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:44:21 - [INFO] - 进度: [123/7405] | Query ID: 5a8d5fc6554299585d9e37c6
+2025-12-25 09:44:21 - [INFO] - ❓ 问题: What's the name of the fantasy film starring Sarah Bolger, featuring a New England family who discover magical creatures around their estate?
+2025-12-25 09:44:21 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['starring sarah bolger', 'magical creatures', 'their estate', 'discover', 'family', 'new england', 'fantasy film']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: The Spiderwick Chronicles (film) (Trust: 0.845)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Sarah Bolger (Trust: 0.679)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:44:28 - [INFO] - 🤖 预测: The Spiderwick Chronicles
+2025-12-25 09:44:28 - [INFO] - ✅ 真值: The Spiderwick Chronicles
+2025-12-25 09:44:28 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.57s)
+2025-12-25 09:44:28 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:44:28 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:44:28 - [INFO] - 进度: [124/7405] | Query ID: 5ac120c55542992a796dedfc
+2025-12-25 09:44:28 - [INFO] - ❓ 问题: Maxeda has been owned since 2004 by which American multinational equity firm?
+2025-12-25 09:44:28 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['american multinational equity firm', 'has been owned since 2004', 'maxeda']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Maxeda (Trust: 0.827)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: VectorJump (Trust: 0.679)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.688)
+2025-12-25 09:44:36 - [INFO] - 🤖 预测: Kohlberg Kravis Roberts
+2025-12-25 09:44:36 - [INFO] - ✅ 真值: KKR & Co
+2025-12-25 09:44:36 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.00)
+2025-12-25 09:44:36 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ✅ Sem-Match (耗时: 7.88s)
+2025-12-25 09:44:36 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:44:36 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:44:36 - [INFO] - 进度: [125/7405] | Query ID: 5ab7c1a955429928e1fe38c8
+2025-12-25 09:44:36 - [INFO] - ❓ 问题: The youngest daughter of Lady Mary-Gaye Curzon stars with Douglas Smith and Lucien Laviscount  in what 2017 film?
+2025-12-25 09:44:36 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['film', 'lucien laviscount', '2017', 'youngest daughter of lady marygaye curzon', 'douglas smith']
+  📊 PPR: 66581 nodes, 158906 edges, 41 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: The Bye Bye Man (Trust: 0.794)
+--- Step 2 (Frontier Size: 14) ---
+  ✅ Selected: Cressida Bonas (Trust: 0.728)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: Bottom of the World (film) (Trust: 0.642)
+2025-12-25 09:44:44 - [INFO] - 🤖 预测: The Bye Bye Man
+2025-12-25 09:44:44 - [INFO] - ✅ 真值: The Bye Bye Man
+2025-12-25 09:44:44 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.43s)
+2025-12-25 09:44:44 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:44:44 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:44:44 - [INFO] - 进度: [126/7405] | Query ID: 5abd01205542992ac4f3819b
+2025-12-25 09:44:44 - [INFO] - ❓ 问题: Mummulgum is a stop on the Bruxner Highway before reaching the town on the banks of which river?
+2025-12-25 09:44:44 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['mummulgum', 'river', 'town', 'bruxner highway']
+  📊 PPR: 66581 nodes, 158906 edges, 36 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Mummulgum (Trust: 0.811)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: QueryEnt (Trust: 0.800)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:44:51 - [INFO] - 🤖 预测: Richmond
+2025-12-25 09:44:51 - [INFO] - ✅ 真值: Richmond
+2025-12-25 09:44:51 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.88s)
+2025-12-25 09:44:51 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:44:51 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:44:51 - [INFO] - 进度: [127/7405] | Query ID: 5ab69c25554299110f219a39
+2025-12-25 09:44:51 - [INFO] - ❓ 问题: Which American audio engineer and clandestine chemist, who was a key figure in the San Francisco Bay Area hippie movement during the 1960s recorded the album "Old and in the Way?"
+2025-12-25 09:44:51 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['1960s', 'which american audio engineer and clandestine chemist', 'san francisco bay area', 'album', 'old and in the way']
+  📊 PPR: 66581 nodes, 158906 edges, 49 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Old and in the Way (album) (Trust: 0.798)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: Owsley Stanley (Trust: 0.772)
+--- Step 3 (Frontier Size: 14) ---
+2025-12-25 09:44:59 - [INFO] - 🤖 预测: Owsley Stanley
+2025-12-25 09:44:59 - [INFO] - ✅ 真值: Owsley Stanley
+2025-12-25 09:44:59 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.62s)
+2025-12-25 09:44:59 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:44:59 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:44:59 - [INFO] - 进度: [128/7405] | Query ID: 5a7b12a355429927d897bf2a
+2025-12-25 09:44:59 - [INFO] - ❓ 问题: When was the palace founded at which Columba de Dunbar died in 1435?
+2025-12-25 09:44:59 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['when', 'in 1435', 'columba de dunbar', 'palace', 'died']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Columba de Dunbar (Trust: 0.844)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: QueryEnt (Trust: 0.787)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: EntMention (Trust: 0.777)
+2025-12-25 09:45:08 - [INFO] - 🤖 预测: Spynie Palace
+2025-12-25 09:45:08 - [INFO] - ✅ 真值: the late 12th Century
+2025-12-25 09:45:08 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.85s)
+2025-12-25 09:45:08 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:45:08 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:45:08 - [INFO] - 进度: [129/7405] | Query ID: 5ae0006755429925eb1afbd3
+2025-12-25 09:45:08 - [INFO] - ❓ 问题: Where is the Bubblegum Alley, that is similar to Gum Wall, located in California?
+2025-12-25 09:45:08 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['california', 'gum wall', 'bubblegum alley']
+  📊 PPR: 66581 nodes, 158906 edges, 29 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Gum Wall (Trust: 0.851)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: Bubblegum Alley (Trust: 0.814)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:45:15 - [INFO] - 🤖 预测: San Luis Obispo
+2025-12-25 09:45:15 - [INFO] - ✅ 真值: San Luis Obispo, California
+2025-12-25 09:45:15 - [INFO] - 📊 指标: F1=0.86 | P=1.00 | R=0.75 | 🎉 High F1 (0.86) (耗时: 7.54s)
+2025-12-25 09:45:15 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:45:15 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:45:15 - [INFO] - 进度: [130/7405] | Query ID: 5ae305df5542992decbdcdc3
+2025-12-25 09:45:15 - [INFO] - ❓ 问题: At what venue was the January 2, 2012 game featured the University of Louisville team?
+2025-12-25 09:45:15 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['at what venue', 'january 2 2012', 'university of louisville', 'team', 'game']
+  📊 PPR: 66581 nodes, 158906 edges, 49 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: 2012 Louisville Cardinals football team (Trust: 0.631)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: EntBridge (Trust: 0.640)
+--- Step 3 (Frontier Size: 13) ---
+  ✅ Selected: VectorJump (Trust: 0.606)
+2025-12-25 09:45:24 - [INFO] - 🤖 预测: Papa John's Cardinal Stadium
+2025-12-25 09:45:24 - [INFO] - ✅ 真值: Mercedes-Benz Superdome
+2025-12-25 09:45:24 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 8.12s)
+2025-12-25 09:45:24 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:45:24 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:45:24 - [INFO] - 进度: [131/7405] | Query ID: 5a8574945542997b5ce3fffb
+2025-12-25 09:45:24 - [INFO] - ❓ 问题: Which film was Oscar nominated, LaLee's Kin: The Legacy of Cotton or Gimme Shelter, the 1970 Rolling Stones documentary?
+2025-12-25 09:45:24 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['1970', 'rolling stones', 'documentary', 'oscar nominated', 'lalees kin the legacy of cotton', 'gimme shelter']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Gimme Shelter (1970 film) (Trust: 0.799)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: LaLee's Kin: The Legacy of Cotton (Trust: 0.712)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: Gimme Shelter (album) (Trust: 0.701)
+2025-12-25 09:45:31 - [INFO] - 🤖 预测: LaLee's Kin
+2025-12-25 09:45:31 - [INFO] - ✅ 真值: LaLee's Kin: The Legacy of Cotton
+2025-12-25 09:45:31 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.57)
+2025-12-25 09:45:31 - [INFO] - 📊 指标: F1=0.57 | P=1.00 | R=0.40 | ✅ Sem-Match (耗时: 7.65s)
+2025-12-25 09:45:31 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:45:31 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:45:31 - [INFO] - 进度: [132/7405] | Query ID: 5a7332935542991f9a20c67d
+2025-12-25 09:45:31 - [INFO] - ❓ 问题: Which board game was published most recently, Pirate's Cove or Catan?
+2025-12-25 09:45:31 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['pirate', 'board game', 'catan']
+  📊 PPR: 66581 nodes, 158906 edges, 29 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Pirate's Cove (Trust: 0.877)
+--- Step 2 (Frontier Size: 15) ---
+  ✅ Selected: QueryEnt (Trust: 0.759)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.761)
+2025-12-25 09:45:39 - [INFO] - 🤖 预测: The Kids of Catan
+2025-12-25 09:45:39 - [INFO] - ✅ 真值: Pirate's Cove
+2025-12-25 09:45:39 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.92s)
+2025-12-25 09:45:39 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:45:39 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:45:39 - [INFO] - 进度: [133/7405] | Query ID: 5a80071f5542992bc0c4a684
+2025-12-25 09:45:39 - [INFO] - ❓ 问题: Alice David is the voice of Lara Croft in a video game developed by which company ?
+2025-12-25 09:45:39 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['video game', 'alice david', 'lara croft', 'which company']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Alice David (Trust: 0.780)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.748)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.745)
+2025-12-25 09:45:47 - [INFO] - 🤖 预测: Crystal Dynamics
+2025-12-25 09:45:47 - [INFO] - ✅ 真值: Crystal Dynamics
+2025-12-25 09:45:47 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.69s)
+2025-12-25 09:45:47 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:45:47 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:45:47 - [INFO] - 进度: [134/7405] | Query ID: 5ae73c065542991e8301cc18
+2025-12-25 09:45:47 - [INFO] - ❓ 问题: Which Eminem album included vocals from a singer who had an album titled "Unapologetic"?
+2025-12-25 09:45:47 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['singer', 'eminem album', 'unapologetic', 'album']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Numb (Rihanna song) (Trust: 0.740)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: Seq (Trust: 0.687)
+--- Step 3 (Frontier Size: 12) ---
+2025-12-25 09:45:54 - [INFO] - 🤖 预测: The Marshall Mathers LP 2
+2025-12-25 09:45:54 - [INFO] - ✅ 真值: "The Marshall Mathers LP 2"
+2025-12-25 09:45:54 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.59s)
+2025-12-25 09:45:54 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:45:54 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:45:54 - [INFO] - 进度: [135/7405] | Query ID: 5a87d8215542994775f60800
+2025-12-25 09:45:54 - [INFO] - ❓ 问题: This American crime film set in South Los Angeles was written and directed by the same director and writer of screenwriter of "Street Kings", "End of Watch", "Sabotage", "Fury" and what other film? 
+2025-12-25 09:45:54 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['end of watch', 'director', 'writer of screenwriter', 'sabotage', 'set in south los angeles', 'fury', 'street kings', 'american crime film']
+  📊 PPR: 66581 nodes, 158906 edges, 48 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: David Ayer (Trust: 0.890)
+--- Step 2 (Frontier Size: 15) ---
+  ✅ Selected: End of Watch (Trust: 0.751)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:46:02 - [INFO] - 🤖 预测: Suicide Squad
+2025-12-25 09:46:02 - [INFO] - ✅ 真值: Suicide Squad
+2025-12-25 09:46:02 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.86s)
+2025-12-25 09:46:02 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:46:02 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:46:02 - [INFO] - 进度: [136/7405] | Query ID: 5ac2ffbd554299677310267b
+2025-12-25 09:46:02 - [INFO] - ❓ 问题: SuperMansion starred the actress who had a recurring role as whom on Workaholics?
+2025-12-25 09:46:02 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['supermansion', 'whom', 'recurring role', 'actress', 'workaholics']
+  📊 PPR: 66581 nodes, 158906 edges, 48 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Jillian Bell (Trust: 0.804)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: SuperMansion (Trust: 0.713)
+--- Step 3 (Frontier Size: 12) ---
+  ✅ Selected: Seq (Trust: 0.688)
+2025-12-25 09:46:11 - [INFO] - 🤖 预测: Jillian Bell
+2025-12-25 09:46:11 - [INFO] - ✅ 真值: Jillian Belk
+2025-12-25 09:46:11 - [INFO] - 📊 指标: F1=0.50 | P=0.50 | R=0.50 | 🎉 High F1 (0.50) (耗时: 8.50s)
+2025-12-25 09:46:11 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:46:11 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:46:11 - [INFO] - 进度: [137/7405] | Query ID: 5a7c960655429935c91b5244
+2025-12-25 09:46:11 - [INFO] - ❓ 问题: The 1974 Texas Tech Raiders football team represented what public research university in Lubbock, Texas?
+2025-12-25 09:46:11 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['texas', '1974 texas tech raiders football team', 'lubbock', 'public research university']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Texas Tech University (Trust: 0.784)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: 1974 Texas Tech Red Raiders football team (Trust: 0.666)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:46:18 - [INFO] - 🤖 预测: Texas Tech University
+2025-12-25 09:46:18 - [INFO] - ✅ 真值: Texas Tech University
+2025-12-25 09:46:18 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 7.42s)
+2025-12-25 09:46:18 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:46:18 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:46:18 - [INFO] - 进度: [138/7405] | Query ID: 5a7d61775542991319bc93b9
+2025-12-25 09:46:18 - [INFO] - ❓ 问题: During Siege of Bharatpur, which Commander-in-Chief of Ireland and Commander-in-Chief of India contributed to the storming of the castle?
+2025-12-25 09:46:18 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['during siege of bharatpur', 'commanderinchief of ireland', 'storming of the castle', 'commanderinchief of india']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Stapleton Cotton, 1st Viscount Combermere (Trust: 0.770)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Siege of Bharatpur (1805) (Trust: 0.716)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:46:26 - [INFO] - 🤖 预测: Stapleton Cotton
+2025-12-25 09:46:26 - [INFO] - ✅ 真值: Lord Combermere
+2025-12-25 09:46:26 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.65s)
+2025-12-25 09:46:26 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:46:26 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:46:26 - [INFO] - 进度: [139/7405] | Query ID: 5ac1c6805542994ab5c67e11
+2025-12-25 09:46:26 - [INFO] - ❓ 问题: For what type of work is the production company for The Year Without a Santa Claus best known?
+2025-12-25 09:46:26 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['production company', 'work']
+  📊 PPR: 66581 nodes, 158906 edges, 20 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: The Year Without a Santa Claus (Trust: 0.680)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: VectorJump (Trust: 0.758)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.684)
+2025-12-25 09:46:34 - [INFO] - 🤖 预测: Seasonal television specials
+2025-12-25 09:46:34 - [INFO] - ✅ 真值: seasonal television specials, particularly its work in stop motion animation
+2025-12-25 09:46:34 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.46)
+2025-12-25 09:46:34 - [INFO] - 📊 指标: F1=0.46 | P=1.00 | R=0.30 | ✅ Sem-Match (耗时: 7.82s)
+2025-12-25 09:46:34 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=1 | support=2 hit_docs=2
+2025-12-25 09:46:34 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:46:34 - [INFO] - 进度: [140/7405] | Query ID: 5a7a230e5542996a35c170ee
+2025-12-25 09:46:34 - [INFO] - ❓ 问题: What year was the film that starred the composer for "The Naked Brothers Band"?
+2025-12-25 09:46:34 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['year', 'naked brothers band', 'composer']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Nat Wolff (Trust: 0.713)
+--- Step 2 (Frontier Size: 14) ---
+  ✅ Selected: Sem (Trust: 0.706)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:46:41 - [INFO] - 🤖 预测: 2007
+2025-12-25 09:46:41 - [INFO] - ✅ 真值: 2014
+2025-12-25 09:46:41 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 7.50s)
+2025-12-25 09:46:41 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:46:41 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:46:41 - [INFO] - 进度: [141/7405] | Query ID: 5ae4627d5542991a06ce9a4d
+2025-12-25 09:46:41 - [INFO] - ❓ 问题: The author of Sexual Politics attended which British University?
+2025-12-25 09:46:41 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['attended', 'sexual politics', 'british university', 'author']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Kate Millett (Trust: 0.723)
+--- Step 2 (Frontier Size: 14) ---
+  ✅ Selected: EntMention (Trust: 0.706)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: Sexual Politics (Trust: 0.696)
+2025-12-25 09:46:51 - [INFO] - 🤖 预测: Oxford
+2025-12-25 09:46:51 - [INFO] - ✅ 真值: Oxford
+2025-12-25 09:46:51 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 10.03s)
+2025-12-25 09:46:51 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:46:51 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:46:51 - [INFO] - 进度: [142/7405] | Query ID: 5ac2d1d755429921a00ab053
+2025-12-25 09:46:51 - [INFO] - ❓ 问题: Who had the best singles ranking, Roberta Vinci or Jorge Lozano?
+2025-12-25 09:46:51 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['roberta vinci', 'jorge lozano']
+  📊 PPR: 66581 nodes, 158906 edges, 20 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Jorge Lozano (Trust: 0.841)
+--- Step 2 (Frontier Size: 15) ---
+  ✅ Selected: Roberta Vinci (Trust: 0.731)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: QueryEnt (Trust: 0.845)
+2025-12-25 09:47:07 - [INFO] - 🤖 预测: Jorge Lozano
+2025-12-25 09:47:07 - [INFO] - ✅ 真值: Roberta Vinci
+2025-12-25 09:47:07 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 15.52s)
+2025-12-25 09:47:07 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:47:07 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:47:07 - [INFO] - 进度: [143/7405] | Query ID: 5ab4e3065542990594ba9cb4
+2025-12-25 09:47:07 - [INFO] - ❓ 问题: Both Truth in Science and Discovery embrace what campaign?
+2025-12-25 09:47:07 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['embrace what campaign', 'discovery', 'truth', 'science']
+  📊 PPR: 66581 nodes, 158906 edges, 38 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Truth in Science (Trust: 0.798)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: Sem (Trust: 0.717)
+--- Step 3 (Frontier Size: 13) ---
+2025-12-25 09:47:17 - [INFO] - 🤖 预测: Teach the Controversy
+2025-12-25 09:47:17 - [INFO] - ✅ 真值: "Teach the Controversy" campaign
+2025-12-25 09:47:17 - [INFO] - 📊 指标: F1=0.80 | P=1.00 | R=0.67 | 🎉 High F1 (0.80) (耗时: 10.24s)
+2025-12-25 09:47:17 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:47:17 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:47:17 - [INFO] - 进度: [144/7405] | Query ID: 5ac298f9554299657fa28fc9
+2025-12-25 09:47:17 - [INFO] - ❓ 问题: Josey Scott and Ian Watkins were both promising musicians. Which of these talented men was incarcerated, impacting his career with a rock band?
+2025-12-25 09:47:17 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['impacting', 'incarcerated', 'career', 'promising musicians', 'josey scott', 'rock band', 'ian watkins']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Josey Scott (Trust: 0.789)
+--- Step 2 (Frontier Size: 15) ---
+  ✅ Selected: Under Your Skin (album) (Trust: 0.648)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: Always (Saliva song) (Trust: 0.641)
+2025-12-25 09:47:28 - [INFO] - 🤖 预测: no
+2025-12-25 09:47:28 - [INFO] - ✅ 真值: Lostprophets disbanded in 2013 after Watkins was charged with sexual offences in late 2012.
+2025-12-25 09:47:28 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 10.96s)
+2025-12-25 09:47:28 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:47:28 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:47:28 - [INFO] - 进度: [145/7405] | Query ID: 5ab6a2be554299710c8d1f08
+2025-12-25 09:47:28 - [INFO] - ❓ 问题: The movies Queen of Blood and Battle Beyond the Sun both contained scenes from what 1959 Soviet feature?
+2025-12-25 09:47:28 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['soviet', 'battle beyond the sun', '1959', 'movies', 'queen of blood']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Battle Beyond the Sun (Trust: 0.749)
+--- Step 2 (Frontier Size: 15) ---
+  ✅ Selected: Queen of Blood (Trust: 0.723)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:47:39 - [INFO] - 🤖 预测: yes
+2025-12-25 09:47:39 - [INFO] - ✅ 真值: Nebo Zovyot
+2025-12-25 09:47:39 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 10.70s)
+2025-12-25 09:47:39 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:47:39 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:47:39 - [INFO] - 进度: [146/7405] | Query ID: 5a738d27554299623ed4abf3
+2025-12-25 09:47:39 - [INFO] - ❓ 问题: Who was born first, Erika Jayne or Marco Da Silva
+2025-12-25 09:47:39 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['marco da silva', 'erika jayne']
+  📊 PPR: 66581 nodes, 158906 edges, 19 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Marco Da Silva (dancer) (Trust: 0.892)
+--- Step 2 (Frontier Size: 14) ---
+  ✅ Selected: EntMention (Trust: 0.783)
+--- Step 3 (Frontier Size: 14) ---
+2025-12-25 09:47:54 - [INFO] - 🤖 预测: Marco Da Silva
+2025-12-25 09:47:54 - [INFO] - ✅ 真值: Erika Jayne
+2025-12-25 09:47:54 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 15.14s)
+2025-12-25 09:47:54 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:47:54 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:47:54 - [INFO] - 进度: [147/7405] | Query ID: 5ab2a186554299295394677b
+2025-12-25 09:47:54 - [INFO] - ❓ 问题: When did the English local newspaper, featuring the sculpture and war memorial in the Forbury gardens, change names?
+2025-12-25 09:47:54 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['english local newspaper', 'sculpture', 'change names', 'war memorial', 'forbury', 'when did']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Maiwand Lion (Trust: 0.746)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Reading Post (Trust: 0.638)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:48:04 - [INFO] - 🤖 预测: 2009
+2025-12-25 09:48:04 - [INFO] - ✅ 真值: 2009
+2025-12-25 09:48:04 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 10.31s)
+2025-12-25 09:48:04 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:48:04 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:48:04 - [INFO] - 进度: [148/7405] | Query ID: 5a8704f8554299211dda2ba4
+2025-12-25 09:48:04 - [INFO] - ❓ 问题: What is the name of the Isles who were led by Aonghus Mór and covered a total land area of over 8300 km2?
+2025-12-25 09:48:04 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['aonghus mór', 'isles']
+  📊 PPR: 66581 nodes, 158906 edges, 19 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: List of rulers of the Kingdom of the Isles (Trust: 0.727)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: Lord of Islay (Trust: 0.726)
+--- Step 3 (Frontier Size: 14) ---
+  ✅ Selected: Aonghus Mór (Trust: 0.725)
+2025-12-25 09:48:19 - [INFO] - 🤖 预测: Suðreyjar
+2025-12-25 09:48:19 - [INFO] - ✅ 真值: Kingdom of the Isles
+2025-12-25 09:48:19 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.00)
+2025-12-25 09:48:19 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ✅ Sem-Match (耗时: 15.31s)
+2025-12-25 09:48:19 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:48:19 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:48:19 - [INFO] - 进度: [149/7405] | Query ID: 5ab5ed505542997d4ad1f255
+2025-12-25 09:48:19 - [INFO] - ❓ 问题: Who is Bruce Spizer an expert on, known as the most influential act of the rock era?
+2025-12-25 09:48:19 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['rock era', 'most influential act', 'bruce spizer']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Bruce Spizer (Trust: 0.782)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: VectorJump (Trust: 0.736)
+--- Step 3 (Frontier Size: 15) ---
+  ✅ Selected: Seq (Trust: 0.753)
+2025-12-25 09:48:30 - [INFO] - 🤖 预测: The Beatles
+2025-12-25 09:48:30 - [INFO] - ✅ 真值: The Beatles
+2025-12-25 09:48:30 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 10.25s)
+2025-12-25 09:48:30 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:48:30 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:48:30 - [INFO] - 进度: [150/7405] | Query ID: 5a77c1505542997042120b1b
+2025-12-25 09:48:30 - [INFO] - ❓ 问题: Which song was behind the third single on the album  "A Lot About Livin' (And a Little 'bout Love)" for two weeks on the country charts?
+2025-12-25 09:48:30 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['two weeks', 'album', 'lot about livin', 'third single', 'country charts']
+  📊 PPR: 66581 nodes, 158906 edges, 49 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Chattahoochee (song) (Trust: 0.803)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: A Lot About Livin' (And a Little 'bout Love) (Trust: 0.784)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:48:40 - [INFO] - 🤖 预测: Chattahoochee
+2025-12-25 09:48:40 - [INFO] - ✅ 真值: "We'll Burn That Bridge"
+2025-12-25 09:48:40 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 10.46s)
+2025-12-25 09:48:40 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:48:40 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:48:40 - [INFO] - 进度: [151/7405] | Query ID: 5a88d745554299206df2b378
+2025-12-25 09:48:40 - [INFO] - ❓ 问题: What occupation was shared by David Yates and Pietro Germi?
+2025-12-25 09:48:40 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['david yates', 'pietro germi', 'occupation']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Pietro Germi (Trust: 0.782)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.738)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.719)
+2025-12-25 09:48:50 - [INFO] - 🤖 预测: Director
+2025-12-25 09:48:50 - [INFO] - ✅ 真值: director
+2025-12-25 09:48:50 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 10.19s)
+2025-12-25 09:48:50 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:48:50 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:48:50 - [INFO] - 进度: [152/7405] | Query ID: 5ae748d1554299572ea547b0
+2025-12-25 09:48:50 - [INFO] - ❓ 问题: Marcus Wayne Garland spent nine seasons with an American professional baseball team that is based in Baltimore, Maryland, and was one of the AMerican League's original eight charter franchises when the league was established in what year?
+2025-12-25 09:48:50 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['american league', 'baltimore maryland', 'in what year', 'marcus wayne garland', 'american professional baseball team']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Baltimore Orioles (Trust: 0.772)
+--- Step 2 (Frontier Size: 15) ---
+  ✅ Selected: Wayne Garland (Trust: 0.750)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:49:00 - [INFO] - 🤖 预测: 1901
+2025-12-25 09:49:00 - [INFO] - ✅ 真值: 1901
+2025-12-25 09:49:00 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 9.95s)
+2025-12-25 09:49:00 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:49:00 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:49:00 - [INFO] - 进度: [153/7405] | Query ID: 5a7a8a9c554299042af8f666
+2025-12-25 09:49:00 - [INFO] - ❓ 问题: The lamp used in many lighthouses is similiar to this type of lamp patented in 1780 by Aimé Argand?
+2025-12-25 09:49:00 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['by aimé argand', 'lighthouses', 'lamp', 'patented in 1780']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Argand lamp (Trust: 0.851)
+--- Step 2 (Frontier Size: 15) ---
+  ✅ Selected: Sem (Trust: 0.807)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:49:10 - [INFO] - 🤖 预测: Yes
+2025-12-25 09:49:10 - [INFO] - ✅ 真值: Argand lamp
+2025-12-25 09:49:10 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 10.18s)
+2025-12-25 09:49:10 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:49:10 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:49:10 - [INFO] - 进度: [154/7405] | Query ID: 5adffe7155429906c02daa9e
+2025-12-25 09:49:10 - [INFO] - ❓ 问题: The songs from the sountrack to "When Harry Met Sally" are performed by a singer that has had how many top 20 US albums?
+2025-12-25 09:49:10 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['when harry met sally', 'singer', 'us', 'sountrack']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Harry Connick Jr. (Trust: 0.745)
+--- Step 2 (Frontier Size: 10) ---
+  ✅ Selected: When Harry Met Sally... (soundtrack) (Trust: 0.730)
+--- Step 3 (Frontier Size: 14) ---
+  ✅ Selected: When Harry Met Sally... (Trust: 0.618)
+2025-12-25 09:49:20 - [INFO] - 🤖 预测: Seven
+2025-12-25 09:49:20 - [INFO] - ✅ 真值: seven
+2025-12-25 09:49:20 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 9.86s)
+2025-12-25 09:49:20 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:49:20 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:49:20 - [INFO] - 进度: [155/7405] | Query ID: 5ab642845542995eadeeff8e
+2025-12-25 09:49:20 - [INFO] - ❓ 问题: Are Broughtonia and Laeliocattleya both orchids?
+2025-12-25 09:49:20 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['broughtonia', 'laeliocattleya']
+  📊 PPR: 66581 nodes, 158906 edges, 19 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Broughtonia (Trust: 0.809)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Sem (Trust: 0.769)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:49:31 - [INFO] - 🤖 预测: yes
+2025-12-25 09:49:31 - [INFO] - ✅ 真值: yes
+2025-12-25 09:49:31 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 10.26s)
+2025-12-25 09:49:31 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:49:31 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:49:31 - [INFO] - 进度: [156/7405] | Query ID: 5a906a685542990a9849362e
+2025-12-25 09:49:31 - [INFO] - ❓ 问题: Where was the world cup hosted that Algeria qualified for the first time into the round of 16?
+2025-12-25 09:49:31 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['where was the world cup hosted', 'round of 16', 'algeria']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Algeria at the FIFA World Cup (Trust: 0.680)
+--- Step 2 (Frontier Size: 11) ---
+  ✅ Selected: 2014 FIFA World Cup (Trust: 0.592)
+--- Step 3 (Frontier Size: 12) ---
+  ✅ Selected: 2002 FIFA World Cup (Trust: 0.553)
+2025-12-25 09:49:40 - [INFO] - 🤖 预测: Brazil
+2025-12-25 09:49:40 - [INFO] - ✅ 真值: Brazil
+2025-12-25 09:49:40 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 9.87s)
+2025-12-25 09:49:40 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:49:40 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:49:40 - [INFO] - 进度: [157/7405] | Query ID: 5a7633ad5542992db9473741
+2025-12-25 09:49:40 - [INFO] - ❓ 问题: Which was fought earlier in our nation's history, the Seven Days Battles or the Battle of Manila?
+2025-12-25 09:49:40 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['seven days battles', 'manila', 'nation']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Seven Days Battles (Trust: 0.849)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: Sem (Trust: 0.761)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: Battle of Manila (1945) (Trust: 0.756)
+2025-12-25 09:49:51 - [INFO] - 🤖 预测: Seven Days Battles
+2025-12-25 09:49:51 - [INFO] - ✅ 真值: The Seven Days Battles
+2025-12-25 09:49:51 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 10.46s)
+2025-12-25 09:49:51 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:49:51 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:49:51 - [INFO] - 进度: [158/7405] | Query ID: 5a74ce9655429974ef308c6c
+2025-12-25 09:49:51 - [INFO] - ❓ 问题: What retailer in ABQ Uptown is headquarted in Poole, Dorset, United Kingdom?
+2025-12-25 09:49:51 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['retailer', 'poole', 'united kingdom', 'dorset', 'abq uptown']
+  📊 PPR: 66581 nodes, 158906 edges, 47 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Lush (company) (Trust: 0.748)
+--- Step 2 (Frontier Size: 15) ---
+  ✅ Selected: QueryEnt (Trust: 0.779)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: Seq (Trust: 0.696)
+2025-12-25 09:50:01 - [INFO] - 🤖 预测: Lush
+2025-12-25 09:50:01 - [INFO] - ✅ 真值: Lush Ltd.
+2025-12-25 09:50:01 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.67)
+2025-12-25 09:50:01 - [INFO] - 📊 指标: F1=0.67 | P=1.00 | R=0.50 | ✅ Sem-Match (耗时: 10.46s)
+2025-12-25 09:50:01 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=1 | support=2 hit_docs=2
+2025-12-25 09:50:01 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:50:01 - [INFO] - 进度: [159/7405] | Query ID: 5a713a5a5542994082a3e6a9
+2025-12-25 09:50:01 - [INFO] - ❓ 问题: What football club plays in the area between the old tool gates: Brook Bar and Trafford bar?
+2025-12-25 09:50:01 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['trafford bar', 'brook bar', 'old tool gates', 'what football club']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Old Trafford, Greater Manchester (Trust: 0.648)
+--- Step 2 (Frontier Size: 15) ---
+  ✅ Selected: VectorJump (Trust: 0.588)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: VectorJump (Trust: 0.591)
+2025-12-25 09:50:18 - [INFO] - 🤖 预测: Manchester United Football Club
+2025-12-25 09:50:18 - [INFO] - ✅ 真值: Manchester United
+2025-12-25 09:50:18 - [INFO] - ⚖️ 裁判: ✅ 语义一致 (虽然 F1=0.67)
+2025-12-25 09:50:18 - [INFO] - 📊 指标: F1=0.67 | P=0.50 | R=1.00 | ✅ Sem-Match (耗时: 16.33s)
+2025-12-25 09:50:18 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:50:18 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:50:18 - [INFO] - 进度: [160/7405] | Query ID: 5ab341f755429969a97a8114
+2025-12-25 09:50:18 - [INFO] - ❓ 问题: The song "Chim Chim Cher-ee" can be heard  in the "Mary Poppins" scene of a Disney ride that debuted in what year?
+2025-12-25 09:50:18 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['disney ride', 'mary poppins', 'year']
+  📊 PPR: 66581 nodes, 158906 edges, 30 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Chim Chim Cher-ee (Trust: 0.764)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: The Great Movie Ride (Trust: 0.637)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:50:28 - [INFO] - 🤖 预测: 1989
+2025-12-25 09:50:28 - [INFO] - ✅ 真值: 1989
+2025-12-25 09:50:28 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 10.10s)
+2025-12-25 09:50:28 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:50:28 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:50:28 - [INFO] - 进度: [161/7405] | Query ID: 5a8325b35542990548d0b18f
+2025-12-25 09:50:28 - [INFO] - ❓ 问题: Who held the record for the longest service in the Australian Parliament for a woman, and was surpassed by  a former Australian politician who was the 29th Speaker of the House of Representatives?
+2025-12-25 09:50:28 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['former australian politician', 'woman', 'record', 'australian parliament', '29th speaker of the house of representatives', 'longest service']
+  📊 PPR: 66581 nodes, 158906 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Kathy Sullivan (Australian politician) (Trust: 0.793)
+--- Step 2 (Frontier Size: 14) ---
+  ✅ Selected: Bronwyn Bishop (Trust: 0.765)
+--- Step 3 (Frontier Size: 14) ---
+2025-12-25 09:50:38 - [INFO] - 🤖 预测: Dorothy Tangney
+2025-12-25 09:50:38 - [INFO] - ✅ 真值: Kathryn Jean Martin
+2025-12-25 09:50:38 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 10.22s)
+2025-12-25 09:50:38 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:50:38 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:50:38 - [INFO] - 进度: [162/7405] | Query ID: 5ab9374b554299131ca422c6
+2025-12-25 09:50:38 - [INFO] - ❓ 问题: Which man who presented the Australia 2022 FIFA World Cup bid was born on October 22, 1930?
+2025-12-25 09:50:38 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['october 22 1930', 'fifa', 'australia', 'world cup', 'man']
+  📊 PPR: 66581 nodes, 158906 edges, 50 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Australia 2022 FIFA World Cup bid (Trust: 0.720)
+--- Step 2 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.725)
+--- Step 3 (Frontier Size: 16) ---
+2025-12-25 09:50:48 - [INFO] - 🤖 预测: Frank Lowy
+2025-12-25 09:50:48 - [INFO] - ✅ 真值: Frank Lowy
+2025-12-25 09:50:48 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 9.91s)
+2025-12-25 09:50:48 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:50:48 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:50:48 - [INFO] - 进度: [163/7405] | Query ID: 5ae52c0f5542992663a4f12e
+2025-12-25 09:50:48 - [INFO] - ❓ 问题: What major city is the Faith Lutheran Middle School and High School located by?
+2025-12-25 09:50:48 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['faith lutheran middle school', 'what major city']
+  📊 PPR: 66581 nodes, 158906 edges, 20 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Faith Lutheran Middle School &amp; High School (Trust: 0.770)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: Vernon Fox (Trust: 0.708)
+--- Step 3 (Frontier Size: 12) ---
+  ✅ Selected: EntBridge (Trust: 0.672)
+2025-12-25 09:50:58 - [INFO] - 🤖 预测: Las Vegas
+2025-12-25 09:50:58 - [INFO] - ✅ 真值: Las Vegas
+2025-12-25 09:50:58 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 9.89s)
+2025-12-25 09:50:58 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:50:58 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:50:58 - [INFO] - 进度: [164/7405] | Query ID: 5adbfbd555429947ff173893
+2025-12-25 09:50:58 - [INFO] - ❓ 问题: What British singer-songwriter hosted the 16th Annual Young Hollywood Awards?
+2025-12-25 09:50:58 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['young hollywood awards', 'singersongwriter']
+  📊 PPR: 66581 nodes, 158906 edges, 20 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: 2014 Young Hollywood Awards (Trust: 0.764)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: Sem (Trust: 0.688)
+--- Step 3 (Frontier Size: 16) ---
+  ✅ Selected: EntBridge (Trust: 0.716)
+2025-12-25 09:51:08 - [INFO] - 🤖 预测: Kelly Osbourne
+2025-12-25 09:51:08 - [INFO] - ✅ 真值: Kelly Lee Osbourne
+2025-12-25 09:51:08 - [INFO] - 📊 指标: F1=0.80 | P=1.00 | R=0.67 | 🎉 High F1 (0.80) (耗时: 9.99s)
+2025-12-25 09:51:08 - [INFO] - 🔎 Hits: retrieval=1 bridge=0 path=0 | support=2 hit_docs=1
+2025-12-25 09:51:08 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:51:08 - [INFO] - 进度: [165/7405] | Query ID: 5ab7f0015542992aa3b8c88b
+2025-12-25 09:51:08 - [INFO] - ❓ 问题: Who did the Star and Dagger bass player marry?
+2025-12-25 09:51:08 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['star and dagger', 'bass player', 'marry']
+  📊 PPR: 66581 nodes, 158906 edges, 25 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Sean Yseult (Trust: 0.552)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: EntMention (Trust: 0.626)
+--- Step 3 (Frontier Size: 13) ---
+  ✅ Selected: Seq (Trust: 0.619)
+2025-12-25 09:51:18 - [INFO] - 🤖 预测: Chris Lee
+2025-12-25 09:51:18 - [INFO] - ✅ 真值: Sean Yseult.
+2025-12-25 09:51:18 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 10.40s)
+2025-12-25 09:51:18 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=1 | support=2 hit_docs=2
+2025-12-25 09:51:18 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:51:18 - [INFO] - 进度: [166/7405] | Query ID: 5ac547525542993e66e822a3
+2025-12-25 09:51:18 - [INFO] - ❓ 问题: In 2017, what was 3/4th of the organization that also has a Center for Veterinary Medicine as well as part of the U.S. Department of Health and Human Services, spent on?
+2025-12-25 09:51:18 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['34th of the organization', 'center for veterinary medicine', 'department of health and human services', 'in 2017', 'spent on']
+  📊 PPR: 66581 nodes, 158906 edges, 45 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Food and Drug Administration (Trust: 0.686)
+--- Step 2 (Frontier Size: 13) ---
+  ✅ Selected: Melarsomine (Trust: 0.455)
+--- Step 3 (Frontier Size: 14) ---
+  ✅ Selected: United States Public Health Service (Trust: 0.440)
+2025-12-25 09:51:34 - [INFO] - 🤖 预测: $700 million
+2025-12-25 09:51:34 - [INFO] - ✅ 真值: Prescription Drug User Fee Act
+2025-12-25 09:51:34 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 15.78s)
+2025-12-25 09:51:34 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:51:34 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:51:34 - [INFO] - 进度: [167/7405] | Query ID: 5a7cbf8c554299452d57b9f4
+2025-12-25 09:51:34 - [INFO] - ❓ 问题: Which came out first, Dinosaur or McFarland, USA
+2025-12-25 09:51:34 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['dinosaur', 'mcfarland usa']
+  📊 PPR: 66581 nodes, 158906 edges, 20 seeds
+  📋 [小空间模式] 全量加载 doc_filter (10 docs)
+--- Step 1 (Frontier Size: 10) ---
+  ✅ Selected: Dinosaur (film) (Trust: 0.702)
+--- Step 2 (Frontier Size: 12) ---
+  ✅ Selected: McFarland, USA (Trust: 0.689)
+--- Step 3 (Frontier Size: 13) ---
+  ✅ Selected: Seq (Trust: 0.679)
+2025-12-25 09:51:44 - [INFO] - 🤖 预测: Dinosaur
+2025-12-25 09:51:44 - [INFO] - ✅ 真值: Dinosaur
+2025-12-25 09:51:44 - [INFO] - 📊 指标: F1=1.00 | P=1.00 | R=1.00 | 🎉 High F1 (1.00) (耗时: 10.19s)
+2025-12-25 09:51:44 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2
+2025-12-25 09:51:44 - [INFO] - ------------------------------------------------------------
+2025-12-25 09:51:44 - [INFO] - 进度: [168/7405] | Query ID: 5a7ddc5a5542995f4f4022da
+2025-12-25 09:51:44 - [INFO] - ❓ 问题: Both Bishop Carroll Catholic High School and Kapaun Mt. Carmel Catholic High School are located in which city in Kansas?
+2025-12-25 09:51:44 - [INFO] - 📋 doc_filter: 10 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 10 docs)
+🎯 Query Entities (normalized): ['kapaun mt carmel catholic high school', 'both bishop carroll catholic high school', 'kansas']

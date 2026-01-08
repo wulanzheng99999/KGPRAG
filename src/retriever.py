@@ -206,16 +206,24 @@ class MultiHopRetriever:
         # 5. 来源类型加权
         source_weights = {
             "QueryEnt": 1.0,
+            "Content": 0.95,     # Hop 0 初始节点 (置信度极高)
             "EntBridge": 0.90,
             "RelPath": 0.85,
+            "EntMention": 0.85,  # 视为弱关联路径
             "SummaryDrill": 0.85,
-            "Sem": 0.80,
+            "SemHigh": 0.80,     # [V3] 高置信度语义边 (>=0.7)
+            "Sem": 0.80,         # 兼容旧代码
             "VectorJump": 0.75,
+            "SemLow": 0.60,      # [V3] 低置信度语义边 (0.55-0.7)，显著降权
             "Seq": 0.65,
         }
-        title = node.get("title", "")
-        source_type = title if title in source_weights else "EntBridge"
-        source_weight = source_weights.get(source_type, 0.75)
+        
+        # 优先使用 explicit source_type (由 search 注入)，否则回退到 title
+        raw_type = node.get("source_type", node.get("title", ""))
+        
+        # 如果是已知类型，直接查表；否则默认为 "Content" (避免误判为高权重的 EntBridge)
+        source_key = raw_type if raw_type in source_weights else "Content"
+        source_weight = source_weights.get(source_key, 0.75)
         
         # 加权融合 (动态调整：PPR 有效时使用，否则将权重分配给其他信号)
         if ppr_available:
@@ -235,8 +243,128 @@ class MultiHopRetriever:
                 0.15 * source_weight
             )
         
+        # [V3] 细粒度降权：利用 edge_score 进一步区分 SemHigh/SemLow
+        edge_score = node.get("edge_score")
+        if edge_score is not None:
+            if source_key == "SemHigh":
+                # SemHigh (0.7~1.0): 保持接近原始分 (0.97~1.0 multiplier)
+                # edge_factor = 0.90 + 0.10 * edge_score (e.g. 0.7 -> 0.97, 1.0 -> 1.0)
+                trust_score *= (0.90 + 0.10 * edge_score)
+            elif source_key == "SemLow":
+                # SemLow (0.55~0.7): 显著压低 (0.84~0.89 multiplier)
+                # edge_factor = 0.65 + 0.35 * edge_score (e.g. 0.55 -> 0.84, 0.69 -> 0.89)
+                trust_score *= (0.65 + 0.35 * edge_score)
+        
         return trust_score
     
+    def _apply_diversity_filter(self, candidates: List[Dict], beam_width: int, hop: int = 0, is_small_space: bool = False) -> List[Dict]:
+        """
+        Diversity Filter V2: Document + Source-Type Aware with Soft Penalty
+        采用迭代贪心选择 (Iterative Greedy Selection) + 动态惩罚
+        """
+        if not candidates:
+            return []
+            
+        # 1. 参数配置
+        lambda_doc = 0.10   # 文档同质化惩罚
+        lambda_type = 0.05  # 类型同质化惩罚
+        
+        # 硬限制 (Safety Guard)
+        # 仅在小空间模式下放宽限制，大空间保持严格多样性
+        hard_limit_doc = 2 if is_small_space else 1
+        
+        # 类型优先级配置 (Base Bonus)
+        # 给关键类型一点初始加分，确保它们有机会被选中
+        type_bonus = {
+            "QueryEnt": 0.05,
+            "EntBridge": 0.04 if hop > 0 else 0.0,
+            "RelPath": 0.04 if hop > 0 else 0.0,
+            "SummaryDrill": 0.03 if hop == 0 else 0.0,
+            "VectorJump": 0.02
+        }
+
+        # 辅助函数：推断 Source Type
+        def get_source_type(node):
+            if "source_type" in node: return node["source_type"]
+            # 兼容旧代码：从 title 推断
+            t = node.get("title", "")
+            if t in ["VectorJump", "EntBridge", "RelPath", "QueryEnt", "SummaryDrill", "Seq", 
+                     "Sem", "SemHigh", "SemLow", "EntMention"]: # V3: SemHigh/Low
+                return t
+            return "Content" # 默认普通文档节点
+
+        # 2. 准备候选池
+        pool = []
+        for node in candidates:
+            stype = get_source_type(node)
+            doc_title = node.get("doc_title", "") or f"__NO_TITLE_{node['id']}__"
+            
+            # 基础分 = 原始分 + 类型奖励
+            base_score = node.get("score", 0.0) + type_bonus.get(stype, 0.0)
+            
+            pool.append({
+                "node": node,
+                "base_score": base_score,
+                "type": stype,
+                "doc": doc_title,
+                "id": node["id"]
+            })
+
+        # 3. 迭代选择 (Iterative Selection)
+        selected = []
+        selected_ids = set()
+        
+        # 计数器
+        counts_doc = {}
+        counts_type = {}
+        
+        while len(selected) < beam_width and pool:
+            best_idx = -1
+            best_adjusted_score = -float('inf')
+            
+            # 遍历池中剩余候选，计算动态分数
+            for i, item in enumerate(pool):
+                # 硬限制检查
+                if counts_doc.get(item["doc"], 0) >= hard_limit_doc:
+                    continue
+                
+                # 动态惩罚：已选的同类/同文档越多，惩罚越大
+                penalty = (lambda_doc * counts_doc.get(item["doc"], 0) + 
+                           lambda_type * counts_type.get(item["type"], 0))
+                           
+                adj_score = item["base_score"] - penalty
+                
+                if adj_score > best_adjusted_score:
+                    best_adjusted_score = adj_score
+                    best_idx = i
+            
+            # 如果找不到合法的候选（都触发硬限制了），尝试放宽硬限制兜底
+            if best_idx == -1:
+                # 兜底策略：取剩余里 base_score 最高的，忽略硬限制
+                # (为了填满 Beam，不至于空着)
+                best_idx = -1
+                best_base_score = -float('inf')
+                for i, item in enumerate(pool):
+                    if item["base_score"] > best_base_score:
+                        best_base_score = item["base_score"]
+                        best_idx = i
+                
+                if best_idx == -1: # 还是空的（pool为空）
+                    break
+
+            # 选中最佳
+            chosen = pool.pop(best_idx)
+            selected.append(chosen["node"])
+            selected_ids.add(chosen["id"])
+            
+            # 更新计数
+            counts_doc[chosen["doc"]] = counts_doc.get(chosen["doc"], 0) + 1
+            counts_type[chosen["type"]] = counts_type.get(chosen["type"], 0) + 1
+            
+        # 4. 再次按分数排序返回 (保证下游处理顺序)
+        selected.sort(key=lambda x: x["score"], reverse=True)
+        return selected
+
     def search(
         self, 
         user_query: str, 
@@ -428,6 +556,10 @@ class MultiHopRetriever:
         reranker_scores = self._get_reranker_scores(pairs)
         
         for i, node in enumerate(frontier):
+            # 确保有 source_type
+            if "source_type" not in node:
+                node["source_type"] = "Content"
+                
             node["reranker_score"] = reranker_scores[i]
             node["trust_score"] = self.compute_trust_score(
                 node, query_entities, reranker_scores[i], node.get("hop_depth", 0)
@@ -444,146 +576,161 @@ class MultiHopRetriever:
         if is_small_space:
             # 确保所有初始候选都进入图谱推理，但不超过 SMALL_SPACE_THRESHOLD 的上限
             effective_beam_width = min(len(frontier), SMALL_SPACE_THRESHOLD)
-            frontier = frontier[:effective_beam_width]
+            # 初始多样性过滤 V2
+            frontier = self._apply_diversity_filter(frontier, effective_beam_width, hop=0, is_small_space=True)
         else:
-            frontier = frontier[:beam_width]
+            # 初始多样性过滤 V2
+            frontier = self._apply_diversity_filter(frontier, beam_width, hop=0, is_small_space=False)
 
-        # --- 3. 迭代扩展 ---
-        step = 0
-        while step < max_hops and frontier:
-            step += 1
-            print(f"--- Step {step} (Frontier Size: {len(frontier)}) ---")
+        # --- 3. 迭代扩展 (Beam Search) ---
+        # 改为标准的 Beam Search 结构：每跳扩展 Top-K 个节点
+        NODES_TO_EXPAND = 3  # 每跳扩展的节点数 (Top-3)
+        
+        for hop in range(max_hops):
+            print(f"--- Hop {hop+1} (Frontier Size: {len(frontier)}) ---")
             
-            current_best_node = frontier.pop(0)
+            # 本跳产生的所有新候选
+            candidates_for_next_hop = []
             
-            if current_best_node["id"] in visited_ids:
-                continue
+            # 取 Frontier 中尚未访问的前 K 个节点进行扩展
+            # 注意：frontier 已经是按分数排序且多样性过滤过的
+            nodes_to_process = []
+            for node in frontier:
+                if node["id"] not in visited_ids:
+                    nodes_to_process.append(node)
+                    if len(nodes_to_process) >= NODES_TO_EXPAND:
+                        break
             
-            visited_ids.add(current_best_node["id"])
-            
-            # 可信度剪枝
-            should_keep = False
-            if current_best_node["score"] >= TRUST_THRESHOLD:
-                should_keep = True
-            elif is_small_space and len(final_selected_nodes) < MIN_CANDIDATES_KEEP:
-                # [小空间模式] 强制保留前 K 个，防止被阈值完全误杀
-                should_keep = True
-                print(f"  🛡️ Force Keep: {current_best_node['title']} (Trust: {current_best_node['score']:.3f} < Threshold)")
-
-            if should_keep:
-                final_selected_nodes[current_best_node["id"]] = current_best_node
-                if current_best_node["score"] >= TRUST_THRESHOLD:
-                    print(f"  ✅ Selected: {current_best_node['title']} (Trust: {current_best_node['score']:.3f})")
-            else:
-                print(f"  🗑️ Pruned: {current_best_node['title']} (Low Trust: {current_best_node['score']:.3f})")
-                continue
-
-            # 扩展邻居
-            neighbors_map = self.graph_store.expand_node(
-                current_best_node["id"], visited_ids, query_entities
-            )
-            
-            # [方案B] Hybrid Retrieval
-            if len(neighbors_map) < 3:
-                hybrid_candidates = self.vector_store.hybrid_retrieval(
-                    user_query, 
-                    current_best_node["context_str"], 
-                    visited_ids,
-                    top_k=5
-                )
-                for hc in hybrid_candidates:
-                    if hc["id"] not in neighbors_map:
-                        neighbors_map[hc["id"]] = {"text": hc["text"], "title": hc["title"]}
-            
-            if not neighbors_map:
-                continue
-
-            # 准备新候选
-            new_candidates = []
-            current_context = current_best_node["context_str"][-1000:].replace("\n", " ")
-            rerank_query = f"{user_query} [Context: {current_context}]"
-
-            # Vector Jump
-            try:
-                vector_candidates = self.vector_store.similarity_search_with_score(rerank_query, k=beam_width)
+            if not nodes_to_process:
+                print("  🛑 No more nodes to expand.")
+                break
                 
-                for v_doc, v_score in vector_candidates:
-                    v_id = v_doc.metadata.get("doc_id")
-                    if v_id in visited_ids:
-                        continue
-                    
-                    # 应用文档过滤器 (HotpotQA-Dist 设置)
-                    if doc_filter and v_id not in doc_filter:
-                        continue
-                    
-                    doc_title = get_doc_title(v_id) or v_doc.metadata.get("title", "")
-                    path_doc_titles = list(current_best_node.get("path_doc_titles", []))
-                    if doc_title:
-                        path_doc_titles.append(doc_title)
+            for current_node in nodes_to_process:
+                visited_ids.add(current_node["id"])
+                
+                # 可信度检查
+                if current_node["score"] < TRUST_THRESHOLD and not (is_small_space and len(final_selected_nodes) < MIN_CANDIDATES_KEEP):
+                    print(f"  🗑️ Pruned: {current_node['title']} (Low Trust: {current_node['score']:.3f})")
+                    continue
+                
+                # 记录为已选节点
+                final_selected_nodes[current_node["id"]] = current_node
+                print(f"  ✅ Expanding: {current_node['title']} (Score: {current_node['score']:.3f})")
+                
+                # 扩展邻居
+                neighbors_map = self.graph_store.expand_node(
+                    current_node["id"], visited_ids, query_entities
+                )
+                
+                # Hybrid Retrieval 补充
+                if len(neighbors_map) < 3:
+                    hybrid_candidates = self.vector_store.hybrid_retrieval(
+                        user_query, 
+                        current_node["context_str"], 
+                        visited_ids,
+                        top_k=5
+                    )
+                    for hc in hybrid_candidates:
+                        if hc["id"] not in neighbors_map:
+                            neighbors_map[hc["id"]] = {"text": hc["text"], "title": hc["title"]}
+                
+                if not neighbors_map:
+                    continue
 
-                    v_node = {
-                        "id": v_id,
-                        "text": v_doc.page_content,
-                        "title": "VectorJump",
-                        "doc_title": doc_title,
-                        "path_history": current_best_node["path_history"] + [f"-> [VectorJump] '{v_doc.metadata.get('title', '')}'"],
-                        "context_str": current_best_node["context_str"] + f"\n[{v_doc.metadata.get('title', '')}] {v_doc.page_content}",
-                        "hop_depth": current_best_node.get("hop_depth", 0) + 1,
-                        "path_doc_titles": path_doc_titles,
+                # 准备当前节点的扩展候选
+                expansion_candidates = []
+                current_context = current_node["context_str"][-1000:].replace("\n", " ")
+                rerank_query = f"{user_query} [Context: {current_context}]"
+                
+                # Vector Jump
+                try:
+                    vector_candidates = self.vector_store.similarity_search_with_score(rerank_query, k=beam_width)
+                    for v_doc, _ in vector_candidates:
+                        v_id = v_doc.metadata.get("doc_id")
+                        if v_id in visited_ids: continue
+                        if doc_filter and v_id not in doc_filter: continue
+                        
+                        doc_title = get_doc_title(v_id) or v_doc.metadata.get("title", "")
+                        path_doc_titles = list(current_node.get("path_doc_titles", []))
+                        if doc_title: path_doc_titles.append(doc_title)
+
+                        expansion_candidates.append({
+                            "id": v_id,
+                            "text": v_doc.page_content,
+                            "title": "VectorJump",
+                            "source_type": "VectorJump", # Added source_type
+                            "doc_title": doc_title,
+                            "path_history": current_node["path_history"] + [f"-> [VectorJump] '{v_doc.metadata.get('title', '')}'"],
+                            "context_str": current_node["context_str"] + f"\n[{v_doc.metadata.get('title', '')}] {v_doc.page_content}",
+                            "hop_depth": current_node.get("hop_depth", 0) + 1,
+                            "path_doc_titles": path_doc_titles,
+                        })
+                except Exception as e:
+                    print(f"⚠️ Vector Expansion Error: {e}")
+
+                # Graph Expansion
+                next_hop_depth = current_node.get("hop_depth", 0) + 1
+                for n_id, n_data in neighbors_map.items():
+                    if n_id in visited_ids: continue
+                    if doc_filter and n_id not in doc_filter: continue
+
+                    doc_title = get_doc_title(n_id)
+                    path_doc_titles = list(current_node.get("path_doc_titles", []))
+                    if doc_title: path_doc_titles.append(doc_title)
+
+                    # Determine source_type
+                    # 修正：直接使用 title 作为 source_type，如果它是已知类型
+                    # 这样可以保留 Sem, EntMention, QueryEnt 等类型
+                    known_types = {
+                        "EntBridge", "RelPath", "Sem", "SemHigh", "SemLow", # V3
+                        "EntMention", "QueryEnt", "SummaryDrill", "Seq", "VectorJump"
                     }
-                    new_candidates.append(v_node)
-            except Exception as e:
-                print(f"⚠️ Vector Expansion Error: {e}")
+                    stype = n_data["title"] if n_data["title"] in known_types else "Sem"
 
-            # Graph Expansion
-            current_hop = current_best_node.get("hop_depth", 0) + 1
-            for n_id, n_data in neighbors_map.items():
-                if n_id in visited_ids:
+                    expansion_candidates.append({
+                        "id": n_id,
+                        "text": n_data["text"],
+                        "title": n_data["title"],
+                        "source_type": stype, # Added source_type
+                        "edge_score": n_data.get("edge_score"), # [V3] 传递 edge_score
+                        "doc_title": doc_title,
+                        "path_history": current_node["path_history"] + [f"-> '{n_data['title']}'"],
+                        "context_str": current_node["context_str"] + f"\n[{n_data['title']}] {n_data['text']}",
+                        "hop_depth": next_hop_depth,
+                        "path_doc_titles": path_doc_titles,
+                    })
+                
+                if not expansion_candidates:
                     continue
                 
-                # 应用文档过滤器 (HotpotQA-Dist 设置)
-                if doc_filter and n_id not in doc_filter:
-                    continue
+                # 移除之前的预截断 (Top 2*Beam)，直接对所有候选打分
+                # 这样可以避免在 Rerank 前丢失高质量的桥接节点
+                
+                # 打分
+                rerank_pairs = [[rerank_query, node["text"]] for node in expansion_candidates]
+                scores = self._get_reranker_scores(rerank_pairs)
+                
+                for i, node in enumerate(expansion_candidates):
+                    node["reranker_score"] = scores[i]
+                    node["trust_score"] = self.compute_trust_score(
+                        node, query_entities, scores[i], node["hop_depth"]
+                    )
+                    node["score"] = node["trust_score"]
+                
+                candidates_for_next_hop.extend(expansion_candidates)
 
-                doc_title = get_doc_title(n_id)
-                path_doc_titles = list(current_best_node.get("path_doc_titles", []))
-                if doc_title:
-                    path_doc_titles.append(doc_title)
-
-                new_node = {
-                    "id": n_id,
-                    "text": n_data["text"],
-                    "title": n_data["title"],
-                    "doc_title": doc_title,
-                    "path_history": current_best_node["path_history"] + [f"-> '{n_data['title']}'"],
-                    "context_str": current_best_node["context_str"] + f"\n[{n_data['title']}] {n_data['text']}",
-                    "hop_depth": current_hop,
-                    "path_doc_titles": path_doc_titles,
-                }
-                new_candidates.append(new_node)
-
-            if not new_candidates:
-                continue
-
-            # 限制候选数量，减少 Reranker 调用开销
-            MAX_CANDIDATES_PER_HOP = beam_width * 3  # 最多 9 个候选
-            if len(new_candidates) > MAX_CANDIDATES_PER_HOP:
-                new_candidates = new_candidates[:MAX_CANDIDATES_PER_HOP]
-
-            # 批量打分 (带缓存)
-            rerank_pairs = [[rerank_query, node["text"]] for node in new_candidates]
-            new_reranker_scores = self._get_reranker_scores(rerank_pairs)
-
-            for i, node in enumerate(new_candidates):
-                node["reranker_score"] = new_reranker_scores[i]
-                node["trust_score"] = self.compute_trust_score(
-                    node, query_entities, new_reranker_scores[i], node.get("hop_depth", 0)
-                )
-                node["score"] = node["trust_score"]
-            
-            frontier.extend(new_candidates)
-            frontier.sort(key=lambda x: x["score"], reverse=True)
-            frontier = frontier[:beam_width * 2]
+            # 本跳结束，汇总所有新候选，进行全局排序和多样性过滤
+            if candidates_for_next_hop:
+                # 使用多样性过滤器 V2 更新 Frontier
+                # current hop index is 'hop', so next hop frontier is prepared for hop+1? 
+                # Actually 'hop' variable in loop is 0, 1, 2.
+                # When hop=0, we are preparing for Hop 1. So we pass hop+1.
+                frontier = self._apply_diversity_filter(candidates_for_next_hop, beam_width, hop=hop+1, is_small_space=is_small_space)
+            else:
+                # 如果没有新候选，保持现有 Frontier（或者直接断掉？通常是断掉）
+                # 这里为了保留上一层未扩展的节点作为备选，可以尝试合并？
+                # 简单策略：如果没有新节点，就停止
+                pass
 
         # --- 4. 返回结果 ---
         # Fallback 机制：如果图谱游走一无所获，但在受限空间内（如 Distractor），
