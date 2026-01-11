@@ -104,11 +104,29 @@ def main():
     logger.info(f"⚙️  使用 LLM 摘要: {args.use_llm_summary}")
     logger.info(f"⏩ 断点续传: {args.skip_existing}")
     logger.info("=" * 70)
-    
-    # 1. 创建持久化目录
-    persist_dir = Path(args.persist_dir)
-    persist_dir.mkdir(parents=True, exist_ok=True)
-    
+
+    # 1. 确定持久化目录（根据数据集自动区分）
+    persist_dir_path = Path(args.persist_dir)
+
+    # 如果用户没有显式指定 persist_dir（即使用了默认值），则根据 input 文件名自动推导
+    # 逻辑：
+    # - distractor -> data/hotpotqa (保持原样)
+    # - fullwiki   -> data/hotpotqa_fullwiki (新路径)
+    # - 其他       -> data/hotpotqa_{stem}
+    if args.persist_dir == "data/hotpotqa":
+        input_stem = Path(args.input).stem
+        if "distractor" in input_stem:
+            persist_dir_path = Path("data/hotpotqa")
+        elif "fullwiki" in input_stem:
+            persist_dir_path = Path("data/hotpotqa_fullwiki")
+        else:
+            persist_dir_path = Path(f"data/hotpotqa_{input_stem}")
+
+    persist_dir_path.mkdir(parents=True, exist_ok=True)
+
+    # 更新 args 以便后续日志打印正确
+    args.persist_dir = str(persist_dir_path)
+
     # 2. 加载数据集
     logger.info(f"\n📄 加载数据集...")
     input_path = project_root / args.input

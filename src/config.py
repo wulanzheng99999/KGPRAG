@@ -19,6 +19,7 @@ LLM_MAX_RETRIES = int(os.environ.get("LLM_MAX_RETRIES", "8"))
 
 # Limit prompt size sent to LLM (avoid 5xx due to oversized requests)
 MAX_EVIDENCE_NODES_FOR_LLM = int(os.environ.get("MAX_EVIDENCE_NODES_FOR_LLM", "4"))
+MAX_EVIDENCE_NODES_SMALL_SPACE = int(os.environ.get("MAX_EVIDENCE_NODES_SMALL_SPACE", "6"))  # Phase 1: 小空间专用，增加覆盖
 MAX_EVIDENCE_CHARS_PER_NODE = int(os.environ.get("MAX_EVIDENCE_CHARS_PER_NODE", "2000"))
 MAX_TOTAL_CONTEXT_CHARS = int(os.environ.get("MAX_TOTAL_CONTEXT_CHARS", "8000"))
 
@@ -117,7 +118,7 @@ SMALL_SPACE_THRESHOLD = 100
 
 # 小空间模式下，强制保留的最小候选数（防止被 TRUST_THRESHOLD 全部剪枝）
 # 在只有 10 个文档时，相对排名 > 绝对阈值
-MIN_CANDIDATES_KEEP = 5
+MIN_CANDIDATES_KEEP = 6  # Phase 1 优化: 3 → 6，确保60%覆盖率
 
 # ================= Performance Tuning =================
 # 批处理大小 (根据 GPU 显存调整)
