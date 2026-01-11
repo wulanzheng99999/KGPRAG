@@ -81,6 +81,17 @@ def main():
     parser.add_argument("--use_llm_summary", action="store_true", help="使用 LLM 生成摘要 (默认: 启发式摘要)")
     args = parser.parse_args()
     
+    # --- 自动选择持久化目录 ---
+    # 如果用户没有显式指定 persist_dir (即仍然是默认值)，且 input 文件名包含特定关键字，则自动切换目录
+    if args.persist_dir == "data/hotpotqa":
+        if "fullwiki" in args.input:
+            args.persist_dir = "data/hotpotqa_fullwiki"
+            print(f"⚠️ 检测到 FullWiki 数据集，自动将持久化目录切换为: {args.persist_dir}")
+        elif "distractor" in args.input:
+            args.persist_dir = "data/hotpotqa"
+            # 默认就是这个，不用改，但可以打印一下确认
+            # print(f"ℹ️ 检测到 Distractor 数据集，使用默认持久化目录: {args.persist_dir}")
+    
     # 初始化日志
     log_dir = project_root / "logs" / "kgs"
     logger = ExperimentLogger(log_dir=str(log_dir), experiment_name="build_kg")
