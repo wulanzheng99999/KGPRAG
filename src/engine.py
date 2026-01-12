@@ -357,7 +357,7 @@ class AdvancedRAGEngine:
 
 **Output Format (STRICTLY REQUIRED):**
 - Output ONLY ONE LINE: Answer: <your answer>
-- <your answer> MUST be: a single entity name, date, number, or short phrase (max 8 words)
+- <your answer> MUST be: a single entity name, date, number, or short phrase (max 5 words)
 - DO NOT include any explanation, reasoning, or sentence structure
 
 **Reasoning Path:**
