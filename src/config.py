@@ -22,6 +22,7 @@ MAX_EVIDENCE_NODES_FOR_LLM = int(os.environ.get("MAX_EVIDENCE_NODES_FOR_LLM", "4
 MAX_EVIDENCE_NODES_SMALL_SPACE = int(os.environ.get("MAX_EVIDENCE_NODES_SMALL_SPACE", "6"))  # Phase 1: 小空间专用，增加覆盖
 MAX_EVIDENCE_CHARS_PER_NODE = int(os.environ.get("MAX_EVIDENCE_CHARS_PER_NODE", "2000"))
 MAX_TOTAL_CONTEXT_CHARS = int(os.environ.get("MAX_TOTAL_CONTEXT_CHARS", "8000"))
+ENABLE_CONTEXT_REORDER = os.environ.get("ENABLE_CONTEXT_REORDER", "1").lower() in ("1", "true", "yes", "on")
 
 # # [Original Config - DeepSeek API]
 # # OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "sk-1408831cec78417d9a6024ac8e02dac4")
