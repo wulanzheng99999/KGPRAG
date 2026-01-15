@@ -14,8 +14,18 @@ from pathlib import Path
 from typing import List, Dict, Optional, Set
 
 from langchain_openai import ChatOpenAI
+import requests
 
-from src.config import LLM_MODEL, DEFAULT_BEAM_WIDTH, DEFAULT_MAX_HOPS, ENABLE_CONTEXT_REORDER
+from src.config import (
+    LLM_MODEL,
+    DEFAULT_BEAM_WIDTH,
+    DEFAULT_MAX_HOPS,
+    NEO4J_URI,
+    NEO4J_URI_FULLWIKI,
+    VLLM_API_KEY,
+    VLLM_BASE_URL,
+    VLLM_MODEL_NAME
+)
 from src.entity_extractor import EntityExtractor
 from src.graph_store import GraphStore
 from src.retriever import MultiHopRetriever
@@ -53,7 +63,11 @@ class AdvancedRAGEngine:
         
         # 初始化各模块
         self.entity_extractor = EntityExtractor()
-        self.graph_store = GraphStore()
+        # 统一使用默认 NEO4J_URI，不再针对 fullwiki 切换端口
+        graph_uri = NEO4J_URI
+        if persist_dir and "fullwiki" in str(persist_dir).lower():
+            graph_uri = NEO4J_URI_FULLWIKI
+        self.graph_store = GraphStore(uri=graph_uri, allow_no_auth=True)
         
         # 根据模式选择向量存储
         if persist_dir:
@@ -84,7 +98,46 @@ class AdvancedRAGEngine:
         )
         
         # LLM for answer generation
-        self.llm = ChatOpenAI(model=LLM_MODEL, temperature=0)
+        # Check if vLLM is available
+        use_vllm = False
+        try:
+            print(f"🔍 Checking vLLM at {VLLM_BASE_URL}...")
+            # Simple check to see if we can list models or just reach the endpoint
+            headers = {}
+            if VLLM_API_KEY and VLLM_API_KEY != "EMPTY":
+                headers["Authorization"] = f"Bearer {VLLM_API_KEY}"
+            response = requests.get(f"{VLLM_BASE_URL}/models", timeout=2, headers=headers)
+            if response.status_code == 200:
+                model_names = []
+                try:
+                    payload = response.json()
+                    model_names = [m.get("id") for m in payload.get("data", []) if m.get("id")]
+                except Exception:
+                    model_names = []
+
+                if not model_names or VLLM_MODEL_NAME in model_names:
+                    use_vllm = True
+                    print(f"✅ vLLM detected. Using model: {VLLM_MODEL_NAME}")
+                else:
+                    print(
+                        "⚠️ vLLM reachable but model not found. "
+                        f"Requested: {VLLM_MODEL_NAME}, Available: {model_names}"
+                    )
+            else:
+                print(f"⚠️ vLLM reachable but returned status {response.status_code}. Falling back to Ollama.")
+        except Exception as e:
+            print(f"⚠️ vLLM not reachable ({e}). Falling back to Ollama.")
+
+        if use_vllm:
+            self.llm = ChatOpenAI(
+                model=VLLM_MODEL_NAME, 
+                temperature=0,
+                api_key=VLLM_API_KEY,
+                base_url=VLLM_BASE_URL
+            )
+        else:
+            print(f"🤖 Using Ollama/Default: {LLM_MODEL}")
+            self.llm = ChatOpenAI(model=LLM_MODEL, temperature=0)
         
         print("✅ 引擎初始化完成")
     
@@ -124,74 +177,6 @@ class AdvancedRAGEngine:
             return True
 
         return False
-    
-    def _concave_reorder(self, evidence: list[dict]) -> list[dict]:
-        """
-        凹透镜重排：将高分证据放在上下文的开头和末尾
-        
-        原理：利用 LLM 的 "Lost-in-the-Middle" 特性，将最强证据
-        放在开头和结尾（注意力最高的区域）
-        
-        排列方式：[Rank1, Rank3, Rank5, ..., Rank6, Rank4, Rank2]
-        即：奇数 rank 正序，偶数 rank 逆序拼接
-        
-        参数:
-            evidence: 已按 score 降序排列的证据列表
-        
-        返回:
-            重排后的证据列表
-        """
-        if not evidence or len(evidence) <= 3:
-            return evidence
-
-        left, right = [], []
-        for i, item in enumerate(evidence):
-            if i % 2 == 0:
-                left.append(item)   # Rank 1, 3, 5, ...
-            else:
-                right.append(item)  # Rank 2, 4, 6, ...
-        
-        # 关键：left 正序，right 逆序，最终形成 "首尾强、中间弱" 的分布
-        return left + list(reversed(right))
-    
-    def _apply_diverse_tail(self, evidence: list[dict]) -> list[dict]:
-        """
-        尾部文档多样性优化：确保上下文末尾来自不同文档
-        
-        原理：对于多跳问题，答案往往需要组合多个文档的信息。
-        如果上下文首尾都来自同一文档，LLM 可能会忽略其他文档。
-        
-        策略：如果首尾节点来自同一文档，从中间找一个不同文档的
-        节点与末尾交换。
-        
-        参数:
-            evidence: 证据列表（通常已经过凹透镜重排）
-        
-        返回:
-            调整后的证据列表
-        """
-        if len(evidence) < 2:
-            return evidence
-
-        def doc_key(node: dict) -> str:
-            """提取节点的文档标识（优先级：doc_title > title > id）"""
-            return node.get("doc_title") or node.get("title") or node.get("id") or ""
-
-        first_doc = doc_key(evidence[0])
-        if not first_doc:
-            return evidence
-
-        # 检查首尾是否来自同一文档
-        if doc_key(evidence[-1]) == first_doc:
-            # 从倒数第二个开始向前查找，找到第一个不同文档的节点
-            for i in range(len(evidence) - 2, 0, -1):
-                candidate_doc = doc_key(evidence[i])
-                if candidate_doc and candidate_doc != first_doc:
-                    # 交换到末尾
-                    evidence[i], evidence[-1] = evidence[-1], evidence[i]
-                    break
-        
-        return evidence
     
     def _post_process_answer(self, raw_answer: str, query: str) -> str:
         """
@@ -382,36 +367,19 @@ class AdvancedRAGEngine:
         
         # 准备上下文
         sorted_evidence = search_result["nodes"]
-
-        if ENABLE_CONTEXT_REORDER:
-            # ==================== Context reorder flow ====================
-            # Step 1: sort by score (high first)
-            sorted_evidence.sort(key=lambda x: x.get("score", 0.0), reverse=True)
-
-            # Step 2: Top-N truncation to control context length
-            TOP_N = 10  # experiment default
-            head = sorted_evidence[:TOP_N]
-
-            # Step 3: concave reorder to fight Lost-in-the-Middle
-            head = self._concave_reorder(head)
-
-            # Step 4: diversify tail to cover multiple docs
-            head = self._apply_diverse_tail(head)
-
-            # Step 5: use reordered evidence list
-            sorted_evidence = head
-            # ========================================================
+        
+        # [Phase 1 优化] 小空间模式使用更多证据节点
+        is_small_space = (doc_filter is not None and len(doc_filter) <= 20)
+        if is_small_space:
+            from src.config import MAX_EVIDENCE_NODES_SMALL_SPACE
+            max_evidence = MAX_EVIDENCE_NODES_SMALL_SPACE
         else:
-            # Original flow: only truncate by config, keep original order
-            is_small_space = (doc_filter is not None and len(doc_filter) <= 20)
-            if is_small_space:
-                from src.config import MAX_EVIDENCE_NODES_SMALL_SPACE
-                max_evidence = MAX_EVIDENCE_NODES_SMALL_SPACE
-            else:
-                from src.config import MAX_EVIDENCE_NODES_FOR_LLM
-                max_evidence = MAX_EVIDENCE_NODES_FOR_LLM
-            sorted_evidence = sorted_evidence[:max_evidence]
-
+            from src.config import MAX_EVIDENCE_NODES_FOR_LLM
+            max_evidence = MAX_EVIDENCE_NODES_FOR_LLM
+        
+        # 限制证据节点数量（避免超长 Context）
+        sorted_evidence = sorted_evidence[:max_evidence]
+        
         context_str = "\n\n".join([f"[{n['title']}] {n['text']}" for n in sorted_evidence])
         best_path_str = search_result["best_path"]
         

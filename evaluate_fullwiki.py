@@ -100,22 +100,25 @@ class HotpotQALoader:
 # 🚀 执行主程序
 # ==========================================
 if __name__ == "__main__":
-    # 1. 初始化日志系统
     PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-    logger = ExperimentLogger(log_dir=os.path.join(PROJECT_ROOT, "logs"), experiment_name="kgprag_eval_fullwiki")
-    
-    # --- 关键配置差异 ---
-    DATA_FILE = os.path.join(PROJECT_ROOT, "data", "hotpot_dev_fullwiki_v1.json")
-    OUTPUT_FILE = os.path.join(PROJECT_ROOT, "data", "advanced_rag_results_fullwiki.jsonl")
-    # 这里指向 Full Wiki 的专用索引目录
-    INDEX_DIR = os.path.join(PROJECT_ROOT, "data", "hotpotqa_fullwiki")
+    MODE = "fullwiki"
+    LOG_BASE_DIR = os.path.join(PROJECT_ROOT, "logs", MODE)
+    os.makedirs(LOG_BASE_DIR, exist_ok=True)
+    logger = ExperimentLogger(log_dir=LOG_BASE_DIR, experiment_name=f"{MODE}_eval")
 
-    # 2. 检查索引目录
+    DATA_FILE = os.path.join(PROJECT_ROOT, "data", "hotpot_dev_fullwiki_v1.json")
+    OUTPUT_FILE = os.path.join(PROJECT_ROOT, "data", f"results_{MODE}.jsonl")
+    INDEX_DIR = os.path.join(PROJECT_ROOT, "data", "hotpotqa_fullwiki")
+    DOC_FILTER = None
+
     logger.info("\n" + "=" * 80)
-    logger.info("🚀 正在启动 Advanced GraphRAG 引擎 (Full Wiki Open Space Mode)...")
+    logger.info(f"🚀 启动 KGPRAG 评估 | 模式: {MODE.upper()}")
+    logger.info("=" * 80)
+    logger.info(f"   📂 输入数据: {DATA_FILE}")
     logger.info(f"   📂 索引目录: {INDEX_DIR}")
-    logger.info("   ✅ 模式: 全开放空间检索 (No doc_filter)")
-    logger.info("   ✅ 策略: Vector Search + Summary Guidance")
+    logger.info(f"   📂 日志目录: {LOG_BASE_DIR}")
+    logger.info(f"   💾 结果输出: {OUTPUT_FILE}")
+    logger.info("   🔒 过滤策略: doc_filter=None (Open Space Mode)")
     logger.info("=" * 80 + "\n")
     
     # 检查索引目录是否存在
@@ -172,13 +175,12 @@ if __name__ == "__main__":
 
                 start_time = time.time()
                 try:
-                    # --- 关键差异: 不传递 doc_filter ---
-                    # 这会告诉 engine 启用全库检索模式
+                    # Force open-space retrieval.
                     result = engine.query(
                         item.query,
                         beam_width=BEAM_WIDTH,
                         max_hops=MAX_HOPS,
-                        doc_filter=None,  # <--- Set to None for Full Wiki
+                        doc_filter=DOC_FILTER,
                         return_debug=True
                     )
                     

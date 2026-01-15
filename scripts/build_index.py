@@ -28,6 +28,7 @@ from src.entity_extractor import EntityExtractor
 from src.graph_store import GraphStore
 from src.graph_builder_offline import OfflineGraphBuilder
 from src.vector_store_persistent import PersistentVectorStore
+from src.config import NEO4J_URI, NEO4J_URI_FULLWIKI
 
 
 def load_documents(input_path: str) -> list:
@@ -51,14 +52,33 @@ def load_documents(input_path: str) -> list:
 def main():
     parser = argparse.ArgumentParser(description="离线建图脚本")
     parser.add_argument("--input", required=True, help="输入文档 JSON 文件路径")
-    parser.add_argument("--persist_dir", default="./index", help="持久化目录 (默认: ./index)")
+    parser.add_argument("--persist_dir", default="data/hotpotqa", help="持久化目录 (默认: data/hotpotqa)")
     parser.add_argument("--reset", action="store_true", help="清空现有索引后重建")
     parser.add_argument("--use_llm_summary", action="store_true", help="使用 LLM 生成摘要 (默认: 启发式摘要)")
     parser.add_argument("--batch_size", type=int, default=32, help="批处理大小 (默认: 32)")
     args = parser.parse_args()
     
+    # --- 智能检测 FullWiki 模式 ---
+    # 逻辑：如果输入文件包含 'fullwiki' 或者 persist_dir 包含 'fullwiki'，则切换到 7688 和 对应目录
+    is_fullwiki = ("fullwiki" in args.input.lower()) or ("fullwiki" in args.persist_dir.lower())
+    
+    if is_fullwiki:
+        # 如果用户没有强制指定其他目录（即仍是默认值），则自动切换到 fullwiki 目录
+        if args.persist_dir == "data/hotpotqa": 
+            args.persist_dir = "data/hotpotqa_fullwiki"
+            
+        neo4j_uri = NEO4J_URI_FULLWIKI
+        print(f"⚠️  检测到 FullWiki 模式: 自动切换 Neo4j URI 为 {neo4j_uri} (7688端口)")
+    else:
+        neo4j_uri = NEO4J_URI
+        print(f"ℹ️  标准模式: 使用 Neo4j URI {neo4j_uri} (7687端口)")
+
     print("=" * 60)
-    print("🚀 KGPRAG 离线建图工具")
+    print("🚀 KGPRAG 离线建图工具 (build_index.py)")
+    print("=" * 60)
+    print(f"📂 输入文件: {args.input}")
+    print(f"📂 持久化目录: {args.persist_dir}")
+    print(f"🌐 Neo4j URI: {neo4j_uri}")
     print("=" * 60)
     
     # 1. 加载文档
@@ -69,7 +89,9 @@ def main():
     # 2. 初始化组件
     print("\n📦 初始化组件...")
     entity_extractor = EntityExtractor()
-    graph_store = GraphStore()
+    
+    # 显式传递 URI 和 allow_no_auth (fullwiki 通常不鉴权或者使用默认)
+    graph_store = GraphStore(uri=neo4j_uri, allow_no_auth=is_fullwiki)
     vector_store = PersistentVectorStore(persist_dir=args.persist_dir)
     
     # 3. 处理 reset
@@ -119,6 +141,9 @@ def main():
     print(f"   文档缓存: {cache_path}")
     print(f"   总文档数: {len(doc_cache)}")
     print("=" * 60)
+    
+    # 显式关闭连接
+    graph_store.close()
 
 
 if __name__ == "__main__":

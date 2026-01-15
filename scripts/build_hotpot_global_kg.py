@@ -26,6 +26,7 @@ from src.graph_store import GraphStore
 from src.graph_builder_offline import OfflineGraphBuilder
 from src.vector_store_persistent import PersistentVectorStore
 from util.custom_logger import ExperimentLogger
+from src.config import NEO4J_URI, NEO4J_URI_FULLWIKI
 
 
 def extract_unique_documents(data: List[Dict]) -> tuple:
@@ -79,6 +80,9 @@ def main():
         elif "distractor" in args.input:
             args.persist_dir = "data/hotpotqa"
 
+    is_fullwiki = ("fullwiki" in args.input.lower()) or ("fullwiki" in args.persist_dir.lower())
+    graph_store_uri = NEO4J_URI_FULLWIKI if is_fullwiki else NEO4J_URI
+
     # 初始化日志
     log_dir = project_root / "logs" / "kgs"
     logger = ExperimentLogger(log_dir=str(log_dir), experiment_name="build_kg")
@@ -88,6 +92,7 @@ def main():
     logger.info("=" * 70)
     logger.info(f"📂 输入文件: {args.input}")
     logger.info(f"📂 持久化目录: {args.persist_dir}")
+    logger.info(f"Neo4j URI: {graph_store_uri}")
     logger.info("=" * 70)
     
     # 1. 创建持久化目录
@@ -109,7 +114,7 @@ def main():
     # 4. 初始化模块
     logger.info(f"\n🔧 初始化模块...")
     entity_extractor = EntityExtractor()
-    graph_store = GraphStore()
+    graph_store = GraphStore(uri=graph_store_uri, allow_no_auth=is_fullwiki)
     vector_store = PersistentVectorStore(persist_dir=str(persist_dir))
     
     graph_builder = OfflineGraphBuilder(

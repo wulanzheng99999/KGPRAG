@@ -3,7 +3,7 @@
 """
 from __future__ import annotations
 
-from typing import List, Dict, Set
+from typing import List, Dict, Set, Optional
 
 from neo4j import GraphDatabase
 
@@ -14,18 +14,76 @@ from util.text_utils import normalize_entity
 class GraphStore:
     """Neo4j 图存储管理器"""
     
-    def __init__(self):
-        self.driver = GraphDatabase.driver(
-            NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD)
-        )
+    def __init__(
+        self,
+        uri: Optional[str] = None,
+        user: Optional[str] = None,
+        password: Optional[str] = None,
+        allow_no_auth: bool = False,
+    ):
+        resolved_uri = uri or NEO4J_URI
+        resolved_user = user or NEO4J_USER
+        resolved_password = password or NEO4J_PASSWORD
+        self.driver = None
+
+        def _verify(driver):
+            if hasattr(driver, "verify_connectivity"):
+                driver.verify_connectivity()
+                return
+            with driver.session() as session:
+                session.run("RETURN 1")
+
+        if allow_no_auth:
+            first_error = None
+            try:
+                self.driver = GraphDatabase.driver(
+                    resolved_uri, auth=(resolved_user, resolved_password)
+                )
+                _verify(self.driver)
+            except Exception as exc:
+                first_error = exc
+                if self.driver:
+                    self.driver.close()
+                try:
+                    print("WARN: Neo4j auth failed, retrying without auth.")
+                    self.driver = GraphDatabase.driver(resolved_uri, auth=None)
+                    _verify(self.driver)
+                except Exception as exc2:
+                    if self.driver:
+                        self.driver.close()
+                    raise RuntimeError(
+                        "Neo4j connection failed with auth and without auth. "
+                        f"Auth error: {first_error}"
+                    ) from exc2
+        else:
+            self.driver = GraphDatabase.driver(
+                resolved_uri, auth=(resolved_user, resolved_password)
+            )
+        
+        # 确保索引存在 (自动修复性能问题)
+        self.ensure_indexes()
     
+    def ensure_indexes(self):
+        """确保所有必要的索引都存在"""
+        try:
+            with self.driver.session() as session:
+                # Chunk ID 索引 (核心)
+                session.run("CREATE INDEX chunk_id_idx IF NOT EXISTS FOR (c:Chunk) ON (c.id)")
+                # Entity Name 索引 (核心)
+                session.run("CREATE INDEX entity_name_idx IF NOT EXISTS FOR (e:Entity) ON (e.name)")
+                # Document Title 索引 (解决 MERGE (d:Document) 的性能瓶颈)
+                session.run("CREATE INDEX document_title_idx IF NOT EXISTS FOR (d:Document) ON (d.title)")
+                # Summary ID 索引
+                session.run("CREATE INDEX summary_id_idx IF NOT EXISTS FOR (s:Summary) ON (s.id)")
+        except Exception as e:
+            print(f"⚠️ Ensure Indexes Error: {e}")
+
     def reset(self):
         """清空图数据库并创建索引"""
         try:
             with self.driver.session() as session:
                 session.run("MATCH (n) DETACH DELETE n")
-                session.run("CREATE INDEX chunk_id_idx IF NOT EXISTS FOR (c:Chunk) ON (c.id)")
-                session.run("CREATE INDEX entity_name_idx IF NOT EXISTS FOR (e:Entity) ON (e.name)")
+            self.ensure_indexes()
         except Exception as e:
             print(f"⚠️ Neo4j Reset Error: {e}")
 

@@ -1,0 +1,26 @@
+﻿2026-01-10 08:37:19 - [INFO] - 进度: [597/7405] | Query ID: 5a85fa815542996432c57155
+2026-01-10 08:37:19 - [INFO] - ❓ 问题: Where was the movement that August Brancart published literature from centerd?
+2026-01-10 08:37:19 - [INFO] - 📋 doc_filter: 17 个文档
+🔍 Starting Adaptive Search (Max Hops: 3, Beam: 8, Filter: 17 docs)
+🎯 Query Entities (normalized): ['movement', 'centerd', 'literature', 'august brancart']
+  📊 PPR: 107175 nodes, 248879 edges, 40 seeds
+  📋 [小空间模式] 全量加载 doc_filter (17 docs)
+--- Hop 1 (Frontier Size: 17) ---
+  ✅ Expanding: Auguste Brancart (Score: 0.707)
+  ✅ Expanding: Decadent movement (Score: 0.499)
+  ✅ Expanding: Dar al-Hikma (Iraqi publishing house) (Score: 0.432)
+--- Hop 2 (Frontier Size: 5) ---
+  ✅ Expanding: VectorJump (Score: 0.615)
+  ✅ Expanding: SemHigh (Score: 0.607)
+  ✅ Expanding: EntBridge (Score: 0.545)
+--- Hop 3 (Frontier Size: 5) ---
+  🛑 No more nodes to expand.
+  🎯 Golden Anchors: 5 nodes (trust_score >= 0.01)
+  📊 Global Pool: 17 nodes (sorted by Context-Dominant Hybrid)
+  🔄 Silver Fillers: 10 nodes (filling remaining 10 slots)
+  ✅ Final Evidence: 15 nodes (Anchors: 5, Fillers: 10)
+  🧠 Router (Rule): LOCATION
+2026-01-10 08:37:32 - [INFO] - 🤖 预测: France
+2026-01-10 08:37:32 - [INFO] - ✅ 真值: Western Europe
+2026-01-10 08:37:32 - [INFO] - 📊 指标: F1=0.00 | P=0.00 | R=0.00 | ❌ MISS (耗时: 13.18s)
+2026-01-10 08:37:32 - [INFO] - 🔎 Hits: retrieval=1 bridge=1 path=0 | support=2 hit_docs=2

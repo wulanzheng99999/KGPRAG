@@ -13,6 +13,12 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "ollama")  # Ollama 兼容 OpenAI 协议但不校验 key
 OPENAI_BASE_URL = os.environ.get("OPENAI_BASE_URL", "http://localhost:11434/v1")
 LLM_MODEL = os.environ.get("LLM_MODEL", "llama3:8b")
+
+# [vLLM Config]
+VLLM_API_KEY = os.environ.get("VLLM_API_KEY", "EMPTY")
+VLLM_BASE_URL = os.environ.get("VLLM_BASE_URL", "http://localhost:8000/v1")
+VLLM_MODEL_NAME = os.environ.get("VLLM_MODEL_NAME", "llama3")
+
 # LLM request reliability (for long-running eval)
 LLM_TIMEOUT = float(os.environ.get("LLM_TIMEOUT", "60"))
 LLM_MAX_RETRIES = int(os.environ.get("LLM_MAX_RETRIES", "8"))
@@ -22,7 +28,6 @@ MAX_EVIDENCE_NODES_FOR_LLM = int(os.environ.get("MAX_EVIDENCE_NODES_FOR_LLM", "4
 MAX_EVIDENCE_NODES_SMALL_SPACE = int(os.environ.get("MAX_EVIDENCE_NODES_SMALL_SPACE", "6"))  # Phase 1: 小空间专用，增加覆盖
 MAX_EVIDENCE_CHARS_PER_NODE = int(os.environ.get("MAX_EVIDENCE_CHARS_PER_NODE", "2000"))
 MAX_TOTAL_CONTEXT_CHARS = int(os.environ.get("MAX_TOTAL_CONTEXT_CHARS", "8000"))
-ENABLE_CONTEXT_REORDER = os.environ.get("ENABLE_CONTEXT_REORDER", "1").lower() in ("1", "true", "yes", "on")
 
 # # [Original Config - DeepSeek API]
 # # OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "sk-1408831cec78417d9a6024ac8e02dac4")
@@ -52,6 +57,7 @@ _LOCAL_MODEL_DIRS = [
     os.environ.get("LOCAL_MODEL_DIR", ""),
     str(_PROJECT_ROOT / "models"),
     "/root/KGPRAG/models",
+    "/gly/rent/wangchong/models",
 ]
 
 
@@ -103,6 +109,7 @@ ENTITY_THRESHOLD = 0.4  # 降低阈值提高召回
 
 # ================= Neo4j Configuration =================
 NEO4J_URI = os.environ.get("NEO4J_URI", "bolt://localhost:7687")
+NEO4J_URI_FULLWIKI = os.environ.get("NEO4J_URI_FULLWIKI", "bolt://localhost:7688")
 NEO4J_USER = os.environ.get("NEO4J_USER", "neo4j")
 # NEO4J_PASSWORD = os.environ.get("NEO4J_PASSWORD", "9RP4s9YpWWSV:k3")
 NEO4J_PASSWORD = os.environ.get("NEO4J_PASSWORD", "9RP4s9YpWWSV:k3")
@@ -148,6 +155,9 @@ ENTITY_STOPWORDS = {
     "life", "history", "part", "end", "beginning", "work", "series", "type", "kind",
     "name", "number", "way", "thing", "fact", "case", "point", "example",
     "system", "method", "process", "result", "effect", "cause",
+    # 常见噪声词 (HotpotQA/Wiki) - moved from retriever.py
+    "american", "film", "director", "actor", "actress", "singer", "writer", 
+    "born", "known", "based",
 }
 
 # 实体过滤参数
